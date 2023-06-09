@@ -4,13 +4,15 @@ import { Recipe } from "@/types"
 
 const Recipes = ({ recipes }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <div>
+    <div className="grid grid-cols-2 gap-4 m-4">
       {
         recipes.map((recipe) => {
           return (
-            <div key={recipe.id}>
-              <Image src={recipe.imgUrl} width={500} height={500} alt="picture of recipe" />
-              <h2 className="text-xl bold">{recipe.title}</h2>
+            <div key={recipe.id} className="bg-off-white shadow-lg h-full w-full">
+              <div className="relative m-4 p-4">
+               <Image src={recipe.imgUrl} fill objectFit="contain" alt={`Picture of ${recipe.title}`} />
+              </div>
+              <h2 className="text-xl mx-5 my-2 text-gray">{recipe.title}</h2>
             </div>
           )
         })

@@ -1,3 +1,4 @@
+const colors = require('tailwindcss/colors')
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -14,20 +15,10 @@ module.exports = {
       '2xl': '1600px'
     },
     colors: {
-      'blue': '#1fb6ff',
-      'purple': '#7e5bef',
-      'pink': '#ff49db',
-      'orange': '#ff7849',
-      'green': '#13ce66',
-      'yellow': '#ffc82c',
-      'gray-dark': '#273444',
-      'gray': '#8492a6',
-      'red': '#DB3734',
       'green-yellow': '#BFE57C',
       'off-white': '#FCFDEE',
-      "light-gray": '#F5F5F2 ',
-      'dark-gray': '#87877F',
-      'white': '#FFFFFF'
+      'gray': colors.gray,
+      'white': colors.white,
     },
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],
