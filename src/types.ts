@@ -1,9 +1,10 @@
 export interface Recipe {
   title: string,
   ingredients: string[],
-  equipment: string[] | undefined,
-  duration: number | undefined,
+  equipment: string[],
+  duration: number | null,
   guide: string,
   id: number,
-  imgUrl: string
+  imgUrl: string,
+  description: string | null
 }

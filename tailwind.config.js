@@ -19,6 +19,11 @@ module.exports = {
       'off-white': '#FCFDEE',
       'gray': colors.gray,
       'white': colors.white,
+      'blue': colors.blue,
+      'zinc': colors.zink,
+      'cyan': colors.cyan,
+      'stone': colors.stone,
+      'lime': colors.lime,
     },
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],

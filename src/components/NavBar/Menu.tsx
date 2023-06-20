@@ -1,40 +1,40 @@
-import Link from 'next/link';
-import { useState } from 'react';
+import Link from 'next/link'
+import { useState } from 'react'
 import {Menu as MenuIcon} from '@styled-icons/entypo'
 
 
 const Menu = () => {
-  const [expand, setExpand] = useState(false);
+  const [expand, setExpand] = useState(false)
 
   return (
-    <div className="relative">
+    <div className="relative z-20">
       <button
-        className="text-off-white font-bold text-xl hover:text-blue transition-color"
+        className="text-off-white font-bold text-xl hover:text-cyan-400 transition-color"
         onClick={() => setExpand(!expand)}
       >
         <MenuIcon className='h-10'/>
       </button>
       <ul
-        className={`shadow-2xl absolute text-dark-gray right-0 transition-all duration-400 ${
-          expand ? 'h-auto opacity-100' : 'h-0 opacity-0'
-        } overflow-hidden bg-light-gray rounded p-1`}
+        className={`shadow-2xl absolute text-stone-700 right-0 transition-opacity ${
+          expand ? 'opacity-100' : 'opacity-0'
+        } overflow-hidden bg-stone-100 rounded p-2`}
       >
-        <li className="hover:text-blue transition-color">
-          <Link href="/">Home</Link>
+        <li className="hover:text-cyan-400 transition-color">
+          <Link href="/" onClick={() => setExpand(false)}>Home</Link>
         </li>
-        <li className="hover:text-blue transition-color">
-          <Link href="/recipes">Recipes</Link>
+        <li className="hover:text-cyan-400 transition-color">
+          <Link href="/recipes" onClick={() => setExpand(false)}>Recipes</Link>
         </li>
-        <li className="hover:text-blue transition-color">
-          <Link href="/api/auth/signin">SignIn</Link>
+        <li className="hover:text-cyan-400 transition-color">
+          <Link href="/api/auth/signin" onClick={() => setExpand(false)}>SignIn</Link>
         </li>
-        <li className="hover:text-blue transition-color">
-          <Link href="/api/auth/signout">SignOut</Link>
+        <li className="hover:text-cyan-400 transition-color">
+          <Link href="/api/auth/signout" onClick={() => setExpand(false)}>SignOut</Link>
         </li>
       </ul>
     </div>
-  );
-};
+  )
+}
 
 
 export default Menu

@@ -1,9 +1,13 @@
 import { PropsWithChildren } from "react"
 
-const Page = (props: PropsWithChildren) => {
+interface PageProps extends PropsWithChildren {
+  className?: string
+}
+
+const Page = ({ className, children}: PageProps) => {
   return (
-    <div className="bg-white p-4 shadow-lg min-h-loose">
-      {props.children}
+    <div className={className}>
+      {children}
     </div>
   )
 }
