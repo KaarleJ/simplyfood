@@ -1,7 +1,7 @@
 import Link from "next/link"
 import Image from "next/image";
 import Menu from "./Menu"
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession } from "next-auth/react"
 import ProfileButton from "../ProfileButton";
 
 const NavBar = () => {
