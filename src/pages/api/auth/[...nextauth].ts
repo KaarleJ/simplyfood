@@ -11,4 +11,8 @@ export const authOptions = {
   ]
 }
 
+console.log(process.env.GITHUB_ID);
+console.log(process.env.GITHUB_SECRET);
+
+
 export default NextAuth(authOptions)
