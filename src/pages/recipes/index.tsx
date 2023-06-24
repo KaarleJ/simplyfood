@@ -61,7 +61,7 @@ export const getServerSideProps: GetServerSideProps<{ recipes: Recipe[] }> = asy
   const searchQuery = context.query.search as string
   
   try {
-    let recipes;
+    let recipes: Recipe[];
     if (searchQuery) {
       recipes = await prisma.recipe.findMany({
         where: {
@@ -80,6 +80,8 @@ export const getServerSideProps: GetServerSideProps<{ recipes: Recipe[] }> = asy
       }
     }
   } catch (error) {
+    console.log(error);
+    
     return {
       notFound: true
     }

@@ -1,6 +1,8 @@
 import { Recipe as RecipeType } from "@/types"
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import Image from "next/image"
+import { PrismaClient } from "@prisma/client"
+const prisma = new PrismaClient()
 
 const Recipe = ({ recipe }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
@@ -55,11 +57,19 @@ export default Recipe
 
 export const getServerSideProps: GetServerSideProps<{ recipe: RecipeType }> = async (context) => {
   const { params } = context
-  const res = await fetch(`http://localhost:4000/recipes/${params!.recipeId}`)
-  const recipe: RecipeType = await res.json()
+  const recipe: RecipeType | null = await prisma.recipe.findUnique({
+    where: {
+      id: Number(params!.recipeId)
+    }
+  })
+  if (!recipe) {
+    return {
+      notFound: true
+    }
+  }
   return {
     props: {
-      recipe
+      recipe: JSON.parse(JSON.stringify(recipe))
     }
   }
 }
