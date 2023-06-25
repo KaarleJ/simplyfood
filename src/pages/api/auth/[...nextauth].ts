@@ -1,8 +1,8 @@
 import NextAuth, { NextAuthOptions } from "next-auth"
 import GitHubProvider from "next-auth/providers/github"
-const isProduction = process.env.NODE_ENV === "production"
-const baseURL = isProduction ? "https://simplyfood-3xfutym3r-kaarlej.vercel.app" : "http://localhost:3000"
 
+const isProduction = process.env.NODE_ENV === "production"
+const baseURL = isProduction ? "http://simplyfood-git-main-kaarlej.vercel.app/" : "http://localhost:3000"
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -12,11 +12,8 @@ export const authOptions: NextAuthOptions = {
     })
   ],
   callbacks: {
-    async signIn() {
-      return isProduction ? `${baseURL}/` : `${baseURL}/callback`
-    },
     async redirect({ url }) {
-      return isProduction ? `${baseURL}${url}` : url
+      return baseURL
     },
     async jwt({ token, user }) {
       if (user) {
@@ -30,7 +27,7 @@ export const authOptions: NextAuthOptions = {
       }
       return session
     }
-  }
+  },
 }
 
 
