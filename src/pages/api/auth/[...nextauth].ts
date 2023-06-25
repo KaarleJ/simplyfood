@@ -12,10 +12,10 @@ export const authOptions: NextAuthOptions = {
     })
   ],
   callbacks: {
+    async signIn() {
+      return baseURL
+    },
     async redirect({ url }) {
-      console.log(baseURL);
-      console.log(process.env.NODE_ENV);
-      
       return baseURL
     },
     async jwt({ token, user }) {
