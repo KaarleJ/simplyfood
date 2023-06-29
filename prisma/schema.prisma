@@ -21,3 +21,4 @@ model Recipe {
   description String?
   guide String
 }
+

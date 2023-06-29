@@ -1,15 +1,11 @@
-import { PropsWithChildren } from "react"
+import { PropsWithChildren } from 'react';
 
 interface PageProps extends PropsWithChildren {
-  className?: string
+  className?: string;
 }
 
-const Page = ({ className, children}: PageProps) => {
-  return (
-    <div className={className}>
-      {children}
-    </div>
-  )
-}
+const Page = ({ className, children }: PageProps) => {
+  return <div className={className}>{children}</div>;
+};
 
-export default Page
+export default Page;

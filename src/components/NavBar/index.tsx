@@ -1,11 +1,10 @@
-import Link from "next/link"
-import Image from "next/image";
-import Menu from "./Menu"
-import { useSession } from "next-auth/react"
-import ProfileButton from "../ProfileButton";
+import Link from 'next/link';
+import Menu from './Menu';
+import { useSession } from 'next-auth/react';
+import ProfileButton from '../ProfileButton';
 
 const NavBar = () => {
-  const { data: session } = useSession()
+  const { data: session } = useSession();
 
   return (
     <nav className="shadow-lg flex justify-between items-center bg-green-yellow p-5  mb-5">
