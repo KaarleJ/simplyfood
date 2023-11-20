@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Recipe } from '@/types';
 import { PrismaClient } from '@prisma/client';
+import SearchBar from '@/components/SearchBar';
 const prisma = new PrismaClient();
 
 const Recipes = ({
@@ -20,26 +21,16 @@ const Recipes = ({
     } else {
       router.push('/recipes');
     }
-    setQuery('');
   };
 
   return (
     <>
-      <form onSubmit={handleSearch} className="flex justify-end">
-        <input
-          className="border border-stone-400 rounded-md px-2 py-1 text-stone-500 text-sm"
-          type="text"
-          placeholder="search recipes..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        ></input>
-        <button
-          type="submit"
-          className="px-2 py-1 mx-1 rounded-md bg-lime-300 font-bold text-white hover:brightness-90 transition-all mr-4"
-        >
-          search
-        </button>
-      </form>
+      <SearchBar
+        className="flex flex-row items-center justify-between ml-4 text-stone-600"
+        query={query}
+        setQuery={setQuery}
+        handleSearch={handleSearch}
+      />
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 m-4">
         {recipes.map((recipe) => {
           return (
