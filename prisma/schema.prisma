@@ -19,5 +19,20 @@ model Recipe {
   imgUrl String
   description String?
   guide String
+  author User? @relation("UserRecipes", fields: [authorId], references: [id])
+  authorId Int?
+  likedBy User[] @relation("UserLikedRecipes")
+  
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email String @unique
+  name String
+  avatarUrl String?
+  recipes Recipe[] @relation("UserRecipes")
+  likedRecipes Recipe[] @relation("UserLikedRecipes")
 }
 
