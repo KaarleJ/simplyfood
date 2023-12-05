@@ -1,18 +1,34 @@
-import { Dispatch, PropsWithChildren, SetStateAction } from 'react';
+import { Dispatch, PropsWithChildren, SetStateAction, useState } from 'react';
+import { useRouter } from 'next/router';
 
 interface SearchBarProps extends PropsWithChildren {
   className?: string;
   query: string;
   setQuery: Dispatch<SetStateAction<string>>;
-  handleSearch: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const SearchBar = ({
   className,
   query,
   setQuery,
-  handleSearch,
 }: SearchBarProps) => {
+  const [input, setInput] = useState<string>(query); // input state for search field
+  const router = useRouter(); // router for pushing query to url
+
+  // On submit, set query state and push query to url
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // We set the query value on submit
+    setQuery(input);
+    // We push the query to the url
+    if (input) {
+      router.push(`/recipes?search=${input}`);
+    } else {
+      router.push('/recipes');
+    }
+  };
+
+
   return (
     <div className={className}>
       {query ? (
@@ -22,13 +38,13 @@ const SearchBar = ({
       ) : (
         <a className="text-xl">Showing all recipes</a>
       )}
-      <form onSubmit={handleSearch}>
+      <form onSubmit={handleSubmit}>
         <input
           className="border border-stone-400 rounded-md px-2 py-1 text-stone-500 text-sm"
           type="text"
           placeholder="search recipes..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
         ></input>
         <button
           type="submit"

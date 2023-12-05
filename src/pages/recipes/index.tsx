@@ -1,35 +1,34 @@
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Recipe } from '@/types';
 import { PrismaClient } from '@prisma/client';
 import SearchBar from '@/components/SearchBar';
+
+// We instantiate prismaClient so we can use the db in the serverless functions.
 const prisma = new PrismaClient();
 
 const Recipes = ({
   recipes,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const [query, setQuery] = useState('');
-  const router = useRouter();
+  const [query, setQuery] = useState(''); // query state for search bar
+  const router = useRouter(); // router for url query
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (query) {
-      router.push(`recipes?search=${encodeURIComponent(query)}`);
-    } else {
-      router.push('/recipes');
+  // set query state if query is in url
+  useEffect(() => {
+    if (router.query.search) {
+      setQuery(router.query.search as string);
     }
-  };
+  }, [router.query.search]);
 
   return (
     <>
       <SearchBar
-        className="flex flex-row items-center justify-between ml-4 text-stone-600"
+        className="flex flex-row items-center justify-between m-4 text-stone-600"
         query={query}
         setQuery={setQuery}
-        handleSearch={handleSearch}
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 m-4">
         {recipes.map((recipe) => {
@@ -57,13 +56,16 @@ const Recipes = ({
 
 export default Recipes;
 
+// We use getServerSideProps to fetch the recipes from the database.
 export const getServerSideProps: GetServerSideProps<{
   recipes: Recipe[];
 }> = async (context) => {
+  // We get the search query from the url
   const searchQuery = context.query.search as string;
 
   try {
     let recipes: Recipe[];
+    // If there is a search query, we search for recipes that match the query
     if (searchQuery) {
       recipes = await prisma.recipe.findMany({
         where: {
@@ -73,9 +75,11 @@ export const getServerSideProps: GetServerSideProps<{
           ],
         },
       });
+      // If there is no search query, we fetch all recipes
     } else {
       recipes = await prisma.recipe.findMany();
     }
+    // We return the recipes as props
     return {
       props: {
         recipes: JSON.parse(JSON.stringify(recipes)),
@@ -87,6 +91,7 @@ export const getServerSideProps: GetServerSideProps<{
     return {
       notFound: true,
     };
+  // We disconnect prismaClient
   } finally {
     await prisma.$disconnect();
   }
