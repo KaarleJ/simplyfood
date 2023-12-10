@@ -13,7 +13,7 @@ const prisma = new PrismaClient();
 const Recipes = ({
   recipes,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const [query, setQuery] = useState(''); // query state for search bar
+  const [query, setQuery] = useState<string>(''); // query state for search bar
   const router = useRouter(); // router for url query
 
   // set query state if query is in url
