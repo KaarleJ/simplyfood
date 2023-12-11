@@ -14,22 +14,24 @@ module.exports = {
       xl: '1440px',
       '2xl': '1600px'
     },
-    colors: {
-      'green-yellow': '#BFE57C',
-      'off-white': '#FCFDEE',
-      'gray': colors.gray,
-      'white': colors.white,
-      'blue': colors.blue,
-      'zinc': colors.zink,
-      'cyan': colors.cyan,
-      'stone': colors.stone,
-      'lime': colors.lime,
-    },
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],
       serif: ['Merriweather', 'serif'],
     },
     extend: {
+      colors: {
+        'green-yellow': '#BFE57C',
+        'off-white': '#FCFDEE',
+        'gray': colors.gray,
+        'white': colors.white,
+        'blue': colors.blue,
+        'zinc': colors.zink,
+        'cyan': colors.cyan,
+        'stone': colors.stone,
+        'lime': colors.lime,
+        'red': colors.red,
+        
+      },
       spacing: {
         '128': '32rem',
         '144': '36rem',
