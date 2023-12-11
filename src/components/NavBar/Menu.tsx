@@ -2,6 +2,9 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Menu as MenuIcon } from '@styled-icons/entypo';
 
+
+// This component will be rendered in NavBar if the screen is small.
+// It renders a list of links that are hidden by default. When the user clicks the MenuIcon, the list of links will be displayed.
 const Menu = () => {
   const [expand, setExpand] = useState(false);
 

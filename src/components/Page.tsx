@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { Loader5 as Loader } from '@styled-icons/remix-line';
+import Loader from './Loader';
 
 interface PageProps extends PropsWithChildren {
   className?: string;
@@ -37,7 +37,7 @@ const Page = ({ className, children }: PageProps) => {
   if (isLoading) {
     return (
       <div className={`${className} flex justify-center items-center`}>
-        <Loader size="64" className='animate-spin text-gray-600'/>
+        <Loader />
       </div>
     );
   }
