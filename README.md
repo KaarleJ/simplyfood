@@ -9,6 +9,9 @@ SimplyFood is a web application that serves as a platform for users to search, p
 - **Database**: We use Neon.tech PostgreSQL DB's in our project. We have different DB's for production, development and tests. We use Vercel's "Blobs" -storage for storing files such as images.
 - **Deployment**: The application is deployed on Vercel's cloud service.
 
+## CI/CD
+We use github actions to setup a CI/CD pipeline. We have a file [.github/workflows/deployment_pipeline.yml](.github/workflows/deployment_pipeline.yml) that defines the steps for build and test checks. And then we have Vercels own checks that deploy the app to Vercel.
+
 ## Development Roadmap
 - Unit-tests for api-routes
 - Api-routes for recipe creation
