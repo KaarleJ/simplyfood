@@ -5,7 +5,18 @@ import * as yup from 'yup';
 type Recipe = Omit<ReadyRecipe, 'id'>;
 
 if (process.env.NODE_ENV === 'test') {
-  console.log('Api handler in test environment');
+  console.log(
+    'Api handler in test environment: ' +
+      process.env.NODE_ENV +
+      ' ' +
+      process.env.TEST_DATABASE_URL
+  );
+  console.log(
+    'Other secrets for debugging: ',
+    process.env.POSTGRES_PRISMA_URL +
+      ', ' +
+      process.env.POSTGRES_URL_NON_POOLING
+  );
 }
 
 // Here we define a validation schema for recipe
