@@ -4,6 +4,10 @@ import type { Recipe as ReadyRecipe } from '../../types/types';
 import * as yup from 'yup';
 type Recipe = Omit<ReadyRecipe, 'id'>;
 
+if (process.env.NODE_ENV === 'test') {
+  console.log('Api handler in test environment');
+}
+
 // Here we define a validation schema for recipe
 const recipeSchema = yup.object().shape({
   title: yup.string().required(),
@@ -25,6 +29,12 @@ export default async function handler(
 
   // If we are in test environment, we use a different database
   if (process.env.NODE_ENV === 'test') {
+    console.log(
+      'Api handler in test environment: ' +
+        process.env.NODE_ENV +
+        ' ' +
+        process.env.TEST_DATABASE_URL
+    );
     prisma = new PrismaClient({
       datasources: {
         db: {
@@ -54,7 +64,20 @@ export default async function handler(
     }
 
     // Create the recipe in db
-    const createdRecipe = await prisma.recipe.create({ data: recipe, select: { id: true, title: true, description: true, duration: true, guide: true, ingredients: true, equipment: true, imgUrl: true, authorId: true } });
+    const createdRecipe = await prisma.recipe.create({
+      data: recipe,
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        duration: true,
+        guide: true,
+        ingredients: true,
+        equipment: true,
+        imgUrl: true,
+        authorId: true,
+      },
+    });
 
     // Send the recipe back to the client
     res.status(201).json(createdRecipe);
