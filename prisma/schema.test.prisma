@@ -1,0 +1,39 @@
+// We use this file to deploy migrations to test DB.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("TEST_DATABASE_URL")
+  directUrl = env("TEST_DATABASE_URL_NON_POOLING")
+}
+
+model Recipe {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title String
+  ingredients String[]
+  equipment String[]
+  duration Int?
+  imgUrl String
+  description String?
+  guide String
+  author User? @relation("UserRecipes", fields: [authorId], references: [id])
+  authorId Int?
+  likedBy User[] @relation("UserLikedRecipes")
+  
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email String @unique
+  name String
+  avatarUrl String?
+  recipes Recipe[] @relation("UserRecipes")
+  likedRecipes Recipe[] @relation("UserLikedRecipes")
+}
