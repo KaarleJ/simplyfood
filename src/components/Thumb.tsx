@@ -25,12 +25,12 @@ const Thumb = ({ file, className }: ThumbProps) => {
     reader.readAsDataURL(file);
   }, [file]);
 
-  if (loading) {
-    return <Loader />;
+  if (file.size === 0 || !thumb) {
+    return null;
   }
 
-  if (!thumb) {
-    return null;
+  if (loading) {
+    return <Loader />;
   }
 
   // eslint-disable-next-line @next/next/no-img-element

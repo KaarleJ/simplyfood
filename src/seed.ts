@@ -3,7 +3,6 @@ const prisma = new PrismaClient();
 
 const recipes = [
   {
-    id: 1,
     title: 'Spring Rolls',
     ingredients: [
       'rice paper',
@@ -24,7 +23,6 @@ const recipes = [
       'Mince the garlic. Grate or chop the carrots into really small pieces. Heat the kettle and add oil. Add the garlic and carrot to the kettle. Sweat the vegetables. Add the minced meat and sear it. Add soy sauce and cook the mix in low heat for 10-20 min. Let the mix cool down a bit. Lay the rice paper on a flat surface. Place a spoonful of the mix on to the paper and start folding. Once you are done with folding. Heat the pan and add oil to it. Fry the folded rolls until golden brown. After frying let them cool down a bit and enjoy!',
   },
   {
-    id: 2,
     title: 'Pasta Carbonara',
     ingredients: [
       'spaghetti',
@@ -44,7 +42,6 @@ const recipes = [
       'Cook the spaghetti according to the package instructions. In a skillet, cook the bacon until crispy. Remove the bacon from the skillet and set it aside. In a bowl, whisk together the egg yolks, grated Parmesan cheese, minced garlic, black pepper, and salt. Drain the cooked spaghetti and add it to the skillet with the bacon fat. Pour the egg mixture over the spaghetti and toss quickly to coat the pasta evenly. The heat from the spaghetti will cook the eggs and create a creamy sauce. Serve the pasta carbonara with additional grated Parmesan cheese and black pepper on top.',
   },
   {
-    id: 3,
     title: 'Chicken Curry',
     ingredients: [
       'chicken thighs',
@@ -66,7 +63,6 @@ const recipes = [
       'Heat oil in a pot and sauté chopped onion until golden brown. Add minced garlic and ginger, and cook for a minute. Stir in curry powder and cook until fragrant. Add chicken thighs and brown them on all sides. Pour in coconut milk and diced tomatoes. Simmer for about 30 minutes or until the chicken is cooked through and tender. Garnish with fresh coriander leaves before serving. Serve the chicken curry with rice or naan bread.',
   },
   {
-    id: 4,
     title: 'Caprese Salad',
     ingredients: [
       'tomatoes',
@@ -87,7 +83,6 @@ const recipes = [
       'Slice the tomatoes and mozzarella cheese into thick slices. Arrange them alternately on a serving platter or in a salad bowl. Tuck fresh basil leaves between the tomato and mozzarella slices. Drizzle with extra virgin olive oil and balsamic vinegar. Season with salt and black pepper to taste. Let the salad sit for a few minutes to allow the flavors to meld together. Serve the Caprese salad as a starter or a light summer meal.',
   },
   {
-    id: 5,
     title: 'Chocolate Chip Cookies',
     ingredients: [
       'butter',
