@@ -11,6 +11,7 @@ on:
   workflow_dispatch:
 
 env:
+  TEST_DATABASE_URL: £{{ secrets.TEST_DATABSE_URL }}
   API_KEY: ${{ secrets.API_KEY }}
 
 permissions:
@@ -60,3 +61,5 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Build with Next.js
         run: npm run build
+      - name: Run unit-tests
+        run: npm run test
