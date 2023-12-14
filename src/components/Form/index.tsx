@@ -7,6 +7,7 @@ import ErrorText from './ErrorText';
 import { FieldArray } from 'formik';
 import { RemoveCircle } from '@styled-icons/material';
 import Thumb from '../Thumb';
+import useRecipeSubmit from '@/hooks/useRecipeSubmit';
 
 interface FormProps extends PropsWithChildren {
   className?: string;
@@ -19,7 +20,7 @@ interface Values {
   equipment: string[];
   duration: string;
   guide: string;
-  image: File | null;
+  image: File;
 }
 
 interface Errors {
@@ -33,21 +34,22 @@ interface Errors {
 }
 
 /*
-* This component represents the form for creating a recipe.
-* It uses Formik to handle form state and validation.
-* It uses the Field component to render each field.
-* It uses the ErrorText component to render error messages.
-* It uses the useSession hook to get the current session.
-* If there is no session, it urges the user to signin.
-* Otherwise, it renders the form.
-*
-* The from has a lot of boilerplate code.
-* We haven't implemented custom components that would reduce boilerplate code  due to to the way Formik handles custom components.
-* We might implement custom components in the future.
-*/
+ * This component represents the form for creating a recipe.
+ * It uses Formik to handle form state and validation.
+ * It uses the Field component to render each field.
+ * It uses the ErrorText component to render error messages.
+ * It uses the useSession hook to get the current session.
+ * If there is no session, it urges the user to signin.
+ * Otherwise, it renders the form.
+ *
+ * The from has a lot of boilerplate code.
+ * We haven't implemented custom components that would reduce boilerplate code  due to to the way Formik handles custom components.
+ * We might implement custom components in the future.
+ */
 
 const Form = ({ className }: FormProps) => {
   const { data: session } = useSession();
+  const { create } = useRecipeSubmit();
 
   // If no session then urge the user to signin
   if (!session) {
@@ -71,7 +73,7 @@ const Form = ({ className }: FormProps) => {
           equipment: [''],
           duration: '',
           guide: '',
-          image: null,
+          image: new File([], ''), // This is a hack to get around the fact that Formik doesn't support file inputs
         }}
         validate={(values) => {
           const errors: Errors = {};
@@ -93,12 +95,15 @@ const Form = ({ className }: FormProps) => {
 
           return errors;
         }}
-        onSubmit={async (values: Values, { setSubmitting }) => {
-          console.log(values);
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 500);
+        onSubmit={async (values, { setSubmitting }) => {
+          const data = await create(values);
+          // Later we will redirect to the recipe page
+          if (data.error) {
+            console.log(data.error);
+          } else {
+            console.log(data);
+          }
+          setSubmitting(false);
         }}
       >
         {({ isSubmitting, setFieldValue, values }) => (
@@ -145,7 +150,7 @@ const Form = ({ className }: FormProps) => {
               <div className="flex flex-col items-center">
                 <Text>Duration</Text>
                 <Field
-                  type="text"
+                  type="number"
                   name="duration"
                   placeholder="Duration here..."
                 />
@@ -153,72 +158,82 @@ const Form = ({ className }: FormProps) => {
               </div>
 
               <div className="flex flex-col items-center">
-                <Text>Equipment</Text>
-                <FieldArray
-                  name="equipment"
-                  render={({ push, remove }) => (
-                    <div>
-                      {values.equipment.length > 0 &&
-                        values.equipment.map((_equipment, index) => (
-                          <div key={index} className="flex flex-row">
-                            <Field
-                              name={`equipment.${index}`}
-                              type="text"
-                              placeholder="Equipment..."
-                            />
-                            <button type="button" onClick={() => remove(index)}>
-                              <RemoveCircle
-                                size="24"
-                                className="text-gray-400"
+                <div className="w-full max-w-lg">
+                  <Text>Equipment</Text>
+                  <FieldArray
+                    name="equipment"
+                    render={({ push, remove }) => (
+                      <div>
+                        {values.equipment.length > 0 &&
+                          values.equipment.map((_equipment, index) => (
+                            <div key={index} className="flex flex-row w-64">
+                              <Field
+                                name={`equipment.${index}`}
+                                type="text"
+                                placeholder="Equipment..."
                               />
-                            </button>
-                          </div>
-                        ))}
-                      <button
-                        type="button"
-                        onClick={() => push(' ')}
-                        className="px-2 py-1 my-2 ml-5 rounded-md bg-lime-300 font-bold text-white hover:brightness-90 transition-all"
-                      >
-                        add
-                      </button>
-                    </div>
-                  )}
-                />
+                              <button
+                                type="button"
+                                onClick={() => remove(index)}
+                              >
+                                <RemoveCircle
+                                  size="24"
+                                  className="text-gray-400"
+                                />
+                              </button>
+                            </div>
+                          ))}
+                        <button
+                          type="button"
+                          onClick={() => push(' ')}
+                          className="px-2 py-1 my-2 ml-5 rounded-md bg-lime-300 font-bold text-white hover:brightness-90 transition-all"
+                        >
+                          add
+                        </button>
+                      </div>
+                    )}
+                  />
+                </div>
                 <ErrorMessage name="equipment" component={ErrorText} />
               </div>
 
-              <div className="flex flex-col items-baseline">
-                <Text>Ingredients</Text>
-                <FieldArray
-                  name="ingredients"
-                  render={({ push, remove }) => (
-                    <div className="flex flex-col items-start">
-                      {values.ingredients.length > 0 &&
-                        values.ingredients.map((_ingredient, index) => (
-                          <div key={index} className="flex flex-row">
-                            <Field
-                              name={`ingredients.${index}`}
-                              type="text"
-                              placeholder="Ingredient..."
-                            />
-                            <button type="button" onClick={() => remove(index)}>
-                              <RemoveCircle
-                                size="24"
-                                className="text-gray-400"
+              <div className="flex flex-col items-center">
+                <div className="w-full max-w-lg">
+                  <Text>Ingredients</Text>
+                  <FieldArray
+                    name="ingredients"
+                    render={({ push, remove }) => (
+                      <div className="flex flex-col items-start">
+                        {values.ingredients.length > 0 &&
+                          values.ingredients.map((_ingredient, index) => (
+                            <div key={index} className="flex flex-row w-64">
+                              <Field
+                                name={`ingredients.${index}`}
+                                type="text"
+                                placeholder="Ingredient..."
                               />
-                            </button>
-                          </div>
-                        ))}
-                      <button
-                        type="button"
-                        onClick={() => push(' ')}
-                        className="px-2 py-1 my-2 ml-5 rounded-md bg-lime-300 font-bold text-white hover:brightness-90 transition-all"
-                      >
-                        add
-                      </button>
-                    </div>
-                  )}
-                />
+                              <button
+                                type="button"
+                                onClick={() => remove(index)}
+                              >
+                                <RemoveCircle
+                                  size="24"
+                                  className="text-gray-400"
+                                />
+                              </button>
+                            </div>
+                          ))}
+                        <button
+                          type="button"
+                          onClick={() => push(' ')}
+                          className="px-2 py-1 my-2 ml-5 rounded-md bg-lime-300 font-bold text-white hover:brightness-90 transition-all"
+                        >
+                          add
+                        </button>
+                      </div>
+                    )}
+                  />
+                </div>
                 <ErrorMessage name="ingredients" component={ErrorText} />
               </div>
 

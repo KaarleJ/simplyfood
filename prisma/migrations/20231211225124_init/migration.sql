@@ -1,5 +1,19 @@
--- AlterTable
-ALTER TABLE "Recipe" ADD COLUMN     "authorId" INTEGER;
+-- CreateTable
+CREATE TABLE "Recipe" (
+    "id" SERIAL NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "title" TEXT NOT NULL,
+    "ingredients" TEXT[],
+    "equipment" TEXT[],
+    "duration" INTEGER,
+    "imgUrl" TEXT NOT NULL,
+    "description" TEXT,
+    "guide" TEXT NOT NULL,
+    "authorId" INTEGER,
+
+    CONSTRAINT "Recipe_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -7,7 +21,6 @@ CREATE TABLE "User" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "avatarUrl" TEXT,
 
