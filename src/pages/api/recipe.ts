@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
-import type { Recipe as ReadyRecipe } from '../../types/types';
+import type { Recipe as ReadyRecipe } from '@/types';
 import * as yup from 'yup';
 import { recipeSchema } from '../../validationSchemas';
 type Recipe = Omit<ReadyRecipe, 'id'>;
