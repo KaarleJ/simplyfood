@@ -13,16 +13,6 @@ interface FormProps extends PropsWithChildren {
   className?: string;
 }
 
-interface Values {
-  title: string;
-  description: string;
-  ingredients: string[];
-  equipment: string[];
-  duration: string;
-  guide: string;
-  image: File;
-}
-
 interface Errors {
   title?: string;
   description?: string;

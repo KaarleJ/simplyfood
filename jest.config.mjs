@@ -11,7 +11,7 @@ const config = {
   // Add more setup options before each test is run
   // setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 
-  testEnvironment: 'jest-environment-jsdom',
+  testEnvironment: 'node',
   testEnvironmentOptions: {
     NODE_ENV: 'test',
   },
