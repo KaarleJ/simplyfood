@@ -7,7 +7,6 @@ import { Create } from '@styled-icons/ionicons-solid';
 // This components acts as the navbar for the entire app. It renders the MenuIcon if the screen is small. Otherwise, it renders a list of links.
 const NavBar = () => {
   const { data: session } = useSession();
-  console.log(session);
 
   return (
     <nav className="shadow-lg flex justify-between items-center bg-green-yellow p-5  mb-5">

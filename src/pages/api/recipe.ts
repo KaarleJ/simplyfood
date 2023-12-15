@@ -1,4 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from './auth/[...nextauth]';
 import { PrismaClient } from '@prisma/client';
 import type { Recipe as ReadyRecipe } from '@/types';
 import * as yup from 'yup';
@@ -9,6 +11,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  // Check authorization
+  const session = await getServerSession(req, res, authOptions);
+  if (!session) {
+    res.status(401).json({ error: 'Unauthorized' });
+    return;
+  }
+
   // Create a new Prisma client
   let prisma = new PrismaClient();
 
