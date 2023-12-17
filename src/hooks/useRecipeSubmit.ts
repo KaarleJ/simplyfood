@@ -10,7 +10,7 @@ interface Values {
   image: File;
 }
 
-interface outputvalues {
+interface outputValues {
   title: string;
   description: string;
   ingredients: string[];
@@ -32,14 +32,41 @@ const useRecipeSubmit = () => {
     duration,
     guide,
     image,
-  }: Values) => {
+  }: Values): Promise<outputValues> => {
+    // We get the authorId from the session and authorize the user at the same time
     const authorId = session?.user?.id as string;
     if (!authorId) {
-      return { error: 'Not logged in' };
+      throw new Error('Unauthorized');
     }
 
-    const imgUrl = '/placeholder'; // await uploadImage(image);
+    // Get the upload URL from the API
+    const {
+      url,
+      error,
+    }: { url: string | undefined; error: string | undefined } = await fetch(
+      '/api/s3'
+    ).then((res) => res.json());
+    if (error) {
+      throw new Error(error);
+    } else if (!url) {
+      throw new Error('Upload URL not found');
+    }
 
+    console.log('url here: ' + url);
+
+    // Upload the image directly to S3
+    const upload = await fetch(url, {
+      method: 'PUT',
+      body: image,
+    });
+    if (!upload.ok) {
+      throw new Error('Upload failed');
+    }
+
+    // Parse the image URL from the uploadUrl
+    const imgUrl = url.split('?')[0];
+
+    // Send the recipe data to the API
     const data = await fetch('/api/recipe', {
       method: 'POST',
       body: JSON.stringify({
@@ -58,6 +85,9 @@ const useRecipeSubmit = () => {
         'Content-Type': 'application/json',
       },
     });
+    if (!data.ok) {
+      throw new Error('Failed to create recipe');
+    }
 
     return data.json();
   };
