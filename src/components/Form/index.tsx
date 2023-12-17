@@ -101,12 +101,10 @@ const Form = ({ className }: FormProps) => {
       >
         {({ isSubmitting, setFieldValue, values }) => (
           <Formi>
-            {values.image && (
-              <Thumb
-                file={values.image}
-                className="shadow-lg max-w-xs sm:max-w-md md:max-w-2xl"
-              />
-            )}
+            <Thumb
+              file={values.image}
+              className="shadow-lg max-w-xs sm:max-w-md md:max-w-2xl"
+            />
             <div className="flex flex-col">
               <div className="flex flex-col items-center">
                 <Text>Image</Text>

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Loader from './Loader';
 
 interface ThumbProps {
-  file: File;
+  file: File | undefined;
   className?: string;
 }
 
@@ -22,11 +22,12 @@ const Thumb = ({ file, className }: ThumbProps) => {
       setLoading(false);
     };
 
-    reader.readAsDataURL(file);
+    if (file) reader.readAsDataURL(file);
   }, [file]);
 
-  if (file.size === 0 || !thumb) {
-    return null;
+  if (!file || file.size === 0 || !thumb) {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src="/image_placeholder.jpg" alt="Placeholder" className={className} />;
   }
 
   if (loading) {
