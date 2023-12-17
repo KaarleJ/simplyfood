@@ -4,11 +4,8 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Recipe } from '@/types';
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/prismaClient';
 import SearchBar from '@/components/SearchBar';
-
-// We instantiate prismaClient so we can use the db in the serverless functions.
-const prisma = new PrismaClient();
 
 const Recipes = ({
   recipes,
@@ -91,8 +88,6 @@ export const getServerSideProps: GetServerSideProps<{
     return {
       notFound: true,
     };
-  // We disconnect prismaClient
-  } finally {
-    await prisma.$disconnect();
+    // We disconnect prismaClient
   }
 };

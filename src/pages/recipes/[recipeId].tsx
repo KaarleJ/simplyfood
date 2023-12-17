@@ -1,8 +1,7 @@
 import { Recipe as RecipeType } from '@/types';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import prisma from '@/prismaClient';
 
 const Recipe = ({
   recipe,

@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from './auth/[...nextauth]';
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/prismaClient';
 import type { Recipe as ReadyRecipe } from '@/types';
 import * as yup from 'yup';
 import { recipeSchema } from '../../validationSchemas';
@@ -16,20 +16,6 @@ export default async function handler(
   if (!session) {
     res.status(401).json({ error: 'Unauthorized' });
     return;
-  }
-
-  // Create a new Prisma client
-  let prisma = new PrismaClient();
-
-  // If we are in test environment, we use a different database
-  if (process.env.NODE_ENV === 'test') {
-    prisma = new PrismaClient({
-      datasources: {
-        db: {
-          url: process.env.TEST_DATABASE_URL,
-        },
-      },
-    });
   }
 
   // If the request is a POST request, we create a new recipe

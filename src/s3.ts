@@ -3,6 +3,10 @@ import crypto from 'crypto';
 import { promisify } from 'util';
 const randomBytes = promisify(crypto.randomBytes);
 
+// We use different buckets for development and production
+const bucketName =
+  process.env.NODE_ENV === 'development' ? 'simplyfooddev' : 'simplyfoodprod';
+
 const s3 = new aws.S3({
   region: 'us-east-1',
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -18,7 +22,7 @@ export const generateUploadUrl = async () => {
 
   // Params for the url
   const params = {
-    Bucket: 'simplyfoodprod',
+    Bucket: bucketName,
     Key: imageName,
     Expires: 60,
   };

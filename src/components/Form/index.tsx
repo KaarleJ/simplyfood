@@ -9,6 +9,7 @@ import { RemoveCircle } from '@styled-icons/material';
 import Thumb from '../Thumb';
 import useRecipeSubmit from '@/hooks/useRecipeSubmit';
 import { useRouter } from 'next/router';
+import Loader from '../Loader';
 
 interface FormProps extends PropsWithChildren {
   className?: string;
@@ -89,7 +90,7 @@ const Form = ({ className }: FormProps) => {
         }}
         onSubmit={async (values, { setSubmitting }) => {
           try {
-            const data = await create(values);
+            await create(values);
             setSubmitting(false);
             router.push('/recipes');
           } catch (error) {
@@ -241,13 +242,20 @@ const Form = ({ className }: FormProps) => {
               </div>
 
               <div className="flex justify-center items-center">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="px-2 py-1 m-4 rounded-md bg-lime-300 font-bold text-white hover:brightness-90 transition-all"
-                >
-                  submit
-                </button>
+                <div className="relative flex items-center">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="px-2 py-1 m-4 rounded-md bg-lime-300 font-bold text-white hover:brightness-90 transition-all"
+                  >
+                    submit
+                  </button>
+                  {isSubmitting && (
+                    <div className="absolute left-full">
+                      <Loader size="24" />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </Formi>
