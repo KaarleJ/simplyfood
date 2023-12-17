@@ -1,12 +1,20 @@
 import handler from '../s3';
 import { createMocks } from 'node-mocks-http';
 import { getServerSession } from 'next-auth/next';
+import { generateUploadUrl } from '@/s3';
 
 // The use of recipe API requires a session, so we mock it
 jest.mock('next-auth/next');
 
 const mockedGetSession = getServerSession as jest.MockedFunction<
   typeof getServerSession
+>;
+
+// We mock the generateUploadUrl function
+jest.mock('../../../s3');
+
+const mockedGenerateUploadUrl = generateUploadUrl as jest.MockedFunction<
+  typeof generateUploadUrl
 >;
 
 // We test the API without a session
@@ -37,6 +45,8 @@ describe('/api/s3', () => {
         image: 'test-image',
       },
     });
+    // We mock the generateUploadUrl function to return a URL
+    mockedGenerateUploadUrl.mockResolvedValue('https://test-url');
   });
 
   test('GET', async () => {
