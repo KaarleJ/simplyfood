@@ -2,7 +2,6 @@ import handler from '../recipe';
 import { createMocks } from 'node-mocks-http';
 import { getServerSession } from 'next-auth/next';
 import { PrismaClient } from '@prisma/client';
-import { after } from 'node:test';
 
 const prisma = new PrismaClient({
   datasources: {

@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, use } from 'react';
 import { useSession } from 'next-auth/react';
 import Text from '../Text';
 import { Formik, Form as Formi, ErrorMessage } from 'formik';
@@ -8,6 +8,7 @@ import { FieldArray } from 'formik';
 import { RemoveCircle } from '@styled-icons/material';
 import Thumb from '../Thumb';
 import useRecipeSubmit from '@/hooks/useRecipeSubmit';
+import { useRouter } from 'next/router';
 
 interface FormProps extends PropsWithChildren {
   className?: string;
@@ -38,6 +39,7 @@ interface Errors {
  */
 
 const Form = ({ className }: FormProps) => {
+  const router = useRouter();
   const { data: session } = useSession();
   const { create } = useRecipeSubmit();
 
@@ -86,12 +88,12 @@ const Form = ({ className }: FormProps) => {
           return errors;
         }}
         onSubmit={async (values, { setSubmitting }) => {
-          const data = await create(values);
-          // Later we will redirect to the recipe page
-          if (data.error) {
-            console.log(data.error);
-          } else {
-            console.log(data);
+          try {
+            const data = await create(values);
+            setSubmitting(false);
+            router.push('/recipes');
+          } catch (error) {
+            if (error instanceof Error) alert(error.message);
           }
           setSubmitting(false);
         }}
