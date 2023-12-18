@@ -15,7 +15,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'simplyfood-prod.s3.eu-central-1.s3.amazonaws.com',
+        hostname: '**.simplyfood-prod.s3.eu-central-1.s3.amazonaws.com',
         port: ''
       },
       {
