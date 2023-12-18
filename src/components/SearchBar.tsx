@@ -1,5 +1,6 @@
 import { Dispatch, PropsWithChildren, SetStateAction, useState } from 'react';
 import { useRouter } from 'next/router';
+import Text from './Text';
 
 interface SearchBarProps extends PropsWithChildren {
   className?: string;
@@ -7,11 +8,7 @@ interface SearchBarProps extends PropsWithChildren {
   setQuery: Dispatch<SetStateAction<string>>;
 }
 
-const SearchBar = ({
-  className,
-  query,
-  setQuery,
-}: SearchBarProps) => {
+const SearchBar = ({ className, query, setQuery }: SearchBarProps) => {
   const [input, setInput] = useState<string>(query); // input state for search field
   const router = useRouter(); // router for pushing query to url
 
@@ -22,19 +19,21 @@ const SearchBar = ({
     setQuery(input);
     // We push the query to the url
     if (input) {
-      router.push(`/recipes?search=${input}`);
+      router.push({
+        pathname: '/recipes',
+        query: { search: input, page: 1 },
+      });
     } else {
       router.push('/recipes');
     }
   };
 
-
   return (
     <div className={className}>
       {query ? (
-        <a className="text-xl">
+        <Text className="text-xl">
           Showing results for <b>&quot;{query}&quot;</b>
-        </a>
+        </Text>
       ) : (
         <a className="text-xl">Showing all recipes</a>
       )}

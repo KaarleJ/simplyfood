@@ -14,7 +14,7 @@ export default function App({
     <>
       <SessionProvider session={session}>
         <NextNProgress color="#29D" />
-        <div className="mx-4 sm:mx-20 md:mx-40 lg:mx-80 min-w-min mt-10 mb-10">
+        <div className="mx-4 sm:mx-20 md:mx-40 lg:mx-80 min-w-min mt-10">
           <NavBar />
           <Page className="bg-white p-4 shadow-lg min-h-loose">
             <Component {...pageProps} />
