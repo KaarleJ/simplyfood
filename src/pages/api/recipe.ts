@@ -40,7 +40,16 @@ export default async function handler(
 
     // Create the recipe in db
     const createdRecipe = await prisma.recipe.create({
-      data: validatedRecipe,
+      data: {
+        title: validatedRecipe.title,
+        description: validatedRecipe.description,
+        duration: validatedRecipe.duration,
+        guide: validatedRecipe.guide,
+        ingredients: validatedRecipe.ingredients,
+        equipment: validatedRecipe.equipment,
+        imgUrl: validatedRecipe.imgUrl,
+        authorId: validatedRecipe.authorId,
+      },
       select: {
         id: true,
         title: true,

@@ -7,4 +7,9 @@ export interface Recipe {
   id: number;
   imgUrl: string;
   description?: string | null | undefined;
+  likeCount?: number | null | undefined;
+  createdAt?: Date | null | undefined;
+  avatarUrl?: string | null | undefined;
+  authorId?: number | null | undefined;
+  authorName?: string | null | undefined;
 }
