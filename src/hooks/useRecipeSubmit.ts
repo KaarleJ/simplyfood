@@ -57,7 +57,9 @@ const useRecipeSubmit = () => {
       method: 'PUT',
       body: image,
     });
-    console.log(upload);
+    if (!upload.ok) {
+      throw new Error('Upload failed');
+    }
 
     // Parse the image URL from the uploadUrl
     const imgUrl = url.split('?')[0];
