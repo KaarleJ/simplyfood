@@ -52,16 +52,12 @@ const useRecipeSubmit = () => {
       throw new Error('Upload URL not found');
     }
 
-    console.log('url here: ' + url);
-
     // Upload the image directly to S3
     const upload = await fetch(url, {
       method: 'PUT',
       body: image,
     });
-    if (!upload.ok) {
-      throw new Error('Upload failed');
-    }
+    console.log(upload);
 
     // Parse the image URL from the uploadUrl
     const imgUrl = url.split('?')[0];
