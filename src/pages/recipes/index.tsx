@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Recipe } from '@/types';
 import prisma from '@/prismaClient';
 import SearchBar from '@/components/SearchBar';
+import { J } from 'styled-icons/fa-solid';
 
 const Recipes = ({
   recipes,
@@ -27,25 +28,27 @@ const Recipes = ({
         query={query}
         setQuery={setQuery}
       />
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 m-4">
-        {recipes.map((recipe) => {
-          return (
-            <Link
-              key={recipe.id}
-              href={`/recipes/${recipe.id}`}
-              className="shadow-lg h-full w-full bg-off-white text-stone-700 hover:text-cyan-700 hover:brightness-90 transition-all"
-            >
-              <Image
-                src={recipe.imgUrl}
-                alt={`Picture of ${recipe.title}`}
-                width={400}
-                height={300}
-                className="object-cover w-full h-48"
-              />
-              <h2 className="text-lg p-2 font-medium">{recipe.title}</h2>
-            </Link>
-          );
-        })}
+      <div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 m-4">
+          {recipes.map((recipe) => {
+            return (
+              <Link
+                key={recipe.id}
+                href={`/recipes/${recipe.id}`}
+                className="shadow-lg h-full w-full bg-off-white text-stone-700 hover:text-cyan-700 hover:brightness-90 transition-all"
+              >
+                <Image
+                  src={recipe.imgUrl}
+                  alt={`Picture of ${recipe.title}`}
+                  width={400}
+                  height={300}
+                  className="object-cover w-full h-48"
+                />
+                <h2 className="text-lg p-2 font-medium">{recipe.title}</h2>
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </>
   );
@@ -88,6 +91,5 @@ export const getServerSideProps: GetServerSideProps<{
     return {
       notFound: true,
     };
-    // We disconnect prismaClient
   }
 };

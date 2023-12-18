@@ -5,10 +5,10 @@ const randomBytes = promisify(crypto.randomBytes);
 
 // We use different buckets for development and production
 const bucketName =
-  process.env.NODE_ENV === 'development' ? 'simplyfooddev' : 'simplyfoodprod';
+  process.env.NODE_ENV === 'development' ? 'simplyfood-dev' : 'simplyfood-prod';
 
 const s3 = new aws.S3({
-  region: 'us-east-1',
+  region: 'eu-central-1',
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   signatureVersion: 'v4',

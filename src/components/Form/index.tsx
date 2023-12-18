@@ -10,6 +10,8 @@ import Thumb from '../Thumb';
 import useRecipeSubmit from '@/hooks/useRecipeSubmit';
 import { useRouter } from 'next/router';
 import Loader from '../Loader';
+import { recipeCreateSchema } from '@/validationSchemas';
+import { toast } from 'react-hot-toast';
 
 interface FormProps extends PropsWithChildren {
   className?: string;
@@ -68,35 +70,17 @@ const Form = ({ className }: FormProps) => {
           guide: '',
           image: new File([], ''), // This is a hack to get around the fact that Formik doesn't support file inputs
         }}
-        validate={(values) => {
-          const errors: Errors = {};
-          if (!values.title) {
-            errors.title = 'Title is required';
-          }
-          if (!(values.ingredients.length > 0)) {
-            errors.ingredients = 'At least one ingredient is required';
-          }
-          if (!(values.equipment.length > 0)) {
-            errors.equipment = 'At least one equipment is required';
-          }
-          if (!values.guide) {
-            errors.guide = 'Instructions are required';
-          }
-          if (!values.duration) {
-            errors.duration = 'Duration is required';
-          }
-
-          return errors;
-        }}
+        validationSchema={recipeCreateSchema}
         onSubmit={async (values, { setSubmitting }) => {
           try {
             await create(values);
             setSubmitting(false);
+            toast.success('Recipe created!');
             router.push('/recipes');
           } catch (error) {
-            if (error instanceof Error) alert(error.message);
+            if (error instanceof Error) toast.error(error.message);
+            setSubmitting(false);
           }
-          setSubmitting(false);
         }}
       >
         {({ isSubmitting, setFieldValue, values }) => (
