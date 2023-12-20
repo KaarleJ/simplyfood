@@ -13,11 +13,10 @@ SimplyFood is a web application that serves as a platform for users to search, p
 We use github actions to setup a CI/CD pipeline. We have a file [.github/workflows/deployment_pipeline.yml](.github/workflows/deployment_pipeline.yml) that defines the steps for build and test checks. And then we have Vercels own checks that deploy the app to Vercel.
 
 ## Development Roadmap
-- Add more api validations.
-- Loading icons for Form
-- Notification component.
-- E2E tests
-- Pagination
+- More Oauth providers
+- comments
+- user page
+- Top users in home page
 
 ## Known faults
 - Since the recipe page is being built on every client request it  is a bit slow.
