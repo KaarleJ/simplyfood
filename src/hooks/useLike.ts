@@ -15,6 +15,9 @@ const useLike = () => {
     const { message, error } = await fetch('/api/like', {
       method,
       body: JSON.stringify({ recipeId }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     }).then((res) => res.json());
 
     // Check if there is an error or if the message is not found

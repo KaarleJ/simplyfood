@@ -50,7 +50,7 @@ describe('/api/recipe', () => {
     });
   });
 
-  test('GET /api/recipe', async () => {
+  test('GET', async () => {
     const { req, res } = createMocks({
       method: 'GET',
     });
@@ -61,7 +61,7 @@ describe('/api/recipe', () => {
     expect(JSON.parse(res._getData())).toEqual({ api: 'Hello World!' });
   });
 
-  test('POST /api/recipe', async () => {
+  test('POST', async () => {
     const { req, res } = createMocks({
       method: 'POST',
       body: {
@@ -91,7 +91,7 @@ describe('/api/recipe', () => {
     expect(returnedRecipe.id).toBeDefined();
   });
 
-  test('POST /api/recipe with empty body', async () => {
+  test('POST with empty body', async () => {
     const { req, res } = createMocks({
       method: 'POST',
       body: {},

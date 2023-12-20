@@ -94,10 +94,10 @@ describe('/api/like', () => {
 
   });
 
-  // Here we test the DELETE request to the API
-  test('DELETE', async () => {
+  // Here we test the PUT request to the API
+  test('PUT', async () => {
     const { req, res } = createMocks({
-      method: 'DELETE',
+      method: 'PUT',
       body: {
         recipeId,
       },

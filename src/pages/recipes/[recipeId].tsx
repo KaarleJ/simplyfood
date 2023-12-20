@@ -24,9 +24,7 @@ const Recipe = ({
     try {
       await like(recipe.id, likedState);
       setLikedState(!likedState);
-      console.log(likes);
       if (likes !== null && likes !== undefined ) {
-        console.log('setting likes');
         setLikes(likedState ? likes - 1 : likes + 1);
       }
       if (likedState) {

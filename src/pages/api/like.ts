@@ -13,8 +13,9 @@ export default async function handler(
     res.status(401).json({ error: 'Unauthorized' });
     return;
   }
+
   // Check if the recipeId is in the body
-  if (!JSON.parse(req.body).recipeId) {
+  if (!req.body.recipeId) {
     res.status(400).json({ error: 'Missing recipeId in body' });
     return;
   }
@@ -24,7 +25,7 @@ export default async function handler(
     return;
   }
   const userId = Number(session.user.id);
-  const recipeId = Number(JSON.parse(req.body).recipeId);
+  const recipeId = Number(req.body.recipeId);
 
   // We check if the recipe is already liked
   const user = await prisma.user.findUnique({
