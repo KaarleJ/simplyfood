@@ -4,10 +4,11 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Recipe } from '@/types';
-import prisma from '@/prismaClient';
 import SearchBar from '@/components/SearchBar';
 import Text from '@/components/Text';
 import PageBar from '@/components/PageBar';
+import { Like } from 'styled-icons/boxicons-regular';
+import { getRecipes } from '@/prismaClient';
 
 const Recipes = ({
   recipes,
@@ -28,43 +29,54 @@ const Recipes = ({
   }, [router.query]);
 
   return (
-    <>
-      <SearchBar
-        className="flex flex-row items-center justify-between m-4 text-stone-600"
-        query={query}
-        setQuery={setQuery}
-      />
+    <div className="flex flex-col min-h-loose justify-between">
+      <div>
+        <SearchBar
+          className="flex flex-row items-center justify-between m-4 text-stone-600"
+          query={query}
+          setQuery={setQuery}
+        />
 
-      <Text className="text-md ml-4 flex justify-center mr-5">
-        Page {page} of {Math.ceil(count / 18)}
-      </Text>
+        <Text className="text-md ml-4 flex justify-center mr-5">
+          Page {page} of {Math.ceil(count / 18)}
+        </Text>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 m-4">
-        {recipes.map((recipe) => {
-          return (
-            <Link
-              key={recipe.id}
-              href={`/recipes/${recipe.id}`}
-              className="shadow-lg h-full w-full bg-off-white text-stone-700 hover:text-cyan-700 hover:brightness-90 transition-all"
-            >
-              <Image
-                src={recipe.imgUrl}
-                alt={`Picture of ${recipe.title}`}
-                width={400}
-                height={300}
-                className="object-cover w-full h-48"
-              />
-              <h2 className="text-lg p-2 font-medium">{recipe.title}</h2>
-            </Link>
-          );
-        })}
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 m-4">
+          {recipes.map((recipe) => {
+            return (
+              <Link
+                key={recipe.id}
+                href={`/recipes/${recipe.id}`}
+                className="shadow-lg h-full w-full bg-off-white text-stone-700 hover:text-cyan-700 hover:brightness-90 transition-all"
+              >
+                <Image
+                  src={recipe.imgUrl}
+                  alt={`Picture of ${recipe.title}`}
+                  width={400}
+                  height={300}
+                  className="object-cover w-full h-48"
+                />
+                <div className="flex flex-row justify-between">
+                  <h2 className="text-lg p-2 font-medium">{recipe.title}</h2>
+                  <div className="flex flex-row justify-center">
+                    <Text className="text-md mt-2 font-medium">
+                      {recipe.likeCount}
+                    </Text>
+                    <Like className="w-6 h-6 ml-1 my-2 mr-2" />
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
       </div>
       <PageBar
         search={query}
         pages={Math.ceil(count / 18)}
         currentPage={page}
+        className=""
       />
-    </>
+    </div>
   );
 };
 
@@ -79,41 +91,13 @@ export const getServerSideProps: GetServerSideProps<{
   const searchQuery = context.query.search as string | undefined;
   const page = context.query.page as string | undefined;
 
-  // We calculate the number of recipes to skip
-  let skip = 0;
-  if (page) {
-    skip = (parseInt(page) - 1) * 18;
-  }
-
+  let recipes: Recipe[];
+  let count: number;
   try {
-    let recipes: Recipe[];
-    let count = 0;
-    // If there is a search query, we search for recipes that match the query
-    if (searchQuery) {
-      recipes = await prisma.recipe.findMany({
-        where: {
-          OR: [
-            { title: { contains: searchQuery, mode: 'insensitive' } },
-            { description: { contains: searchQuery, mode: 'insensitive' } },
-          ],
-        },
-        skip,
-        take: 18,
-      });
-      count = await prisma.recipe.count({
-        where: {
-          OR: [
-            { title: { contains: searchQuery, mode: 'insensitive' } },
-            { description: { contains: searchQuery, mode: 'insensitive' } },
-          ],
-        },
-      });
-
-      // If there is no search query, we fetch all recipes
-    } else {
-      recipes = await prisma.recipe.findMany({ skip, take: 18 });
-      count = await prisma.recipe.count();
-    }
+    // We fetch the recipes and count from the database
+    const res = await getRecipes(page, searchQuery);
+    recipes = res.recipes;
+    count = res.count;
     // We return the recipes and count as props
     return {
       props: {

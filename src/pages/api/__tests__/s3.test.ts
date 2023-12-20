@@ -34,7 +34,6 @@ describe('/api/s3 without session', () => {
 });
 
 describe('/api/s3', () => {
-  // We connect to the database and clear the recipes table before each test
   beforeAll(async () => {
     // After the initial test, we mock the getSession function to return a session object
     mockedGetSession.mockResolvedValue({

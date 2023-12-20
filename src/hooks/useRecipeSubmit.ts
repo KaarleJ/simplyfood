@@ -46,6 +46,8 @@ const useRecipeSubmit = () => {
     }: { url: string | undefined; error: string | undefined } = await fetch(
       '/api/s3'
     ).then((res) => res.json());
+
+    // Check if there is an error or if the URL is not found
     if (error) {
       throw new Error(error);
     } else if (!url) {

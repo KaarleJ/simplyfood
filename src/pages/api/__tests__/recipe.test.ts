@@ -35,8 +35,8 @@ describe('/api/recipe without session', () => {
 });
 
 describe('/api/recipe', () => {
-  // We connect to the database and clear the recipes table before each test
   beforeAll(async () => {
+    // We connect to the database and clear the recipes table before each test
     await prisma.$connect();
     await prisma.recipe.deleteMany();
     // After the initial test, we mock the getSession function to return a session object
@@ -50,7 +50,7 @@ describe('/api/recipe', () => {
     });
   });
 
-  test('GET /api/recipe', async () => {
+  test('GET', async () => {
     const { req, res } = createMocks({
       method: 'GET',
     });
@@ -61,7 +61,7 @@ describe('/api/recipe', () => {
     expect(JSON.parse(res._getData())).toEqual({ api: 'Hello World!' });
   });
 
-  test('POST /api/recipe', async () => {
+  test('POST', async () => {
     const { req, res } = createMocks({
       method: 'POST',
       body: {
@@ -91,7 +91,7 @@ describe('/api/recipe', () => {
     expect(returnedRecipe.id).toBeDefined();
   });
 
-  test('POST /api/recipe with empty body', async () => {
+  test('POST with empty body', async () => {
     const { req, res } = createMocks({
       method: 'POST',
       body: {},
