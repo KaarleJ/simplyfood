@@ -35,8 +35,8 @@ describe('/api/recipe without session', () => {
 });
 
 describe('/api/recipe', () => {
-  // We connect to the database and clear the recipes table before each test
   beforeAll(async () => {
+    // We connect to the database and clear the recipes table before each test
     await prisma.$connect();
     await prisma.recipe.deleteMany();
     // After the initial test, we mock the getSession function to return a session object

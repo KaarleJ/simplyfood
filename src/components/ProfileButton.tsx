@@ -8,7 +8,6 @@ interface PropTypes {
 }
 
 // This component will be rendered in NavBar if a user is logged on. It renders a button which displays a list of links when clicked.
-
 const ProfileButton = ({ session }: PropTypes) => {
   const [expand, setExpand] = useState(false); // This state handles if the list of links is displayed or not.
 
