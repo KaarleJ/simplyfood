@@ -16,6 +16,10 @@ if (process.env.NODE_ENV === 'test') {
   });
 } else {
   console.log('Using production database.');
+  console.log(
+    'process.env.POSTGRES_PRISMA_URL',
+    process.env.POSTGRES_PRISMA_URL
+  );
   prisma = new PrismaClient({
     datasources: {
       db: {
