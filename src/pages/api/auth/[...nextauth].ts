@@ -1,5 +1,6 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
+import GoogleProvider from 'next-auth/providers/google';
 import prisma from '@/prismaClient';
 
 export const authOptions: NextAuthOptions = {
@@ -7,6 +8,10 @@ export const authOptions: NextAuthOptions = {
     GitHubProvider({
       clientId: process.env.GITHUB_ID as string,
       clientSecret: process.env.GITHUB_SECRET as string,
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID as string,
+      clientSecret: process.env.GOOGLE_SECRET as string,
     }),
   ],
   callbacks: {
@@ -23,13 +28,12 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async signIn({ user }) {
-      const id = Number(user.id);
 
-      let prismaUser = await prisma.user.findUnique({ where: { id } });
+      let prismaUser = await prisma.user.findUnique({ where: { id: user.id } });
 
       if (!prismaUser) {
         const dbUser = {
-          id: Number(user.id),
+          id: user.id,
           name: user.name as string,
           email: user.email as string,
           avatarUrl: user.image as string,

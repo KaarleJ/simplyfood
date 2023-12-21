@@ -125,7 +125,7 @@ export const getServerSideProps: GetServerSideProps<{
   liked: boolean;
 }> = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
-  const userId = Number(session?.user?.id) as number | undefined;
+  const userId = session?.user?.id as string;
 
   // We get the recipe id from the url.
   const { params } = context;

@@ -45,7 +45,7 @@ describe('/api/like', () => {
     // We create a user and a recipe in the database
     await prisma.user.create({
       data: {
-        id: 1,
+        id: '1',
         email: 'test@example.com',
         name: 'Test User',
         avatarUrl: 'test-image',
@@ -60,7 +60,7 @@ describe('/api/like', () => {
         ingredients: ['test ingredient'],
         equipment: ['test equipment'],
         imgUrl: 'test/url',
-        authorId: 1,
+        authorId: '1',
       },
     });
     recipeId = recipe.id;
@@ -83,7 +83,7 @@ describe('/api/like', () => {
     // We check that the like is created in the database
     const user = await prisma.user.findUnique({
       where: {
-        id: 1,
+        id: '1',
       },
       include: {
         likedRecipes: true,
@@ -111,7 +111,7 @@ describe('/api/like', () => {
     // We check that the like is deleted in the database
     const user = await prisma.user.findUnique({
       where: {
-        id: 1,
+        id: '1',
       },
       include: {
         likedRecipes: true,

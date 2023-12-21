@@ -24,7 +24,7 @@ export default async function handler(
     res.status(400).json({ error: 'Missing id in session' });
     return;
   }
-  const userId = Number(session.user.id);
+  const userId = session.user.id as string;
   const recipeId = Number(req.body.recipeId);
 
   // We check if the recipe is already liked
