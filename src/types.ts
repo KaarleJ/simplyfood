@@ -10,6 +10,6 @@ export interface Recipe {
   likeCount?: number | null | undefined;
   createdAt?: Date | null | undefined;
   avatarUrl?: string | null | undefined;
-  authorId?: number | null | undefined;
+  authorId?: string | null | undefined;
   authorName?: string | null | undefined;
 }

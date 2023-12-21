@@ -113,7 +113,7 @@ export const getRecentRecipes = async () => {
 };
 
 // This function is used to get a recipe by its ID.
-export const getRecipeById = async (id: number, userId: number | undefined) => {
+export const getRecipeById = async (id: number, userId: string | undefined) => {
   const [recipe]: (Recipe & { authorName: string })[] = await prisma.$queryRaw`
     SELECT "Recipe".*, "User"."avatarUrl", "User"."name" AS "authorName", COUNT("_UserLikedRecipes"."B") AS "likeCount"
     FROM "Recipe"
@@ -147,7 +147,7 @@ export const getRecipeById = async (id: number, userId: number | undefined) => {
   return { recipe, liked };
 };
 
-export const likeRecipe = async (recipeId: number, userId: number) => {
+export const likeRecipe = async (recipeId: number, userId: string) => {
   // Check if the user has already liked the recipe
   const existingLike = await prisma.user.findUnique({
     where: { id: userId },

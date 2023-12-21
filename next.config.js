@@ -23,6 +23,11 @@ const nextConfig = {
         hostname: 'simplyfood-dev.s3.eu-central-1.amazonaws.com',
         port: ''
       },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        port: ''
+      }
     ]
   }
 }

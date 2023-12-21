@@ -9,7 +9,7 @@ export const recipeSchema = yup.object().shape({
   ingredients: yup.array().of(yup.string().required()).required(),
   equipment: yup.array().of(yup.string().required()).required(),
   imgUrl: yup.string().required(),
-  authorId: yup.number().nullable(),
+  authorId: yup.string().nullable(),
 });
 
 // Here we define a validation schema for a recipe that is being created
