@@ -14,7 +14,13 @@ if (process.env.NODE_ENV === 'test') {
     },
   });
 } else {
-  prisma = new PrismaClient();
+  prisma = new PrismaClient({
+    datasources: {
+      db: {
+        url: process.env.POSTGRES_PRISMA_URL,
+      },
+    },
+  });
 }
 
 export default prisma;

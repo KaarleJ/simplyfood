@@ -1,4 +1,3 @@
-import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
@@ -8,14 +7,15 @@ import SearchBar from '@/components/SearchBar';
 import Text from '@/components/Text';
 import PageBar from '@/components/PageBar';
 import { Like } from 'styled-icons/boxicons-regular';
-import { getRecipes } from '@/prismaClient';
+import useSWR from 'swr';
+import Loader from '@/components/Loader';
 
-const Recipes = ({
-  recipes,
-  count,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Recipes = () => {
   const [query, setQuery] = useState<string>(''); // query state for search bar
+  const [recipes, setRecipes] = useState<Recipe[]>([]); // recipes state for recipes
+  const [count, setCount] = useState<number>(0); // count state for pagination
   const [page, setPage] = useState<number>(1); // page state for pagination
+
   const router = useRouter(); // router for url query
 
   // set query state if query is in url
@@ -27,6 +27,34 @@ const Recipes = ({
       setPage(parseInt(router.query.page as string));
     }
   }, [router.query]);
+
+  // Fetcher function for SWR
+  const fetcher = () =>
+    fetch(`/api/recipes?search=${query}&page=${page}`).then((res) =>
+      res.json()
+    );
+
+  // Fetch recipes and count from api
+  const { data, error, isLoading } = useSWR(
+    `/api/recipes?search=${query}&page=${page}`,
+    fetcher
+  );
+
+  // Set recipes and count state from data
+  useEffect(() => {
+    if (data) {
+      setRecipes(data.recipes);
+      setCount(data.count);
+    }
+  }, [data]);
+
+  if (error) return <div>Failed to load</div>;
+  if (isLoading)
+    return (
+      <div className="flex flex-col justify-center items-center">
+        <Loader />
+      </div>
+    );
 
   return (
     <div className="flex flex-col min-h-loose justify-between">
@@ -81,35 +109,3 @@ const Recipes = ({
 };
 
 export default Recipes;
-
-// We use getServerSideProps to fetch the recipes from the database.
-export const getServerSideProps: GetServerSideProps<{
-  recipes: Recipe[];
-  count: number;
-}> = async (context) => {
-  // We get the search query and page from the url
-  const searchQuery = context.query.search as string | undefined;
-  const page = context.query.page as string | undefined;
-
-  let recipes: Recipe[];
-  let count: number;
-  try {
-    // We fetch the recipes and count from the database
-    const res = await getRecipes(page, searchQuery);
-    recipes = res.recipes;
-    count = res.count;
-    // We return the recipes and count as props
-    return {
-      props: {
-        recipes: JSON.parse(JSON.stringify(recipes)),
-        count,
-      },
-    };
-  } catch (error) {
-    console.log(error);
-
-    return {
-      notFound: true,
-    };
-  }
-};
