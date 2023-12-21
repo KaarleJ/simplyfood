@@ -28,7 +28,6 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async signIn({ user }) {
-
       let prismaUser = await prisma.user.findUnique({ where: { id: user.id } });
 
       if (!prismaUser) {

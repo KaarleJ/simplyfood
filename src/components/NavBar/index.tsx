@@ -13,7 +13,7 @@ const NavBar = () => {
       <h1 className="text-off-white text-3xl font-bold">SimplyFood</h1>
 
       <div className="sm:hidden">
-        <Menu />
+        <Menu session={session} />
       </div>
 
       <ul className="ml-4 mr-20 hidden sm:flex justify-end space-x-4 lg:space-x-16 xl:space-x-32 text-xl grow items-center">
