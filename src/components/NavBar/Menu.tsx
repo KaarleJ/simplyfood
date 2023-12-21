@@ -1,11 +1,15 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { Menu as MenuIcon } from '@styled-icons/entypo';
+import { Session } from 'next-auth';
 
+interface MenuProps {
+  session: Session | null;
+}
 
 // This component will be rendered in NavBar if the screen is small.
 // It renders a list of links that are hidden by default. When the user clicks the MenuIcon, the list of links will be displayed.
-const Menu = () => {
+const Menu = ({ session }: MenuProps) => {
   const [expand, setExpand] = useState(false);
 
   return (
@@ -31,16 +35,31 @@ const Menu = () => {
             Recipes
           </Link>
         </li>
-        <li className="hover:text-cyan-400 transition-color">
-          <Link href="/api/auth/signin" onClick={() => setExpand(false)}>
-            SignIn
-          </Link>
-        </li>
-        <li className="hover:text-cyan-400 transition-color">
-          <Link href="/api/auth/signout" onClick={() => setExpand(false)}>
-            SignOut
-          </Link>
-        </li>
+        {session ? (
+          <>
+            <li className="hover:text-cyan-400 transition-color">
+              <Link href="/profile" onClick={() => setExpand(false)}>
+                Profile
+              </Link>
+            </li>
+            <li className="hover:text-cyan-400 transition-color">
+              <Link href="/create" onClick={() => setExpand(false)}>
+                Create
+              </Link>
+            </li>
+            <li className="hover:text-cyan-400 transition-color">
+              <Link href="/api/auth/signout" onClick={() => setExpand(false)}>
+                SignOut
+              </Link>
+            </li>
+          </>
+        ) : (
+          <li className="hover:text-cyan-400 transition-color">
+            <Link href="/api/auth/signin" onClick={() => setExpand(false)}>
+              SignIn
+            </Link>
+          </li>
+        )}
       </ul>
     </div>
   );

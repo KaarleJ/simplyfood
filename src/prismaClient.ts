@@ -6,6 +6,7 @@ let prisma: PrismaClient;
 
 // In the test environment we use a different database
 if (process.env.NODE_ENV === 'test') {
+  console.log('Using test database.');
   prisma = new PrismaClient({
     datasources: {
       db: {
@@ -14,6 +15,7 @@ if (process.env.NODE_ENV === 'test') {
     },
   });
 } else {
+  console.log('Using production database.');
   prisma = new PrismaClient({
     datasources: {
       db: {
