@@ -9,8 +9,7 @@ export default async function handler(
   const searchQuery = req.query.search as string | undefined;
   const page = req.query.page as string | undefined;
 
-  console.log('searchQuery', searchQuery);
-  console.log('page', page);
+
   if (req.method === 'GET') {
     let recipes: Recipe[];
     let count: number;

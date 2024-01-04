@@ -57,8 +57,8 @@ describe('/api/recipe', () => {
 
     await handler(req, res);
 
-    expect(res._getStatusCode()).toBe(200);
-    expect(JSON.parse(res._getData())).toEqual({ api: 'Hello World!' });
+    expect(res._getStatusCode()).toBe(405);
+    expect(JSON.parse(res._getData())).toEqual({ message: 'Method not allowed' });
   });
 
   test('POST', async () => {

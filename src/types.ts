@@ -12,4 +12,5 @@ export interface Recipe {
   avatarUrl?: string | null | undefined;
   authorId?: string | null | undefined;
   authorName?: string | null | undefined;
+  likes?: number | null | undefined;
 }

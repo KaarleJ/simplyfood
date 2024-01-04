@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from './auth/[...nextauth]';
+import { authOptions } from '../auth/[...nextauth]';
 import prisma from '@/prismaClient';
 import type { Recipe as ReadyRecipe } from '@/types';
 import * as yup from 'yup';
-import { recipeSchema } from '../../validationSchemas';
+import { recipeSchema } from '../../../validationSchemas';
 type Recipe = Omit<ReadyRecipe, 'id'>;
 
 export default async function handler(
@@ -18,10 +18,9 @@ export default async function handler(
     return;
   }
 
-  // If the request is a POST request, we create a new recipe
   if (req.method === 'POST') {
-    const recipe = req.body.recipe;
     // Validate the recipe
+    const recipe = req.body.recipe;
     if (!recipe) {
       res.status(400).json({ error: 'Missing body' });
       return;
@@ -66,8 +65,8 @@ export default async function handler(
     // Send the recipe back to the client
     res.status(201).json(createdRecipe);
 
-    // If the request is a GET request, we send a hello world message
-  } else if (req.method === 'GET') {
-    res.status(200).json({ api: 'Hello World!' });
+    // All other methods are not allowed
+  } else {
+    res.status(405).json({ message: 'Method not allowed' });
   }
 }
