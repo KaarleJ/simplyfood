@@ -1,30 +1,31 @@
 import { Recipe as RecipeType } from '@/types';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
-import { getRecipeById } from '@/prismaClient';
 import Text from '@/components/Text';
 import Button from '@/components/Button';
 import { Like, Share } from 'styled-icons/boxicons-regular';
 import { toast } from 'react-hot-toast';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useLike from '@/hooks/useLike';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../api/auth/[...nextauth]';
+import useSWR from 'swr';
+import { useRouter } from 'next/router';
+import Loader from '@/components/Loader';
 
 // This page renders a recipe with the id that is passed in the url.
-const Recipe = ({
-  recipe,
-  liked,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const [likes, setLikes] = useState(recipe.likeCount);
-  const [likedState, setLikedState] = useState(liked);
+const Recipe = () => {
+  const router = useRouter();
+  const [recipe, setRecipe] = useState<RecipeType>();
+  const [likes, setLikes] = useState<number>();
+  const [likedState, setLikedState] = useState<boolean>(false);
   const { like } = useLike();
 
+  const recipeId = Number(router.query.recipeId);
+
   const handleLike = async () => {
+    if (!recipeId) return;
     try {
-      await like(recipe.id, likedState);
+      await like(recipeId, likedState);
       setLikedState(!likedState);
-      if (likes !== null && likes !== undefined ) {
+      if (likes !== null && likes !== undefined) {
         setLikes(likedState ? likes - 1 : likes + 1);
       }
       if (likedState) {
@@ -44,6 +45,29 @@ const Recipe = ({
     navigator.clipboard.writeText(window.location.href);
     toast.success('Link copied to clipboard');
   };
+
+  // Fetcher function for SWR
+  const fetcher = () =>
+    fetch(`/api/recipe/${recipeId}`).then((res) => res.json());
+
+  // Fetch recipe from api
+  const { data, error, isLoading } = useSWR(`/api/recipe/${recipeId}`, fetcher);
+
+  useEffect(() => {
+    if (data) {
+      setRecipe(data.recipe);
+      setLikes(data.recipe.likeCount);
+      setLikedState(data.liked);
+    }
+  }, [data]);
+
+  if (error) return <div>Failed to load</div>;
+  if (isLoading || !recipe)
+    return (
+      <div className="flex flex-col justify-center items-center bg-blue-100 self-center">
+        <Loader />
+      </div>
+    );
 
   return (
     <>
@@ -117,30 +141,3 @@ const Recipe = ({
 };
 
 export default Recipe;
-
-// This function fetches the data for the recipe with the id that is passed in the url.
-// This function is used to build the page on every request.
-export const getServerSideProps: GetServerSideProps<{
-  recipe: RecipeType;
-  liked: boolean;
-}> = async (context) => {
-  const session = await getServerSession(context.req, context.res, authOptions);
-  const userId = session?.user?.id as string;
-
-  // We get the recipe id from the url.
-  const { params } = context;
-  // We fetch the recipe from the DB using the id.
-  const { recipe, liked }: { recipe: RecipeType | null; liked: boolean } =
-    await getRecipeById(Number(params?.recipeId), userId);
-  if (!recipe) {
-    return {
-      notFound: true,
-    };
-  }
-  return {
-    props: {
-      recipe: JSON.parse(JSON.stringify(recipe)),
-      liked,
-    },
-  };
-};
