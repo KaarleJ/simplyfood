@@ -17,16 +17,6 @@ interface FormProps extends PropsWithChildren {
   className?: string;
 }
 
-interface Errors {
-  title?: string;
-  description?: string;
-  ingredients?: string;
-  equipment?: string;
-  duration?: string;
-  guide?: string;
-  image?: string;
-}
-
 /*
  * This component represents the form for creating a recipe.
  * It uses Formik to handle form state and validation.
@@ -160,7 +150,7 @@ const Form = ({ className }: FormProps) => {
                           ))}
                         <button
                           type="button"
-                          onClick={() => push(' ')}
+                          onClick={() => push('')}
                           className="px-2 py-1 my-2 ml-5 rounded-md bg-lime-300 font-bold text-white hover:brightness-90 transition-all"
                         >
                           add

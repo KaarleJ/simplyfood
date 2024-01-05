@@ -4,29 +4,49 @@ import { Recipe } from './types';
 
 let prisma: PrismaClient;
 
-// In the test environment we use a different database
-if (process.env.NODE_ENV === 'test') {
-  console.log('Using test database.');
-  prisma = new PrismaClient({
-    datasources: {
-      db: {
-        url: process.env.TEST_DATABASE_URL,
+// Check NODE_ENV to determine which database to use
+switch (process.env.NODE_ENV) {
+  case 'production':
+    console.log('Using production database.');
+    console.log(
+      'process.env.POSTGRES_PRISMA_URL',
+      process.env.POSTGRES_PRISMA_URL
+    );
+    prisma = new PrismaClient({
+      datasources: {
+        db: {
+          url: process.env.POSTGRES_PRISMA_URL,
+        },
       },
-    },
-  });
-} else {
-  console.log('Using production database.');
-  console.log(
-    'process.env.POSTGRES_PRISMA_URL',
-    process.env.POSTGRES_PRISMA_URL
-  );
-  prisma = new PrismaClient({
-    datasources: {
-      db: {
-        url: process.env.POSTGRES_PRISMA_URL,
+    });
+    break;
+  case 'development':
+    console.log('Using development database.');
+    console.log(
+      'process.env.POSTGRES_PRISMA_URL',
+      process.env.POSTGRES_PRISMA_URL
+    );
+    prisma = new PrismaClient({
+      datasources: {
+        db: {
+          url: process.env.POSTGRES_PRISMA_URL,
+        },
       },
-    },
-  });
+    });
+    break;
+  case 'test':
+    console.log('Using test database.');
+    prisma = new PrismaClient({
+      datasources: {
+        db: {
+          url: process.env.TEST_DATABASE_URL,
+        },
+      },
+    });
+    break;
+  default:
+    throw new Error('Unknown NODE_ENV');
+    break;
 }
 
 export default prisma;
