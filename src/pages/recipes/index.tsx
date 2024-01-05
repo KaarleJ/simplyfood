@@ -51,7 +51,7 @@ const Recipes = () => {
   if (error) return <div>Failed to load</div>;
   if (isLoading)
     return (
-      <div className="flex flex-col justify-center items-center">
+      <div className="flex flex-col justify-center items-center h-screen">
         <Loader />
       </div>
     );

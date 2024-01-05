@@ -22,7 +22,7 @@ model Recipe {
   author User? @relation("UserRecipes", fields: [authorId], references: [id])
   authorId String?
   likedBy User[] @relation("UserLikedRecipes")
-  
+  comments Comment[]
 }
 
 model User {
@@ -34,5 +34,16 @@ model User {
   avatarUrl String?
   recipes Recipe[] @relation("UserRecipes")
   likedRecipes Recipe[] @relation("UserLikedRecipes")
+  comments Comment[]
 }
 
+model Comment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  body      String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  recipe    Recipe   @relation(fields: [recipeId], references: [id])
+  recipeId  Int
+}

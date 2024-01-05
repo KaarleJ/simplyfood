@@ -50,7 +50,7 @@ describe('/api/recipe', () => {
     });
   });
 
-  test('GET', async () => {
+  test('GET method not allowed', async () => {
     const { req, res } = createMocks({
       method: 'GET',
     });

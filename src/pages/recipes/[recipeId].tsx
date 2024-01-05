@@ -64,7 +64,7 @@ const Recipe = () => {
   if (error) return <div>Failed to load</div>;
   if (isLoading || !recipe)
     return (
-      <div className="flex flex-col justify-center items-center bg-blue-100 self-center">
+      <div className="flex flex-col justify-center items-center self-center h-screen">
         <Loader />
       </div>
     );
