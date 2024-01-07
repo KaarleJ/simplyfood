@@ -1,6 +1,6 @@
 # SimplyFood
 
-SimplyFood is a web application that serves as a platform for users to search, post, and comment on recipes. It was developed as a learning project.
+SimplyFood is a web application that serves as a platform for users to search, post, and comment on recipes. It was developed as a learning project. The app is deployed [here](https://simplyfood-kaarlej.vercel.app/).
 
 ## Technology Stack
 
@@ -13,10 +13,13 @@ SimplyFood is a web application that serves as a platform for users to search, p
 We use github actions to setup a CI/CD pipeline. We have a file [.github/workflows/deployment_pipeline.yml](.github/workflows/deployment_pipeline.yml) that defines the steps for build and test checks. And then we have Vercels own checks that deploy the app to Vercel.
 
 ## Development Roadmap
-- More Oauth providers
 - comments
+- update recipes
 - user page
 - Top users in home page
+- Incrementally updating to app router
+
 
 ## Known faults
-- Since the recipe page is being built on every client request it  is a bit slow.
+- We had to change pages that were using SSR to be CSR. That's because of the limitations of vercel's free-tier
+- We have no component tests for frontend and no E2E tests. The tests overall seem to be a bit thin.
