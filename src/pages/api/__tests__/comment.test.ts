@@ -41,9 +41,6 @@ describe('/api/comment', () => {
   beforeAll(async () => {
     // Connect to and clear the db and create user and recipe for comment testing.
     await prisma.$connect();
-    await prisma.comment.deleteMany();
-    await prisma.recipe.deleteMany({});
-    await prisma.user.deleteMany({});
     const user = await prisma.user.create({
       data: {
         email: 'test@example.com',

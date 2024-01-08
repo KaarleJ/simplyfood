@@ -40,8 +40,6 @@ describe('/api/recipe', () => {
   beforeAll(async () => {
     // We connect to the database and clear the recipes table before tests
     await prisma.$connect();
-    await prisma.comment.deleteMany();
-    await prisma.recipe.deleteMany();
     // After the initial test, we mock the getSession function to return a session object
     mockedGetSession.mockResolvedValue({
       expires: '1',

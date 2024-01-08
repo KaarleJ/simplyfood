@@ -16,6 +16,7 @@ const config = {
     NODE_ENV: 'test',
   },
   testTimeout: 30000,
+  globalTeardown: './jest.teardown.ts',
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

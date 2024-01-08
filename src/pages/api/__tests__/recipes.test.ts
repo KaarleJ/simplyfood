@@ -16,9 +16,6 @@ describe('/api/recipes', () => {
   beforeAll(async () => {
     // We connect to the database and clear the recipes table before tests
     await prisma.$connect();
-    await prisma.comment.deleteMany();
-    await prisma.recipe.deleteMany({});
-    await prisma.user.deleteMany({});
     const { id } = await prisma.user.create({
       data: {
         email: 'tester@test.com',
