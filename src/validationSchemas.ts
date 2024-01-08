@@ -28,3 +28,8 @@ export const recipeCreateSchema = yup.object().shape({
     .required('Equipment list is required'),
   image: yup.mixed().required('Image is required'),
 });
+
+export const commentSchema = yup.object().shape({
+  body: yup.string().required(),
+  recipeId: yup.number().required(),
+});

@@ -9,6 +9,7 @@ import useLike from '@/hooks/useLike';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import Loader from '@/components/Loader';
+import CommentTable from '@/components/CommentTable';
 
 // This page renders a recipe with the id that is passed in the url.
 const Recipe = () => {
@@ -61,7 +62,13 @@ const Recipe = () => {
     }
   }, [data]);
 
-  if (error) return <div>Failed to load</div>;
+  if (error) {
+    return (
+      <div className="flex flex-col justify-center items-center self-center h-screen">
+        <Text className="text-3xl">Recipe not found</Text>
+      </div>
+    );
+  }
   if (isLoading || !recipe)
     return (
       <div className="flex flex-col justify-center items-center self-center h-screen">
@@ -80,20 +87,24 @@ const Recipe = () => {
       />
       <div className="flex flex-row justify-between">
         <div className="text-stone-700 m-5">
-          <Text header className="self-end">
+          <Text header className="self-end text-4xl">
             {recipe.title}
           </Text>
-          <p className="italic">{recipe.description}</p>
-          <h1 className="mt-2 text-xl">Ingredients:</h1>
-          <ul className="ml-4 list-disc">
+          <Text className="italic text-lg">{recipe.description}</Text>
+          <Text header className="mt-2 text-2xl">
+            Ingredients:
+          </Text>
+          <ul className="ml-4 list-disc text-lg italic">
             {recipe.ingredients.map((ingredient) => (
               <li key={ingredient}>{ingredient}</li>
             ))}
           </ul>
           {recipe.equipment ? (
             <>
-              <h1 className="mt-2 text-xl">Cooking equipment:</h1>
-              <ul className="ml-4 list-disc">
+              <Text header className="mt-2 text-2xl">
+                Cooking equipment:
+              </Text>
+              <ul className="ml-4 list-disc text-lg italic">
                 {recipe.equipment.map((equipment) => (
                   <li key={equipment}>{equipment}</li>
                 ))}
@@ -133,8 +144,16 @@ const Recipe = () => {
         </div>
       </div>
       <div className="mx-4">
-        <h1 className="text-xl">Instructions</h1>
-        <a>{recipe.guide}</a>
+        <Text header className="text-2xl">
+          Instructions
+        </Text>
+        <Text className="text-sm">{recipe.guide}</Text>
+      </div>
+      <div className="mx-4 mt-10">
+        <Text header className="text-2xl mb-2">
+          Comments
+        </Text>
+        <CommentTable comments={recipe.comments} recipeId={recipe.id}/>
       </div>
     </>
   );
