@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 import { PrismaClient } from '@prisma/client';
 import { Recipe } from './types';
+import { Comment } from './types';
 
 let prisma: PrismaClient;
 
@@ -153,7 +154,22 @@ export const getRecipeById = async (id: number, userId: string | undefined) => {
     LEFT JOIN "_UserLikedRecipes" ON "Recipe"."id" = "_UserLikedRecipes"."A"
     WHERE "Recipe"."id" = ${id}
     GROUP BY "Recipe"."id", "User"."avatarUrl", "User"."name";
+`;
+
+  // we fetch comments of the recipe
+  const comments = await prisma.$queryRaw`
+    SELECT "Comment".*, "User"."name" AS "authorName", "User"."avatarUrl" AS "avatarUrl"
+    FROM "Comment"
+    LEFT JOIN "User" ON "Comment"."authorId" = "User"."id"
+    WHERE "Comment"."recipeId" = ${id};
   `;
+
+  // Add comments to the recipe object
+  if (recipe && comments) {
+    recipe.comments = comments as Comment[];
+  } else {
+    return { recipe: null, liked: false };
+  }
 
   let liked = false;
 

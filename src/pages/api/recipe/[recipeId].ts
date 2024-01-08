@@ -10,6 +10,11 @@ export default async function handler(
 ) {
   const { recipeId } = req.query;
 
+  if (!recipeId) {
+    res.status(400).json({ error: 'Missing recipe id' });
+    return;
+  }
+
   if (req.method === 'GET') {
     // Check session
     const session = await getServerSession(req, res, authOptions);

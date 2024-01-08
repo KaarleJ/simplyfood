@@ -10,7 +10,7 @@ const Text = ({ children, header, className }: TextProps) => {
   return (
     <>
       {header ? (
-        <h1 className={`text-3xl text-bold text-stone-800 ${className}`}>{children}</h1>
+        <h1 className={`text-3xl text-bold text-stone-700 ${className}`}>{children}</h1>
       ) : (
         <p className={`text-xl text-stone-600 ${className}`}>{children}</p>
       )}
