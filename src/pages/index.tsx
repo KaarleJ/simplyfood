@@ -1,10 +1,8 @@
 import type { GetStaticProps, InferGetStaticPropsType } from 'next';
 import { Recipe } from '@/types';
 import { getPopularRecipes, getRecentRecipes } from '@/prismaClient';
-import Link from 'next/link';
-import Image from 'next/image';
 import Text from '@/components/Text';
-import { Like } from 'styled-icons/boxicons-regular';
+import RecipeCard from '@/components/RecipeCard';
 
 const Home = ({
   mostPopularRecipes,
@@ -15,70 +13,32 @@ const Home = ({
       <Text header className="m-5">
         Most popular recipes
       </Text>
-      <div className="m-5 grid justify-center bg-gray-50 border rounded-md">
+      <div className="m-5 py-2 grid bg-gray-50 border rounded-md overflow-x-auto">
         <div className="overflow-x-auto">
-          <div className="flex flex-row align-middle justify-start w-max">
-            {mostPopularRecipes.map((recipe) => {
-              return (
-                <Link
-                  key={recipe.id}
-                  href={`/recipes/${recipe.id}`}
-                  className="shadow-lg w-48 mx-5 my-2 bg-off-white text-stone-700 hover:text-cyan-700 hover:brightness-90 transition-all"
-                >
-                  <Image
-                    src={recipe.imgUrl}
-                    alt={`Picture of ${recipe.title}`}
-                    width={400}
-                    height={300}
-                    className="object-cover w-full h-48"
-                  />
-                  <div className="flex flex-row justify-between">
-                    <h2 className="text-lg p-2 font-medium">{recipe.title}</h2>
-                    <div className="flex flex-row justify-center">
-                      <Text className="text-md mt-2 font-medium">
-                        {recipe.likeCount}
-                      </Text>
-                      <Like className="w-6 h-6 ml-1 my-2 mr-2" />
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
+          <div className="flex flex-row items-stretch justify-start w-max">
+            {mostPopularRecipes.map((recipe) => (
+              <RecipeCard
+                key={recipe.id}
+                recipe={recipe}
+                className="mx-5 w-48"
+              />
+            ))}
           </div>
         </div>
       </div>
       <Text header className="m-5">
         Most recent recipes
       </Text>
-      <div className="m-5 grid justify-center bg-gray-50 border rounded-md">
+      <div className="m-5 py-2 grid bg-gray-50 border rounded-md overflow-x-auto">
         <div className="overflow-x-auto">
-          <div className="flex flex-row align-middle justify-start w-max">
-            {mostRecentRecipes.map((recipe) => {
-              return (
-                <Link
-                  key={recipe.id}
-                  href={`/recipes/${recipe.id}`}
-                  className="shadow-lg w-48 mx-5 my-2 bg-off-white text-stone-700 hover:text-cyan-700 hover:brightness-90 transition-all"
-                >
-                  <Image
-                    src={recipe.imgUrl}
-                    alt={`Picture of ${recipe.title}`}
-                    width={400}
-                    height={300}
-                    className="object-cover w-full h-48"
-                  />
-                  <div className="flex flex-row justify-between">
-                    <h2 className="text-lg p-2 font-medium">{recipe.title}</h2>
-                    <div className="flex flex-row justify-center">
-                      <Text className="text-md mt-2 font-medium">
-                        {recipe.likeCount}
-                      </Text>
-                      <Like className="w-6 h-6 ml-1 my-2 mr-2" />
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
+          <div className="flex flex-row items-stretch justify-start w-max">
+            {mostRecentRecipes.map((recipe) => (
+              <RecipeCard
+                key={recipe.id}
+                recipe={recipe}
+                className="mx-5 w-48"
+              />
+            ))}
           </div>
         </div>
       </div>
