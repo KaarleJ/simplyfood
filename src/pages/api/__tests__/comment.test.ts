@@ -1,4 +1,4 @@
-import handler from '../comment/index';
+import handler from '../comment';
 import { createMocks } from 'node-mocks-http';
 import { getServerSession } from 'next-auth/next';
 import { PrismaClient } from '@prisma/client';
