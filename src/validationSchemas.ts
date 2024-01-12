@@ -24,7 +24,7 @@ export const recipeCreateSchema = yup.object().shape({
     .required('Ingredient list is required'),
   equipment: yup
     .array()
-    .of(yup.string().required('At least one equipment is required'))
+    .of(yup.string().required('Equipment can\'t be empty'))
     .required('Equipment list is required'),
   image: yup.mixed().required('Image is required'),
 });

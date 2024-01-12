@@ -36,7 +36,7 @@ const Page = ({ className, children }: PageProps) => {
   // If the page is loading we return loading ui
   if (isLoading) {
     return (
-      <div className={`${className} flex justify-center items-center`}>
+      <div className={`${className} flex justify-center items-center h-screen`}>
         <Loader />
       </div>
     );

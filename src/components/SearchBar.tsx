@@ -1,6 +1,7 @@
 import { Dispatch, PropsWithChildren, SetStateAction, useState } from 'react';
 import { useRouter } from 'next/router';
 import Text from './Text';
+import Button from './Button';
 
 interface SearchBarProps extends PropsWithChildren {
   className?: string;
@@ -45,12 +46,12 @@ const SearchBar = ({ className, query, setQuery }: SearchBarProps) => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
         ></input>
-        <button
+        <Button
           type="submit"
-          className="px-2 py-1 mx-1 rounded-md bg-lime-300 font-bold text-white hover:brightness-90 transition-all mr-4"
+          className="px-2 py-1 rounded-md bg-lime-300 font-bold text-white hover:brightness-90 transition-all"
         >
           search
-        </button>
+        </Button>
       </form>
     </div>
   );
