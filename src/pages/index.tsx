@@ -13,8 +13,8 @@ const Home = ({
       <Text header className="m-5">
         Most popular recipes
       </Text>
-      <div className="m-5 py-2 grid bg-gray-50 border rounded-md overflow-x-auto">
-        <div className="overflow-x-auto">
+      <div className="m-5 grid bg-gray-50 border rounded-md">
+        <div className="overflow-x-auto py-2">
           <div className="flex flex-row items-stretch justify-start w-max">
             {mostPopularRecipes.map((recipe) => (
               <RecipeCard
@@ -29,8 +29,8 @@ const Home = ({
       <Text header className="m-5">
         Most recent recipes
       </Text>
-      <div className="m-5 py-2 grid bg-gray-50 border rounded-md overflow-x-auto">
-        <div className="overflow-x-auto">
+      <div className="m-5 grid bg-gray-50 border rounded-md overflow-x-auto">
+        <div className="overflow-x-auto py-2">
           <div className="flex flex-row items-stretch justify-start w-max">
             {mostRecentRecipes.map((recipe) => (
               <RecipeCard
