@@ -7,7 +7,7 @@ interface CommentCardProps {
 }
 
 const CommentCard = ({ comment }: CommentCardProps) => {
-  const { id, authorName, avatarUrl, body } = comment;
+  const { authorName, avatarUrl, body } = comment;
   return (
     <div className="rounded-md m-5 p-3 bg-off-white flex flex-row shadow-xl">
       <Image
