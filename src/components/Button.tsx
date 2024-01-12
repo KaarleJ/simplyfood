@@ -1,29 +1,17 @@
-import { PropsWithChildren } from 'react';
+import { ButtonHTMLAttributes } from 'react';
 
-interface ButtonProps extends PropsWithChildren {
-  type?: 'button' | 'submit' | 'reset' | undefined;
-  disabled?: boolean;
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
-  onClick?: () => void;
   toggled?: boolean;
 }
 
-const Button = ({
-  children,
-  type,
-  disabled,
-  className,
-  onClick,
-  toggled,
-}: ButtonProps) => {
+const Button = ({ children, disabled, className, toggled, ...props }: ButtonProps) => {
   return (
     <button
-      type={type}
-      disabled={disabled}
-      onClick={onClick}
       className={`px-2 py-1 mx-4 rounded-md ${
-        (disabled || toggled) ? 'bg-lime-500' : 'bg-lime-300'
+        disabled || toggled ? 'bg-lime-500' : 'bg-lime-300'
       } font-bold text-white hover:brightness-90 transition-all ${className}`}
+      {...props}
     >
       {children}
     </button>

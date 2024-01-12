@@ -1,31 +1,40 @@
-import { Field as Fieldi } from 'formik';
+import ErrorText from './ErrorText';
+import Text from '../Text';
+import { ErrorMessage } from 'formik';
+import Input from './Input';
 
 interface FieldProps {
-  name: string;
   type: string;
+  name: string;
   placeholder: string;
-  className?: string;
+  error: string | undefined;
+  touched: boolean | undefined;
+  title?: string;
 }
 
-const Field = ({ name, type, placeholder, className }: FieldProps) => {
-  if (type === 'textarea') {
-    return (
-      <Fieldi
-        as="textarea"
-        className={`border border-stone-400 rounded-md p-2 m-2 text-stone-500 text-md w-full max-w-lg ${className}`}
-        name={name}
-        placeholder={placeholder}
-      />
-    );
-  }
-
+const Field = ({
+  type,
+  name,
+  placeholder,
+  error,
+  touched,
+  title,
+}: FieldProps) => {
   return (
-    <Fieldi
-      className={`border border-stone-400 rounded-md p-2 m-2 text-stone-500 text-md w-full max-w-lg ${className}`}
-      name={name}
-      type={type}
-      placeholder={placeholder}
-    />
+    <div className="flex flex-col items-center">
+      <Text>
+        {title ? title : name.charAt(0).toUpperCase() + name.slice(1)}
+      </Text>
+      {type === 'textarea' ? (
+        <Input as={type} type={type} name={name} placeholder={placeholder} />
+      ) : (
+        <Input type={type} name={name} placeholder={placeholder} />
+      )}
+      {error && touched ? (
+        <ErrorMessage name={name} component={ErrorText} />
+      ) : null}
+    </div>
   );
 };
+
 export default Field;
