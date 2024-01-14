@@ -23,7 +23,7 @@ const RecipeCard = ({ recipe, className }: RecipeCardProps) => {
         className="object-cover w-full h-48"
       />
       <div className="flex flex-row justify-between">
-        <h2 className="text-lg p-2 font-medium text-ellipsis">{recipe.title}</h2>
+        <Text className="text-xl p-2 text-ellipsis">{recipe.title}</Text>
         <div className="flex flex-row justify-center">
           <Text className="text-md mt-2 font-medium">{recipe.likeCount}</Text>
           <Like className="w-6 h-6 ml-1 my-2 mr-2" />
