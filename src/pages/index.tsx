@@ -2,7 +2,7 @@ import type { GetStaticProps, InferGetStaticPropsType } from 'next';
 import { Recipe } from '@/types';
 import { getPopularRecipes, getRecentRecipes } from '@/prismaClient';
 import Text from '@/components/Text';
-import RecipeCard from '@/components/RecipeCard';
+import StaticRecipeTable from '@/components/StaticRecipeTable';
 
 const Home = ({
   mostPopularRecipes,
@@ -13,35 +13,11 @@ const Home = ({
       <Text header className="m-5">
         Most popular recipes
       </Text>
-      <div className="m-5 grid bg-gray-50 border rounded-md">
-        <div className="overflow-x-auto py-2">
-          <div className="flex flex-row items-stretch justify-start w-max">
-            {mostPopularRecipes.map((recipe) => (
-              <RecipeCard
-                key={recipe.id}
-                recipe={recipe}
-                className="mx-5 w-48"
-              />
-            ))}
-          </div>
-        </div>
-      </div>
+      <StaticRecipeTable recipes={mostPopularRecipes} />
       <Text header className="m-5">
         Most recent recipes
       </Text>
-      <div className="m-5 grid bg-gray-50 border rounded-md overflow-x-auto">
-        <div className="overflow-x-auto py-2">
-          <div className="flex flex-row items-stretch justify-start w-max">
-            {mostRecentRecipes.map((recipe) => (
-              <RecipeCard
-                key={recipe.id}
-                recipe={recipe}
-                className="mx-5 w-48"
-              />
-            ))}
-          </div>
-        </div>
-      </div>
+      <StaticRecipeTable recipes={mostRecentRecipes} />
     </div>
   );
 };

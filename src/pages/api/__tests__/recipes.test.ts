@@ -1,4 +1,5 @@
 import handler from '../recipes';
+import authorHandler from '../recipes/[authorId]';
 import { createMocks } from 'node-mocks-http';
 import { PrismaClient } from '@prisma/client';
 import { Recipe } from '@/types';
@@ -14,7 +15,7 @@ const prisma = new PrismaClient({
 describe('/api/recipes', () => {
   let authorId: string;
   beforeAll(async () => {
-    // We connect to the database and clear the recipes table before tests
+    // We connect to the database and create a user and two recipes
     await prisma.$connect();
     const { id } = await prisma.user.create({
       data: {
@@ -88,8 +89,63 @@ describe('/api/recipes', () => {
     expect(count).toBe(1);
     expect(recipes[0].title).toBe('Spring rolls');
   });
+});
 
-  afterAll(async () => {
-    await prisma.$disconnect();
+describe('/api/recipes/[authorId]', () => {
+  let authorId: string;
+  beforeAll(async () => {
+    // We connect to the database and create a user and two recipes
+    await prisma.$connect();
+    const { id } = await prisma.user.create({
+      data: {
+        email: 'tester2@test2.com',
+        name: 'Tester2',
+        avatarUrl: 'test-image-2',
+      },
+    });
+    authorId = id;
+    await prisma.recipe.create({
+      data: {
+        title: 'Chicken Nuggets',
+        description: 'dino nuggies',
+        duration: 20,
+        guide: 'This and that',
+        ingredients: ['1 egg', '1 cup of flour', '1 cup of chicken'],
+        equipment: ['1 bowl', '1 pan'],
+        imgUrl: 'https://images.com/photo-23124124512414',
+        authorId,
+      },
+    });
+    await prisma.recipe.create({
+      data: {
+        title: 'pancakes',
+        description: 'a delicious pancake recipe',
+        duration: 40,
+        guide: 'This and that',
+        ingredients: ['1 egg', '1 cup of flour'],
+        equipment: ['1 bowl', '1 pan'],
+        imgUrl: 'https://images.com/photo-23124124512414',
+        authorId,
+      },
+    });
+  });
+
+  test('GET with authorId', async () => {
+    const { req, res } = createMocks({
+      method: 'GET',
+      query: {
+        authorId,
+      },
+    });
+
+    await authorHandler(req, res);
+
+    expect(res._getStatusCode()).toBe(200);
+    const { recipes }: { recipes: Recipe[] } = JSON.parse(res._getData());
+    // We filter out recipes created in parallel tests. And we map them to titles.
+
+    expect(recipes.length).toBe(2);
+    expect(recipes[0].title).toBe('Chicken Nuggets');
+    expect(recipes[1].title).toBe('pancakes');
   });
 });

@@ -28,5 +28,8 @@ export default async function handler(
       res.status(500).json({ error: 'Unable to fetch recipes' });
       return;
     }
+  } else {
+    res.status(405).json({ error: 'Method not allowed' });
+    return;
   }
 }
