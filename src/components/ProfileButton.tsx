@@ -31,7 +31,7 @@ const ProfileButton = ({ session }: PropTypes) => {
         } overflow-hidden bg-stone-100 rounded p-2`}
       >
         <li className="hover:text-cyan-400 transition-color">
-          <Link href="/" onClick={() => setExpand(false)}>
+          <Link href="/profile" onClick={() => setExpand(false)}>
             Profile
           </Link>
         </li>
