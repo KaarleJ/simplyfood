@@ -26,8 +26,8 @@ const useRecipes = () => {
     data,
     error,
     isLoading: loading,
-  } = useSWR(`/api/recipes?search=${query}&page=${page}`, () =>
-    fetch(`/api/recipes?search=${query}&page=${page}`).then((res) => res.json())
+  } = useSWR(`/api/recipes?search=${query}&page=${page}`, (url) =>
+    fetch(url).then((res) => res.json())
   );
 
   // Set recipes and count state from data
