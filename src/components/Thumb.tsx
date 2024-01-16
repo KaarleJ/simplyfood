@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Loader from './Loader';
+import Image from 'next/image';
 
 interface ThumbProps {
   file: File | string | undefined;
@@ -13,6 +14,7 @@ const Thumb = ({ file, className }: ThumbProps) => {
   useEffect(() => {
     if (typeof file === 'string') {
       setThumb(file);
+      setLoading(false);
       return;
     }
     setLoading(true);
@@ -30,16 +32,30 @@ const Thumb = ({ file, className }: ThumbProps) => {
   }, [file]);
 
   if (!file || (file instanceof File && file.size === 0) || !thumb) {
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img src="/image_placeholder.jpg" alt="Placeholder" className={className} />;
+    return (
+      <Image
+        src="/image_placeholder.jpg"
+        width={1920}
+        height={1080}
+        alt="Placeholder"
+        className={`object-cover w-full ${className}`}
+      />
+    );
   }
 
   if (loading) {
     return <Loader />;
   }
 
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img src={thumb} alt="Thumbnail" className={className} />;
+  return (
+    <Image
+      src={thumb}
+      width={1920}
+      height={1080}
+      alt="Thumbnail"
+      className={`object-cover w-full ${className}`}
+    />
+  );
 };
 
 export default Thumb;

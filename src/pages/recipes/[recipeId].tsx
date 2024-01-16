@@ -6,9 +6,12 @@ import { toast } from 'react-hot-toast';
 import Loader from '@/components/Loader';
 import CommentTable from '@/components/CommentTable';
 import useRecipe from '@/hooks/useRecipe';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 // This page renders a recipe with the id that is passed in the url.
 const Recipe = () => {
+  const { data: session } = useSession();
   const { recipe, error, loading, liked, likes, handleLike } = useRecipe();
 
   // This function copies the url to the clipboard and displays a toast notification.
@@ -72,15 +75,25 @@ const Recipe = () => {
             <Text className="self-center">{likes}</Text>
             <Button
               type="button"
-              className="mx-2 "
+              className="mx-1 ml-2"
               onClick={handleLike}
               toggled={liked}
             >
               <Like size="24" />
             </Button>
-            <Button type="button" className="mx-2" onClick={handleShare}>
+            <Button type="button" onClick={handleShare} className="mx-1">
               <Share size="24" />
             </Button>
+            {session?.user.id === recipe.authorId ? (
+              <>
+                <Button className="mx-1">
+                  <Link href={`/create/${recipe.id}`}>edit</Link>
+                </Button>
+                <Button className="bg-red-600 mx-1" onClick={() => console.log('delete to be implemented')}>
+                  delete
+                </Button>
+              </>
+            ) : null}
           </div>
           {recipe.avatarUrl ? (
             <Image
@@ -108,7 +121,7 @@ const Recipe = () => {
         <Text header className="text-2xl mb-2">
           Comments
         </Text>
-        <CommentTable comments={recipe.comments} recipeId={recipe.id}/>
+        <CommentTable comments={recipe.comments} recipeId={recipe.id} />
       </div>
     </>
   );

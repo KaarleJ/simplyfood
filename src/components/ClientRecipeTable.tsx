@@ -41,7 +41,7 @@ const ClientRecipeTable = ({ className, apiUrl }: ClientRecipeTableProps) => {
     );
   }
   return (
-    <div className={`grid bg-gray-50 border rounded-md overflow-x-auto ${className}`}>
+    <div className={`grid bg-gray-50 border w-full rounded-md overflow-x-auto ${className}`}>
       <div className="overflow-x-auto py-2">
         <div className="flex flex-row items-stretch justify-start w-max">
           {data.recipes.map((recipe) => (
