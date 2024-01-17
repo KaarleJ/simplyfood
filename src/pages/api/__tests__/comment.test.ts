@@ -31,7 +31,7 @@ describe('/api/comment without session', () => {
     await handler(req, res);
 
     expect(res._getStatusCode()).toBe(401);
-    expect(JSON.parse(res._getData())).toEqual({ error: 'Unauthorized' });
+    expect(JSON.parse(res._getData())).toEqual({ error: 'Must be signed in to create a recipe!' });
   });
 });
 
