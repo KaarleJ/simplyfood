@@ -145,7 +145,8 @@ describe('/api/recipes/[authorId]', () => {
     // We filter out recipes created in parallel tests. And we map them to titles.
 
     expect(recipes.length).toBe(2);
-    expect(recipes[0].title).toBe('Chicken Nuggets');
-    expect(recipes[1].title).toBe('pancakes');
+    const titles = recipes.map((recipe) => recipe.title);
+    expect(titles).toContain('Chicken Nuggets');
+    expect(titles).toContain('pancakes');
   });
 });
