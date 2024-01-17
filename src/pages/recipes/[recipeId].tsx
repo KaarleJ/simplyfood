@@ -70,25 +70,25 @@ const Recipe = () => {
           ) : null}
         </div>
         <div className="flex flex-col justify-start items-center">
-          <div className="flex flex-row items-center mr-4 mt-5">
-            <Text className="self-center">{likes}</Text>
+          <div className="grid grid-cols-2 sm:flex flex-row items-start justify-center sm:mr-4 mt-5">
             <Button
               type="button"
-              className="mx-1 ml-2"
+              className="mx-1 my-1 text-lg flex flex-row"
               onClick={handleLike}
               toggled={liked}
             >
-              <Like size="24" />
+              {likes}
+              <Like size="24"  className='ml-2'/>
             </Button>
-            <Button type="button" onClick={handleShare} className="mx-1">
+            <Button type="button" onClick={handleShare} className="mx-1 my-1">
               <Share size="24" />
             </Button>
             {session?.user.id === recipe.authorId ? (
               <>
-                <Button className="mx-1">
+                <Button className="mx-1 my-1">
                   <Link href={`/create/${recipe.id}`}>edit</Link>
                 </Button>
-                <Button className="bg-red-600 mx-1">
+                <Button className="bg-red-600 mx-1 my-1">
                   <Link href={`/recipes/${recipe.id}?show=true`}>delete</Link>
                 </Button>
               </>
