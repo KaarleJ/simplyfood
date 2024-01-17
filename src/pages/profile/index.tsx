@@ -10,9 +10,9 @@ const Profile = ({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
-    <div className="grid grid-rows-6 m-16 grid-flow-row-dense">
+    <div className="flex flex-col items-center justify-start sm:grid grid-rows-6 sm:m-16 grid-flow-row-dense">
       <div className="col-start-1 col-span-3">
-        <Text header className="text-5xl m-5">
+        <Text header className=" text-4xl sm:text-5xl m-5">
           {user.name}
         </Text>
         <Text className="m-5">{user.email}</Text>
@@ -28,12 +28,12 @@ const Profile = ({
 
       <div className='col-start-1 col-span-7 m-5'>
         <Text header>Recipes liked by you</Text>
-        <ClientRecipeTable apiUrl={`/api/recipes/${user.id}?liked=true`} className='m-5'/>
+        <ClientRecipeTable apiUrl={`/api/recipes/${user.id}?liked=true`} className='my-5 sm:mx-5'/>
       </div>
 
       <div className='col-start-1 col-span-7 m-5'>
         <Text header>Recipes created by you</Text>
-        <ClientRecipeTable apiUrl={`/api/recipes/${user.id}`} className='m-5'/>
+        <ClientRecipeTable apiUrl={`/api/recipes/${user.id}`} className='my-5 sm:mx-5'/>
       </div>
     </div>
   );

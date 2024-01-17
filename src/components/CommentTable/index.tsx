@@ -1,29 +1,32 @@
 import { Comment } from '@/types';
 import CommentCard from './CommentCard';
-import { useSession } from 'next-auth/react';
 import Text from '../Text';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import Button from '../Button';
-import useComment from '@/hooks/useComment';
+import useCommentPost from '@/hooks/useCommentPost';
+import useCommentDelete from '@/hooks/useCommentDelete';
 import { toast } from 'react-hot-toast';
 import Loader from '../Loader';
+import { Session } from 'next-auth';
 
 interface CommentTableProps {
   comments: Comment[] | [] | null | undefined;
   recipeId: number;
+  session: Session | null;
 }
 
 const CommentTable = ({
   comments: initialComments,
   recipeId,
+  session,
 }: CommentTableProps) => {
   const [comments, setComments] = useState<Comment[] | null | undefined>(
     initialComments
   );
-  const { data: session } = useSession();
   const [input, setInput] = useState<string>('');
-  const { comment, isLoading, data } = useComment();
+  const { comment, isLoading: postLoading, data } = useCommentPost();
+  const { remove, isLoading: deleteLoading } = useCommentDelete();
 
   const handleComment = async () => {
     try {
@@ -39,8 +42,25 @@ const CommentTable = ({
     toast.success('Comment posted');
   };
 
+  const handleDelete = async (commentId: number) => {
+    try {
+      await remove(commentId);
+      setComments((currentComments) =>
+        currentComments?.filter((comment) => comment.id !== commentId)
+      );
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+      return;
+    }
+    toast.success('Comment deleted');
+  };
+
   useEffect(() => {
     if (data) {
+      console.log('Running effect');
       setComments((currentComments) => currentComments?.concat(data));
     }
   }, [data]);
@@ -71,7 +91,7 @@ const CommentTable = ({
               name="comment"
               onChange={(e) => setInput(e.target.value)}
             />
-            <div className='flex flex-row justify-center items-center'>
+            <div className="flex flex-row justify-center items-center">
               <Button
                 className="ml-0 text-white rounded-md p-2 mt-2"
                 type="button"
@@ -79,16 +99,23 @@ const CommentTable = ({
               >
                 Submit
               </Button>
-              {isLoading ? <Loader size='36'/> : null}
+              {postLoading ? <Loader size="36" /> : null}
             </div>
           </form>
         </div>
       ) : null}
-      {!comments || comments[0] === null ? (
-        <div className="text-center">No comments yet</div>
+      {!comments || comments[0] === undefined ? (
+        <div className="text-center w-full h-28">
+          <Text className="text-2xl mt-10">No comments yet</Text>
+        </div>
       ) : (
         comments.map((comment) => (
-          <CommentCard comment={comment} key={comment.id} />
+          <CommentCard
+            comment={comment}
+            key={comment.id}
+            userId={session?.user.id}
+            handleDelete={handleDelete}
+          />
         ))
       )}
     </div>

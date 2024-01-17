@@ -1,4 +1,5 @@
 import handler from '../comment';
+import deleteHandler from '../comment/[commentId]';
 import { createMocks } from 'node-mocks-http';
 import { getServerSession } from 'next-auth/next';
 import { PrismaClient } from '@prisma/client';
@@ -30,7 +31,7 @@ describe('/api/comment without session', () => {
     await handler(req, res);
 
     expect(res._getStatusCode()).toBe(401);
-    expect(JSON.parse(res._getData())).toEqual({ error: 'Unauthorized' });
+    expect(JSON.parse(res._getData())).toEqual({ error: 'Must be signed in to create a recipe!' });
   });
 });
 
@@ -90,6 +91,8 @@ describe('/api/comment', () => {
     });
   });
 
+  let commentId: number;
+
   test('POST', async () => {
     const { req, res } = createMocks({
       method: 'POST',
@@ -113,5 +116,20 @@ describe('/api/comment', () => {
     expect(returnedComment.recipeId).toBe(recipeId);
     expect(returnedComment.id).toBeDefined();
     expect(returnedComment.createdAt).toBeDefined();
+
+    commentId = returnedComment.id;
+  });
+
+  test('DELETE', async () => {
+    const { req, res } = createMocks({
+      method: 'DELETE',
+      query: {
+        commentId,
+      },
+    });
+
+    await deleteHandler(req, res);
+
+    expect(res._getStatusCode()).toBe(200);
   });
 });

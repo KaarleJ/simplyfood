@@ -4,8 +4,10 @@ import { useRouter } from 'next/router';
 import { Recipe } from '@/types';
 import { toast } from 'react-hot-toast';
 import useLike from './useLike';
+import { useSession } from 'next-auth/react';
 
 const useRecipe = () => {
+  const { data: session } = useSession();
   const router = useRouter();
   const [recipe, setRecipe] = useState<Recipe>();
   const [likes, setLikes] = useState<number>();
@@ -53,7 +55,27 @@ const useRecipe = () => {
     }
   }, [data]);
 
-  return { recipe, loading, error, liked, likes, handleLike };
+  const remove = async (email: string) => {
+    if (email !== session?.user.email) {
+      toast.error('Email doesn\'t match');
+      return;
+    }
+    if (!recipe) {
+      toast.error('Recipe not found');
+      return;
+    }
+    try {
+      await fetch(`/api/recipe/${recipe.id}`, {
+        method: 'DELETE',
+      });
+      toast.success('Recipe deleted!');
+      router.push('/recipes');
+    } catch (error) {
+      if (error instanceof Error) toast.error(error.message);
+    }
+  };
+
+  return { recipe, loading, error, liked, likes, handleLike, remove, session };
 };
 
 export default useRecipe;

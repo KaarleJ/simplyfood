@@ -1,4 +1,8 @@
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import { FormikHelpers } from 'formik';
+import { toast } from 'react-hot-toast';
+import { putImage } from '@/s3';
 
 interface Values {
   title: string;
@@ -21,9 +25,37 @@ interface outputValues {
   authorId: number;
 }
 
-const useRecipeSubmit = () => {
+const useRecipeCreate = () => {
+  const router = useRouter();
   const { data: session } = useSession();
 
+  const initialValues = {
+    title: '',
+    description: '',
+    ingredients: [''],
+    equipment: [''],
+    duration: '',
+    guide: '',
+    image: new File([], ''),
+  };
+
+  // This handles form submit
+  const onSubmit = async (
+    values: any,
+    { setSubmitting }: FormikHelpers<any>
+  ) => {
+    try {
+      await create(values);
+      setSubmitting(false);
+      toast.success('Recipe created!');
+      router.push('/recipes');
+    } catch (error) {
+      if (error instanceof Error) toast.error(error.message);
+      setSubmitting(false);
+    }
+  };
+
+  // This functions posts the recipe data to the API
   const create = async ({
     title,
     description,
@@ -39,32 +71,8 @@ const useRecipeSubmit = () => {
       throw new Error('Unauthorized');
     }
 
-    // Get the upload URL from the API
-    const {
-      url,
-      error,
-    }: { url: string | undefined; error: string | undefined } = await fetch(
-      '/api/s3'
-    ).then((res) => res.json());
-
-    // Check if there is an error or if the URL is not found
-    if (error) {
-      throw new Error(error);
-    } else if (!url) {
-      throw new Error('Upload URL not found');
-    }
-
-    // Upload the image directly to S3
-    const upload = await fetch(url, {
-      method: 'PUT',
-      body: image,
-    });
-    if (!upload.ok) {
-      throw new Error('Upload failed');
-    }
-
-    // Parse the image URL from the uploadUrl
-    const imgUrl = url.split('?')[0];
+    // Upload the image to S3 and get the URL
+    const imgUrl = await putImage(image);
 
     // Send the recipe data to the API
     const data = await fetch('/api/recipe', {
@@ -92,7 +100,7 @@ const useRecipeSubmit = () => {
     return data.json();
   };
 
-  return { create };
+  return { session, onSubmit, initialValues };
 };
 
-export default useRecipeSubmit;
+export default useRecipeCreate;

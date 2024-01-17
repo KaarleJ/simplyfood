@@ -1,4 +1,9 @@
+import { useRouter } from 'next/router';
+import { toast } from 'react-hot-toast';
+import useRecipe from './useRecipe';
+import { FormikHelpers } from 'formik';
 import { useSession } from 'next-auth/react';
+import { putImage } from '@/s3';
 import { Recipe } from '../types';
 
 interface NewValues {
@@ -11,38 +16,36 @@ interface NewValues {
   image: File | string;
 }
 
-const useRecipePut = () => {
+const useRecipeEdit = () => {
+  const router = useRouter();
+  const { recipe, error, loading } = useRecipe();
   const { data: session } = useSession();
 
+
+  // This function is called when the form is submitted
+  const onSubmit = async (
+    values: any,
+    { setSubmitting }: FormikHelpers<any>
+  ) => {
+    try {
+      if (!recipe) {
+        throw new Error('Recipe not found');
+      }
+      await put(values, recipe);
+      setSubmitting(false);
+      toast.success('Recipe edited!');
+      router.push('/recipes');
+    } catch (error) {
+      if (error instanceof Error) toast.error(error.message);
+      setSubmitting(false);
+    }
+  };
+
+  // This function posts the edited recipe to the API
   const put = async (newValues: NewValues, oldValues: Recipe) => {
     let imgUrl: string;
     if (newValues.image instanceof File) {
-      // Get the upload URL from the API
-      const {
-        url,
-        error,
-      }: { url: string | undefined; error: string | undefined } = await fetch(
-        '/api/s3'
-      ).then((res) => res.json());
-
-      // Check if there is an error or if the URL is not found
-      if (error) {
-        throw new Error(error);
-      } else if (!url) {
-        throw new Error('Upload URL not found');
-      }
-
-      // Upload the image directly to S3
-      const upload = await fetch(url, {
-        method: 'PUT',
-        body: newValues.image,
-      });
-      if (!upload.ok) {
-        throw new Error('Upload failed');
-      }
-
-      // Parse the image URL from the uploadUrl
-      imgUrl = url.split('?')[0];
+      imgUrl = await putImage(newValues.image);
     } else {
       imgUrl = oldValues.imgUrl;
     }
@@ -75,7 +78,7 @@ const useRecipePut = () => {
     return data.json();
   };
 
-  return { put, session };
+  return { session, recipe, error, loading, onSubmit };
 };
 
-export default useRecipePut;
+export default useRecipeEdit;
