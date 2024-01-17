@@ -14,7 +14,6 @@ const useRecipe = () => {
   const [liked, setLiked] = useState<boolean>(false);
   const { like } = useLike();
   const recipeId = Number(router.query.recipeId);
-  const show = router.query.show === 'true';
 
   // This function handles liking and unliking a recipe
   const handleLike = async () => {
@@ -76,7 +75,7 @@ const useRecipe = () => {
     }
   };
 
-  return { recipe, loading, error, liked, likes, handleLike, show, remove, session };
+  return { recipe, loading, error, liked, likes, handleLike, remove, session };
 };
 
 export default useRecipe;

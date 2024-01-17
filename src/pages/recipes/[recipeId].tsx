@@ -7,11 +7,14 @@ import Loader from '@/components/Loader';
 import CommentTable from '@/components/CommentTable';
 import useRecipe from '@/hooks/useRecipe';
 import Link from 'next/link';
-import DeleteModal from '@/components/DeleteModal';
+import DeleteRecipeModal from '@/components/Modal/DeleteRecipeModal';
+import { useState } from 'react';
 
 // This page renders a recipe with the id that is passed in the url.
 const Recipe = () => {
-  const { recipe, error, loading, liked, likes, handleLike, show, remove, session } = useRecipe();
+  const { recipe, error, loading, liked, likes, handleLike, remove, session } =
+    useRecipe();
+  const [show, setShow] = useState<boolean>(false);
 
   // This function copies the url to the clipboard and displays a toast notification.
   const handleShare = () => {
@@ -73,23 +76,26 @@ const Recipe = () => {
           <div className="grid grid-cols-2 sm:flex flex-row items-start justify-center sm:mr-4 mt-5">
             <Button
               type="button"
-              className="mx-1 my-1 text-lg flex flex-row"
+              className="!mx-1 my-1 text-md flex flex-row"
               onClick={handleLike}
               toggled={liked}
             >
               {likes}
-              <Like size="24"  className='ml-2'/>
+              <Like size="20"/>
             </Button>
-            <Button type="button" onClick={handleShare} className="mx-1 my-1">
+            <Button type="button" onClick={handleShare} className="!mx-1 my-1">
               <Share size="24" />
             </Button>
             {session?.user.id === recipe.authorId ? (
               <>
-                <Button className="mx-1 my-1">
+                <Button className="!mx-1 my-1">
                   <Link href={`/create/${recipe.id}`}>edit</Link>
                 </Button>
-                <Button className="bg-red-600 mx-1 my-1">
-                  <Link href={`/recipes/${recipe.id}?show=true`}>delete</Link>
+                <Button
+                  className="bg-red-600 !mx-1 my-1"
+                  onClick={() => setShow(true)}
+                >
+                  delete
                 </Button>
               </>
             ) : null}
@@ -120,10 +126,16 @@ const Recipe = () => {
         <Text header className="text-2xl mb-2">
           Comments
         </Text>
-        <CommentTable comments={recipe.comments} recipeId={recipe.id} />
+        <CommentTable
+          comments={recipe.comments}
+          recipeId={recipe.id}
+          session={session}
+        />
       </div>
 
-      {show ? (<DeleteModal remove={remove}/>) : (null)}
+      {show ? (
+        <DeleteRecipeModal remove={remove} onClose={() => setShow(false)} />
+      ) : null}
     </>
   );
 };
