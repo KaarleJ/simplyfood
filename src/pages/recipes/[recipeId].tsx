@@ -6,13 +6,12 @@ import { toast } from 'react-hot-toast';
 import Loader from '@/components/Loader';
 import CommentTable from '@/components/CommentTable';
 import useRecipe from '@/hooks/useRecipe';
-import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import DeleteModal from '@/components/DeleteModal';
 
 // This page renders a recipe with the id that is passed in the url.
 const Recipe = () => {
-  const { data: session } = useSession();
-  const { recipe, error, loading, liked, likes, handleLike } = useRecipe();
+  const { recipe, error, loading, liked, likes, handleLike, show, remove, session } = useRecipe();
 
   // This function copies the url to the clipboard and displays a toast notification.
   const handleShare = () => {
@@ -89,8 +88,8 @@ const Recipe = () => {
                 <Button className="mx-1">
                   <Link href={`/create/${recipe.id}`}>edit</Link>
                 </Button>
-                <Button className="bg-red-600 mx-1" onClick={() => console.log('delete to be implemented')}>
-                  delete
+                <Button className="bg-red-600 mx-1">
+                  <Link href={`/recipes/${recipe.id}?show=true`}>delete</Link>
                 </Button>
               </>
             ) : null}
@@ -123,6 +122,8 @@ const Recipe = () => {
         </Text>
         <CommentTable comments={recipe.comments} recipeId={recipe.id} />
       </div>
+
+      {show ? (<DeleteModal remove={remove}/>) : (null)}
     </>
   );
 };

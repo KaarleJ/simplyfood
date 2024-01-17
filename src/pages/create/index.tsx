@@ -1,9 +1,9 @@
 import Form from '../../components/Form';
-import useRecipeCreate from '../../hooks/useRecipeCreate';
+import useRecipePost from '../../hooks/useRecipePost';
 import Text from '../../components/Text';
 
 const Create = () => {
-  const { session, onSubmit, initialValues } = useRecipeCreate();
+  const { session, onSubmit, initialValues } = useRecipePost();
 
   if (!session) {
     return (

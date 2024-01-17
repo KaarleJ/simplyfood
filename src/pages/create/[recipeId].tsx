@@ -1,10 +1,10 @@
 import Text from '../../components/Text';
 import Form from '../../components/Form';
-import useRecipeEdit from '../../hooks/useRecipeEdit';
+import useRecipePut from '../../hooks/useRecipePut';
 import Loader from '@/components/Loader';
 
 const Edit = () => {
-  const { session, error, loading, onSubmit, recipe } = useRecipeEdit();
+  const { session, error, loading, onSubmit, recipe } = useRecipePut();
 
   if (!session) {
     return (

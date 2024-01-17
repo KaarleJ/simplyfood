@@ -31,3 +31,35 @@ export const generateUploadUrl = async () => {
   const uploadUrl = await s3.getSignedUrlPromise('putObject', params);
   return uploadUrl;
 };
+
+// This function is a client side function to fetch the uploadUrl and put the image to S3
+/*
+@param image - The image to upload
+@returns The URL of the uploaded image
+*/
+export const putImage = async (image: File) => {
+  // Get the upload URL from the API
+  const { url, error }: { url: string | undefined; error: string | undefined } =
+    await fetch('/api/s3').then((res) => res.json());
+
+  // Check if there is an error or if the URL is not found
+  if (error) {
+    throw new Error(error);
+  } else if (!url) {
+    throw new Error('Upload URL not found');
+  }
+
+  // Upload the image directly to S3
+  const upload = await fetch(url, {
+    method: 'PUT',
+    body: image,
+  });
+  if (!upload.ok) {
+    throw new Error('Upload failed');
+  }
+
+  // Parse the image URL from the uploadUrl
+  const imgUrl = url.split('?')[0];
+
+  return imgUrl;
+};
