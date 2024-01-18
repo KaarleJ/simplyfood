@@ -3,15 +3,7 @@ import useRecipePost from '../../hooks/useRecipePost';
 import Text from '../../components/Text';
 
 const Create = () => {
-  const { session, onSubmit, initialValues } = useRecipePost();
-
-  if (!session) {
-    return (
-      <div className="flex items-center justify-center flex-col max-h-full">
-        <Text>You must be signed in to create a recipe</Text>
-      </div>
-    );
-  }
+  const { onSubmit, initialValues } = useRecipePost();
 
   return (
     <>

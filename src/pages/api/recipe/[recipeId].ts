@@ -42,7 +42,7 @@ export default async function handler(
     // Check session
     const session = await getServerSession(req, res, authOptions);
     if (!session) {
-      res.status(401).json({ error: 'Unauthorized' });
+      res.status(401).json({ error: 'You must be signed in to edit a recipe' });
       return;
     }
     const userId = session?.user?.id as string | undefined;

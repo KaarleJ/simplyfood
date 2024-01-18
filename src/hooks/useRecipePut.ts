@@ -19,7 +19,6 @@ interface NewValues {
 const useRecipeEdit = () => {
   const router = useRouter();
   const { recipe, error, loading } = useRecipe();
-  const { data: session } = useSession();
 
 
   // This function is called when the form is submitted
@@ -61,7 +60,7 @@ const useRecipeEdit = () => {
     };
 
     // Send the recipe data to the API
-    const data = await fetch(`/api/recipe/${oldValues.id}`, {
+    const { data, error } = await fetch(`/api/recipe/${oldValues.id}`, {
       method: 'PUT',
       body: JSON.stringify({
         recipe,
@@ -69,16 +68,16 @@ const useRecipeEdit = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-    });
+    }).then((res) => res.json());
 
-    if (!data.ok) {
-      throw new Error('Failed to update recipe');
+    if (error) {
+      throw new Error(error);
     }
 
-    return data.json();
+    return data;
   };
 
-  return { session, recipe, error, loading, onSubmit };
+  return { recipe, error, loading, onSubmit };
 };
 
 export default useRecipeEdit;

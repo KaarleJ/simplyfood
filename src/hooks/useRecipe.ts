@@ -12,7 +12,7 @@ const useRecipe = () => {
   const [recipe, setRecipe] = useState<Recipe>();
   const [likes, setLikes] = useState<number>();
   const [liked, setLiked] = useState<boolean>(false);
-  const { like } = useLike();
+  const { like, loading: likeLoading } = useLike();
   const recipeId = Number(router.query.recipeId);
 
   // This function handles liking and unliking a recipe
@@ -41,7 +41,7 @@ const useRecipe = () => {
   const {
     data,
     error,
-    isLoading: loading,
+    isLoading: recipeLoading,
   } = useSWR(`/api/recipe/${recipeId}`, () =>
     fetch(`/api/recipe/${recipeId}`).then((res) => res.json())
   );
@@ -75,7 +75,7 @@ const useRecipe = () => {
     }
   };
 
-  return { recipe, loading, error, liked, likes, handleLike, remove, session };
+  return { recipe, recipeLoading, likeLoading, error, liked, likes, handleLike, remove, session };
 };
 
 export default useRecipe;

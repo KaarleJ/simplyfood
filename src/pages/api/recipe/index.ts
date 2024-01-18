@@ -14,13 +14,14 @@ export default async function handler(
   // Check authorization
   const session = await getServerSession(req, res, authOptions);
   if (!session) {
-    res.status(401).json({ error: 'Unauthorized' });
+    res.status(401).json({ error: 'Must be signed in to create a recipe!' });
     return;
   }
 
   if (req.method === 'POST') {
     // Validate the recipe
     const recipe = req.body.recipe;
+    recipe.authorId = session.user.id;
     if (!recipe) {
       res.status(400).json({ error: 'Missing body' });
       return;
