@@ -18,7 +18,7 @@ interface NewValues {
 
 const useRecipeEdit = () => {
   const router = useRouter();
-  const { recipe, error, loading } = useRecipe();
+  const { recipe, error, recipeLoading: loading } = useRecipe();
 
 
   // This function is called when the form is submitted
