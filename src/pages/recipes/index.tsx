@@ -9,7 +9,12 @@ const Recipes = () => {
   const { recipes, loading, error, count, page, query, setQuery } =
     useRecipes();
 
-  if (error) return <div>Failed to load</div>;
+  if (error)
+    return (
+      <div className="flex flex-col justify-center items-center h-screen">
+        <Text>{error}</Text>
+      </div>
+    );
   if (loading)
     return (
       <div className="flex flex-col justify-center items-center h-screen">

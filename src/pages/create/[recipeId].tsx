@@ -4,15 +4,7 @@ import useRecipePut from '../../hooks/useRecipePut';
 import Loader from '@/components/Loader';
 
 const Edit = () => {
-  const { session, error, loading, onSubmit, recipe } = useRecipePut();
-
-  if (!session) {
-    return (
-      <div className="flex items-center justify-center flex-col max-h-full">
-        <Text>You must be signed in to create a recipe</Text>
-      </div>
-    );
-  }
+  const { error, loading, onSubmit, recipe } = useRecipePut();
 
   if (loading) {
     return (
@@ -26,6 +18,7 @@ const Edit = () => {
     return (
       <div className="flex items-center justify-center flex-col max-h-full">
         <Text>Something went wrong</Text>
+        <Text>{error}</Text>
       </div>
     );
   }

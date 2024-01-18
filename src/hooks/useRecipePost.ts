@@ -1,4 +1,3 @@
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { FormikHelpers } from 'formik';
 import { toast } from 'react-hot-toast';
@@ -27,7 +26,6 @@ interface outputValues {
 
 const useRecipeCreate = () => {
   const router = useRouter();
-  const { data: session } = useSession();
 
   const initialValues = {
     title: '',
@@ -65,17 +63,12 @@ const useRecipeCreate = () => {
     guide,
     image,
   }: Values): Promise<outputValues> => {
-    // We get the authorId from the session and authorize the user at the same time
-    const authorId = session?.user?.id as string;
-    if (!authorId) {
-      throw new Error('Unauthorized');
-    }
 
     // Upload the image to S3 and get the URL
     const imgUrl = await putImage(image);
 
     // Send the recipe data to the API
-    const data = await fetch('/api/recipe', {
+    const { data, error } = await fetch('/api/recipe', {
       method: 'POST',
       body: JSON.stringify({
         recipe: {
@@ -86,21 +79,20 @@ const useRecipeCreate = () => {
           duration,
           guide,
           imgUrl,
-          authorId,
         },
       }),
       headers: {
         'Content-Type': 'application/json',
       },
-    });
-    if (!data.ok) {
-      throw new Error('Failed to create recipe');
+    }).then((res) => res.json());
+    if (error) {
+      throw new Error(error);
     }
 
-    return data.json();
+    return data;
   };
 
-  return { session, onSubmit, initialValues };
+  return { onSubmit, initialValues };
 };
 
 export default useRecipeCreate;

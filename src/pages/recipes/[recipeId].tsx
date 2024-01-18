@@ -12,8 +12,17 @@ import { useState } from 'react';
 
 // This page renders a recipe with the id that is passed in the url.
 const Recipe = () => {
-  const { recipe, error, loading, liked, likes, handleLike, remove, session } =
-    useRecipe();
+  const {
+    recipe,
+    error,
+    recipeLoading,
+    likeLoading,
+    liked,
+    likes,
+    handleLike,
+    remove,
+    session,
+  } = useRecipe();
   const [show, setShow] = useState<boolean>(false);
 
   // This function copies the url to the clipboard and displays a toast notification.
@@ -29,7 +38,7 @@ const Recipe = () => {
       </div>
     );
   }
-  if (loading || !recipe)
+  if (recipeLoading || !recipe)
     return (
       <div className="flex flex-col justify-center items-center self-center h-screen">
         <Loader />
@@ -80,8 +89,14 @@ const Recipe = () => {
               onClick={handleLike}
               toggled={liked}
             >
-              {likes}
-              <Like size="20"/>
+              {likeLoading ? (
+                <Loader size='24'/>
+              ) : (
+                <>
+                  {likes}
+                  <Like size="20" />
+                </>
+              )}
             </Button>
             <Button type="button" onClick={handleShare} className="!mx-1 my-1">
               <Share size="24" />
