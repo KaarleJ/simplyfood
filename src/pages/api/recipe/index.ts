@@ -21,11 +21,11 @@ export default async function handler(
   if (req.method === 'POST') {
     // Validate the recipe
     const recipe = req.body.recipe;
-    recipe.authorId = session.user.id;
     if (!recipe) {
       res.status(400).json({ error: 'Missing body' });
       return;
     }
+    recipe.authorId = session.user.id;
     let validatedRecipe: Recipe;
     try {
       validatedRecipe = await recipeSchema.validate(req.body.recipe);
