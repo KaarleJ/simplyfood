@@ -52,3 +52,5 @@ const Recipes = () => {
 };
 
 export default Recipes;
+
+export const runtime = 'edge';
