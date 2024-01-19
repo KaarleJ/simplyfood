@@ -1,3 +1,4 @@
+'use client';
 import { Dispatch, PropsWithChildren, SetStateAction, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Text from './Text';

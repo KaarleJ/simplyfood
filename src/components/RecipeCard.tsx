@@ -1,3 +1,4 @@
+'use client';
 import { Recipe } from '@/types';
 import Link from 'next/link';
 import Image from 'next/image';

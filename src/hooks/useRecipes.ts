@@ -1,11 +1,9 @@
 import useSWR from 'swr';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Recipe } from '@/types';
 
 const useRecipes = () => {
   const [query, setQuery] = useState<string>(''); // query state for search bar
-  const [recipes, setRecipes] = useState<Recipe[]>([]); // recipes state for recipes
   const [count, setCount] = useState<number>(0); // count state for pagination
   const [page, setPage] = useState<number>(1); // page state for pagination
   const searchParams = useSearchParams(); // searchParams for url query
@@ -32,12 +30,11 @@ const useRecipes = () => {
   // Set recipes and count state from data
   useEffect(() => {
     if (data) {
-      setRecipes(data.recipes);
       setCount(data.count);
     }
   }, [data]);
 
-  return { recipes, loading, error, count, page, query, setQuery };
+  return { loading, error, count, page, query, setQuery };
 };
 
 export default useRecipes;
