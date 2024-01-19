@@ -1,5 +1,5 @@
 import { Dispatch, PropsWithChildren, SetStateAction, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import Text from './Text';
 import Button from './Button';
 
@@ -20,10 +20,7 @@ const SearchBar = ({ className, query, setQuery }: SearchBarProps) => {
     setQuery(input);
     // We push the query to the url
     if (input) {
-      router.push({
-        pathname: '/recipes',
-        query: { search: input, page: 1 },
-      });
+      router.push(`/recipes?search=${input}&page=1`);
     } else {
       router.push('/recipes');
     }

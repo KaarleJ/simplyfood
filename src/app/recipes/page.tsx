@@ -1,3 +1,4 @@
+'use client';
 import SearchBar from '@/components/SearchBar';
 import Text from '@/components/Text';
 import PageBar from '@/components/PageBar';

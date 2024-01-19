@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import {
   ArrowLeftSquareFill,
   ArrowRightSquareFill,
@@ -23,10 +23,7 @@ const PageBar = ({
       <button
         disabled={currentPage === 1}
         onClick={() =>
-          router.push({
-            pathname: '/recipes',
-            query: { search, page: currentPage - 1 },
-          })
+          router.push(`/recipes?search=${search}&page=${currentPage - 1}`)
         }
       >
         <ArrowLeftSquareFill size={28} className="text-xl text-lime-300 m-2" />
@@ -46,10 +43,7 @@ const PageBar = ({
           return (
             <button
               onClick={() => {
-                router.push({
-                  pathname: '/recipes',
-                  query: { search, page },
-                });
+                router.push(`/recipes?search=${search}&page=${page}`);
               }}
               className="border border-gray-600 rounded bg-gray-100 m-2 p-2 shadow-md"
               key={page}
@@ -61,10 +55,7 @@ const PageBar = ({
       </ul>
       <button
         onClick={() => {
-          router.push({
-            pathname: '/recipes',
-            query: { search, page: currentPage + 1 },
-          });
+          router.push(`/recipes?search=${search}&page=${currentPage+1}`);
         }}
         disabled={currentPage === pages}
       >
