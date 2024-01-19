@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { Recipe } from '@/types';
 
 const useRecipes = () => {
@@ -8,17 +8,18 @@ const useRecipes = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]); // recipes state for recipes
   const [count, setCount] = useState<number>(0); // count state for pagination
   const [page, setPage] = useState<number>(1); // page state for pagination
-  const searchParams = useSearchParams(); // searchParams for url query
+
+  const router = useRouter(); // router for url query
 
   // set query state if query is in url
   useEffect(() => {
-    if (searchParams?.get('search')) {
-      setQuery(searchParams?.get('search') as string);
+    if (router.query.search) {
+      setQuery(router.query.search as string);
     }
-    if (searchParams?.get('page')) {
-      setPage(parseInt(searchParams?.get('page') as string));
+    if (router.query.page) {
+      setPage(parseInt(router.query.page as string));
     }
-  }, [searchParams]);
+  }, [router.query]);
 
   // Fetch recipes and count from api
   const {
