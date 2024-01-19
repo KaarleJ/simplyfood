@@ -15,6 +15,8 @@ We use github actions to setup a CI/CD pipeline. We have a file [.github/workflo
 ## Development Roadmap
 - comments
 - update recipes
+- delete recipes
+- delete comments
 - user page
 - Top users in home page
 - Incrementally updating to app router

@@ -8,12 +8,11 @@ export default async function Page() {
 
   return (
     <div className="max-w-auto">
-      <Text header className='text-center m-5'>Welcome to SimplyFood! The home of all delicious recipes!</Text>
-      <Text className="m-5 !text-2xl">
+      <Text header className="m-5">
         Most popular recipes
       </Text>
       <StaticRecipeTable recipes={mostPopularRecipes} />
-      <Text className="m-5 !text-2xl" >
+      <Text header className="m-5">
         Most recent recipes
       </Text>
       <StaticRecipeTable recipes={mostRecentRecipes} />
