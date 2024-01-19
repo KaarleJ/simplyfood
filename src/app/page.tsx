@@ -8,14 +8,17 @@ export default async function Page() {
 
   return (
     <div className="max-w-auto">
-      <Text header className="m-5">
+      <Text header className='text-center m-5'>Welcome to SimplyFood! The home of all delicious recipes!</Text>
+      <Text className="m-5 !text-2xl">
         Most popular recipes
       </Text>
       <StaticRecipeTable recipes={mostPopularRecipes} />
-      <Text header className="m-5">
+      <Text className="m-5 !text-2xl" >
         Most recent recipes
       </Text>
       <StaticRecipeTable recipes={mostRecentRecipes} />
     </div>
   );
 }
+
+export const revalidate = 60;
