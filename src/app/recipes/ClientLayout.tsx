@@ -6,7 +6,7 @@ import PageBar from '@/components/PageBar';
 import useRecipes from '@/hooks/useRecipes';
 
 const ClientLayout = ({ children }: { children: React.ReactNode }) => {
-  const { loading, error, count, page, query, setQuery } =
+  const { count, page, query, setQuery } =
     useRecipes();
   return (
     <div>
