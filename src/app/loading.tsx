@@ -8,3 +8,9 @@ export default function Loading() {
     </div>
   );
 }
+
+
+export const metadata = {
+  title: 'SimplyFood - Loading',
+  description: 'Loading...',
+};

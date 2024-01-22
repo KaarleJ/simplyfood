@@ -1,3 +1,4 @@
+'use client';
 import { Comment } from '@/types';
 import CommentCard from './CommentCard';
 import Text from '../Text';

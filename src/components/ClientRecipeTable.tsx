@@ -1,3 +1,4 @@
+'use client';
 import RecipeCard from './RecipeCard';
 import useSWR from 'swr';
 import { Recipe } from '@/types';
@@ -14,20 +15,24 @@ const ClientRecipeTable = ({ className, apiUrl }: ClientRecipeTableProps) => {
     data,
     error,
     isLoading: loading,
-  } = useSWR<{ recipes: Recipe[]}>(apiUrl, (url: string) =>
+  } = useSWR<{ recipes: Recipe[] }>(apiUrl, (url: string) =>
     fetch(url).then((res) => res.json())
   );
 
   if (loading) {
     return (
-      <div className={`bg-gray-50 border rounded-md h-48 w-full flex justify-center items-center ${className}`}>
+      <div
+        className={`bg-gray-50 border rounded-md h-48 w-full flex justify-center items-center ${className}`}
+      >
         <Loader />
       </div>
     );
   }
   if (error || !data) {
     return (
-      <div className={`bg-gray-50 border rounded-md h-48 w-full flex justify-center items-center ${className}`}>
+      <div
+        className={`bg-gray-50 border rounded-md h-48 w-full flex justify-center items-center ${className}`}
+      >
         <Text>Failed to load</Text>
       </div>
     );
@@ -35,13 +40,17 @@ const ClientRecipeTable = ({ className, apiUrl }: ClientRecipeTableProps) => {
 
   if (data.recipes.length === 0) {
     return (
-      <div className={`bg-gray-50 border rounded-md h-48 w-full flex justify-center items-center ${className}`}>
+      <div
+        className={`bg-gray-50 border rounded-md h-48 w-full flex justify-center items-center ${className}`}
+      >
         <Text>No recipes</Text>
       </div>
     );
   }
   return (
-    <div className={`grid bg-gray-50 border w-full rounded-md overflow-x-auto ${className}`}>
+    <div
+      className={`grid bg-gray-50 border w-full rounded-md overflow-x-auto ${className}`}
+    >
       <div className="overflow-x-auto py-2">
         <div className="flex flex-row items-stretch justify-start w-max">
           {data.recipes.map((recipe) => (

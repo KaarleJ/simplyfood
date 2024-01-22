@@ -1,14 +1,20 @@
-import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { User } from '@/types';
 import Text from '@/components/Text';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../api/auth/[...nextauth]';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import Image from 'next/image';
 import ClientRecipeTable from '@/components/ClientRecipeTable';
 
-const Profile = ({
-  user,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Profile = async () => {
+  const session = await getServerSession(authOptions);
+  const user = session?.user as User | undefined;
+  if (!session || !user) {
+    return (
+      <div className="flex flex-col justify-center items-center self-center h-screen">
+        <Text className="text-3xl">You are not logged in</Text>
+      </div>
+    );
+  }
   return (
     <div className="flex flex-col items-center justify-start sm:grid grid-rows-6 sm:m-16 grid-flow-row-dense">
       <div className="col-start-1 col-span-3">
@@ -26,14 +32,20 @@ const Profile = ({
         className="col-start-6 col-span-2 row-start-1 rounded-full"
       />
 
-      <div className='col-start-1 col-span-7 m-5'>
+      <div className="col-start-1 col-span-7 m-5">
         <Text header>Recipes liked by you</Text>
-        <ClientRecipeTable apiUrl={`/api/recipes/${user.id}?liked=true`} className='my-5 sm:mx-5'/>
+        <ClientRecipeTable
+          apiUrl={`/api/recipes/${user.id}?liked=true`}
+          className="my-5 sm:mx-5"
+        />
       </div>
 
-      <div className='col-start-1 col-span-7 m-5'>
+      <div className="col-start-1 col-span-7 m-5">
         <Text header>Recipes created by you</Text>
-        <ClientRecipeTable apiUrl={`/api/recipes/${user.id}`} className='my-5 sm:mx-5'/>
+        <ClientRecipeTable
+          apiUrl={`/api/recipes/${user.id}`}
+          className="my-5 sm:mx-5"
+        />
       </div>
     </div>
   );
@@ -41,6 +53,7 @@ const Profile = ({
 
 export default Profile;
 
+/*
 export const getServerSideProps: GetServerSideProps<{
   user: User;
 }> = async (context) => {
@@ -64,3 +77,4 @@ export const getServerSideProps: GetServerSideProps<{
     };
   }
 };
+*/

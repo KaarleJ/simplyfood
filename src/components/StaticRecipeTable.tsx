@@ -1,4 +1,3 @@
-'use client';
 import { Recipe } from '@/types';
 import RecipeCard from '@/components/RecipeCard';
 
