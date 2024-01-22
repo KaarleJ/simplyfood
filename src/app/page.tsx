@@ -8,9 +8,21 @@ export default async function Page() {
 
   return (
     <div className="max-w-auto">
-      <Text header className="text-center m-10 p-5 text-5xl bg-lime-300 text-white shadow-lg rounded-md">
+      <Text
+        header
+        className="text-center m-10 p-5 hidden sm:block text-5xl bg-lime-300 text-white shadow-lg rounded-md"
+      >
         Simplyfood, the home of all delicious recipes!
       </Text>
+      <div className="sm:hidden bg-lime-300 rounded-sm p-2 shadow-lg ">
+        <Text
+          header
+          className="text-center text-white"
+        >
+          Simplyfood
+        </Text>
+        <Text className='text-center text-white'>The home of all delicious recipes!</Text>
+      </div>
       <Text header className="m-5">
         Most popular recipes
       </Text>

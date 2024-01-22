@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useState } from 'react';
 import Loader from './Loader';
 import Image from 'next/image';
