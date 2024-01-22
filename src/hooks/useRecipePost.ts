@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { FormikHelpers } from 'formik';
 import { toast } from 'react-hot-toast';
 import { putImage } from '@/s3';

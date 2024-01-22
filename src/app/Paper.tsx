@@ -5,9 +5,9 @@ interface PageProps extends PropsWithChildren {
 }
 
 // This component will work as a wrapper for all pages.
-const Page = ({ className, children }: PageProps) => {
+const Paper = ({ className, children }: PageProps) => {
 
   return <div className={className}>{children}</div>;
 };
 
-export default Page;
+export default Paper;

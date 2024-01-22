@@ -24,3 +24,7 @@ const Recipes = async ({
 };
 
 export default Recipes;
+
+export const metadata = {
+  title: 'SimplyFood - Recipes',
+};

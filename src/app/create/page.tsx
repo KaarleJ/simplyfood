@@ -1,3 +1,4 @@
+'use client';
 import Form from '../../components/Form';
 import useRecipePost from '../../hooks/useRecipePost';
 import Text from '../../components/Text';

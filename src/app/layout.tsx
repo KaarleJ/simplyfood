@@ -8,6 +8,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <link rel="icon" href="/favicon.ico" sizes="any" />
       <body>
         <ClientLayout>{children}</ClientLayout>
       </body>
@@ -16,7 +17,7 @@ export default function RootLayout({
 }
 
 export const metadata: Metadata = {
-  title: 'SimplyFood',
+  title: 'SimplyFood - The home of the most delicious recipes on the web!',
   description:
-    'Welcome to SimplyFood! The home of the most delicious recipes on the web!',
+    'SimplyFood is a recipe website where you can find the most delicious recipes on the web!',
 };
