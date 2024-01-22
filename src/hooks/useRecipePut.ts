@@ -1,8 +1,7 @@
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import useRecipe from './useRecipe';
 import { FormikHelpers } from 'formik';
-import { useSession } from 'next-auth/react';
 import { putImage } from '@/s3';
 import { Recipe } from '../types';
 
