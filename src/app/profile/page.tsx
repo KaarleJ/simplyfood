@@ -3,11 +3,13 @@ import Text from '@/components/Text';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import Image from 'next/image';
-import ClientRecipeTable from '@/components/ClientRecipeTable';
+import StaticRecipeTable from '@/components/StaticRecipeTable';
+import prisma from '@/prismaClient';
 
 const Profile = async () => {
   const session = await getServerSession(authOptions);
   const user = session?.user as User | undefined;
+
   if (!session || !user) {
     return (
       <div className="flex flex-col justify-center items-center self-center h-screen">
@@ -15,6 +17,23 @@ const Profile = async () => {
       </div>
     );
   }
+
+  const likedRecipes = await prisma.recipe.findMany({
+    where: {
+      likedBy: {
+        some: {
+          id: user.id,
+        },
+      },
+    },
+  });
+
+  const createdRecipes = await prisma.recipe.findMany({
+    where: {
+      authorId: user.id,
+    },
+  });
+
   return (
     <div className="flex flex-col items-center justify-start sm:grid grid-rows-6 sm:m-16 grid-flow-row-dense">
       <div className="col-start-1 col-span-3">
@@ -34,47 +53,17 @@ const Profile = async () => {
 
       <div className="col-start-1 col-span-7 m-5">
         <Text header>Recipes liked by you</Text>
-        <ClientRecipeTable
-          apiUrl={`/api/recipes/${user.id}?liked=true`}
-          className="my-5 sm:mx-5"
+        <StaticRecipeTable
+          recipes={likedRecipes}
         />
       </div>
 
       <div className="col-start-1 col-span-7 m-5">
         <Text header>Recipes created by you</Text>
-        <ClientRecipeTable
-          apiUrl={`/api/recipes/${user.id}`}
-          className="my-5 sm:mx-5"
-        />
+        <StaticRecipeTable recipes={createdRecipes} />
       </div>
     </div>
   );
 };
 
 export default Profile;
-
-/*
-export const getServerSideProps: GetServerSideProps<{
-  user: User;
-}> = async (context) => {
-  const session = await getServerSession(context.req, context.res, authOptions);
-  const user = session?.user as User | undefined;
-  if (!session || !user) {
-    return {
-      notFound: true,
-    };
-  }
-  try {
-    return {
-      props: {
-        user: JSON.parse(JSON.stringify(user)),
-      },
-    };
-  } catch (error) {
-    console.error(error);
-    return {
-      notFound: true,
-    };
-  }
-};
-*/

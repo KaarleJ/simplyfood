@@ -1,9 +1,8 @@
-'use client';
 import { Recipe } from '@/types';
 import Link from 'next/link';
 import Image from 'next/image';
 import Text from '@/components/Text';
-import { Like } from 'styled-icons/boxicons-regular';
+import Like from '@/components/icons/Like';
 
 interface RecipeCardProps {
   recipe: Recipe;
