@@ -1,3 +1,4 @@
+'use client';
 import Text from '../Text';
 import { useState } from 'react';
 import Button from '../Button';

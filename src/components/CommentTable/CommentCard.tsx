@@ -1,3 +1,4 @@
+'use client';
 import { Comment } from '@/types';
 import Text from '@/components/Text';
 import Image from 'next/image';

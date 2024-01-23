@@ -1,3 +1,4 @@
+'use client';
 import Modal from '.';
 import Text from '../Text';
 import { Comment } from '@/types';

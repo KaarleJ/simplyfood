@@ -61,7 +61,6 @@ const CommentTable = ({
 
   useEffect(() => {
     if (data) {
-      console.log('Running effect');
       setComments((currentComments) => currentComments?.concat(data));
     }
   }, [data]);

@@ -1,3 +1,4 @@
+'use client';
 import { Loader5 as LoaderIcon } from '@styled-icons/remix-line';
 
 interface LoaderProps {
