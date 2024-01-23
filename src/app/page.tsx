@@ -1,5 +1,5 @@
 import Text from '@/components/Text';
-import StaticRecipeTable from '@/components/StaticRecipeTable';
+import StaticRecipeTable from '@/components/RecipeTable';
 import { getPopularRecipes, getRecentRecipes } from '@/prismaClient';
 
 export default async function Page() {
