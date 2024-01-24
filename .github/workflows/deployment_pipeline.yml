@@ -13,6 +13,8 @@ on:
 env:
   NODE_ENV: "test"
   TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL  }}
+  POSTGRES_PRISMA_URL: ${{  secrets.POSTGRES_PRISMA_URL }}
+  POSTGRES_URL_NON_POOLING: ${{  secrets.POSTGRES_URL_NON_POOLING }}
 
 permissions:
   contents: read
