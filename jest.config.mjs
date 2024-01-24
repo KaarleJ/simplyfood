@@ -17,6 +17,7 @@ const config = {
   },
   testTimeout: 30000,
   globalTeardown: './jest.teardown.ts',
+  globalSetup: './jest.setup.ts',
   testMatch: ['**/*.test.ts'],
 };
 
