@@ -2,12 +2,20 @@ import handler from '../recipe/[recipeId]';
 import { createMocks } from 'node-mocks-http';
 import { getServerSession } from 'next-auth/next';
 import prisma from '@/prismaClient';
+import { deleteImage } from '@/s3';
 
 // The use of recipe API requires a session, so we mock it
 jest.mock('next-auth/next');
 
 const mockedGetSession = getServerSession as jest.MockedFunction<
   typeof getServerSession
+>;
+
+// We mock the deleteImage function
+jest.mock('../../../s3');
+
+const mockedDeleteImage = deleteImage as jest.MockedFunction<
+  typeof deleteImage
 >;
 
 // We test the API without a session
