@@ -37,7 +37,5 @@ jobs:
         run: npm run build
       - name: Run unit-tests
         run: npm run test
-      - name: Start server
-        run: npm run start
       - name: Run e2e test
         run: npm run test:e2e
