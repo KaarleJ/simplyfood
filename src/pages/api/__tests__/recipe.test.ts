@@ -2,6 +2,7 @@ import handler from '../recipe';
 import { createMocks } from 'node-mocks-http';
 import { getServerSession } from 'next-auth/next';
 import { PrismaClient } from '@prisma/client';
+import { deleteImage } from '@/s3';
 
 const prisma = new PrismaClient({
   datasources: {
@@ -16,6 +17,13 @@ jest.mock('next-auth/next');
 
 const mockedGetSession = getServerSession as jest.MockedFunction<
   typeof getServerSession
+>;
+
+// We mock the deleteImage function
+jest.mock('../../../s3');
+
+const mockedDeleteImage = deleteImage as jest.MockedFunction<
+  typeof deleteImage
 >;
 
 // We test the API without a session

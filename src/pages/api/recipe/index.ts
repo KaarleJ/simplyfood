@@ -6,6 +6,7 @@ import type { Recipe as ReadyRecipe } from '@/types';
 import * as yup from 'yup';
 import { recipeSchema } from '../../../validationSchemas';
 type Recipe = Omit<ReadyRecipe, 'id'>;
+import { deleteImage } from '@/s3';
 
 export default async function handler(
   req: NextApiRequest,
@@ -31,10 +32,13 @@ export default async function handler(
       validatedRecipe = await recipeSchema.validate(req.body.recipe);
     } catch (error) {
       if (error instanceof yup.ValidationError) {
+        await deleteImage(recipe.imgUrl);
         res.status(400).json({ error: error.errors[0] });
         return;
       } else {
-        throw error;
+        await deleteImage(recipe.imgUrl);
+        res.status(500).json({ error: 'Unable to validate recipe' });
+        return;
       }
     }
 

@@ -7,6 +7,7 @@ type Recipe = Omit<RecipeType, 'id'>;
 import { recipeSchema } from '../../../validationSchemas';
 import * as yup from 'yup';
 import prisma from '@/prismaClient';
+import { deleteImage } from '@/s3';
 
 export default async function handler(
   req: NextApiRequest,
@@ -133,10 +134,19 @@ export default async function handler(
       return;
     }
 
+    const imgUrl = recipe.imgUrl;
+
     // Delete recipe
     await prisma.recipe.delete({
       where: { id: Number(recipeId) },
     });
+
+    // Delete image from S3
+    try {
+      await deleteImage(imgUrl);
+    } catch (error) {
+      console.log(error);
+    }
 
     // Return recipe
     res.status(200).json({ message: 'Recipe deleted' });
