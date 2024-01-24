@@ -1,4 +1,4 @@
-import aws from 'aws-sdk';
+import S3 from 'aws-sdk/clients/s3';
 import crypto from 'crypto';
 import { promisify } from 'util';
 const randomBytes = promisify(crypto.randomBytes);
@@ -7,7 +7,7 @@ const randomBytes = promisify(crypto.randomBytes);
 const bucketName =
   process.env.NODE_ENV === 'development' ? 'simplyfood-dev' : 'simplyfood-prod';
 
-const s3 = new aws.S3({
+const s3 = new S3({
   region: 'eu-central-1',
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -62,4 +62,29 @@ export const putImage = async (image: File) => {
   const imgUrl = url.split('?')[0];
 
   return imgUrl;
+};
+
+// This function is used to delete an image from S3
+/*
+@param imageUrl - The URL of the image to delete
+*/
+export const deleteImage = async (imageUrl: string) => {
+  // Parse the image key from the URL
+  const key = imageUrl.split('/').slice(-1)[0];
+
+  // Params for the delete request
+  const params = {
+    Bucket: bucketName,
+    Key: key,
+  };
+
+  // Delete the image
+  const res = await s3.deleteObject(params).promise();
+
+  // Check if the image was deleted
+  if (res.$response.error) {
+    throw new Error(res.$response?.error.message);
+  } else {
+    return res;
+  }
 };
