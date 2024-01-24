@@ -11,7 +11,8 @@
     "seed": "node src/seed.ts",
     "postinstall": "prisma generate",
     "test": "jest",
-    "test:w": "jest --watch"
+    "test:w": "jest --watch",
+    "test:e2e": "NODE_ENV=test npx playwright test"
   },
   "dependencies": {
     "@prisma/client": "^4.15.0",
@@ -27,6 +28,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
+    "sharp": "^0.33.2",
     "styled-icons": "^10.47.0",
     "swr": "^2.2.4",
     "tailwindcss": "3.3.2",
@@ -36,6 +38,7 @@
     "@babel/core": "^7.23.6",
     "@babel/preset-env": "^7.23.6",
     "@babel/preset-typescript": "^7.23.3",
+    "@playwright/test": "^1.41.1",
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^14.1.2",
     "@types/jest": "^29.5.11",

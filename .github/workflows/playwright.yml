@@ -1,0 +1,44 @@
+name: SimplyFood playwright tests
+on:
+  push:
+    branches: ["main"]
+
+  pull_request:
+    types: [opened, reopened]
+
+  workflow_dispatch:
+
+env:
+  NODE_ENV: "test"
+  TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL  }}
+  POSTGRES_PRISMA_URL: ${{  secrets.POSTGRES_PRISMA_URL }}
+  POSTGRES_URL_NON_POOLING: ${{  secrets.POSTGRES_URL_NON_POOLING }}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 20
+    - name: Install dependencies
+      run: npm ci
+    - name: Build with Next.js
+      run: npm run build
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test
+    - uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
