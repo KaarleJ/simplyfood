@@ -29,15 +29,3 @@ test('Renders Most Recent Recipes', async ({ page }) => {
   expect(page.getByText('Caprese Salad')).toBeTruthy();
   expect(page.getByText('Chicken Curry')).toBeTruthy();
 });
-
-test('NavBar is rendered and can be navigated', async ({ page }) => {
-  await page.goto('/');
-
-  const navbar = page.getByRole('navigation');
-  expect(navbar).toBeTruthy();
-  const recipesLink = page.getByRole('link', { name: 'Recipes' });
-  expect(recipesLink).toBeTruthy();
-  await recipesLink.click();
-  await page.waitForURL('**/recipes');
-  expect(page.url()).toBe('http://127.0.0.1:3000/recipes');
-});

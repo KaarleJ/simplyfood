@@ -2,7 +2,7 @@ import { test as setup } from '@playwright/test';
 import prisma from '@/prismaClient';
 import { seedDatabase } from '@/seed';
 
-setup('do login', async () => {
+setup('Clear and populate database', async () => {
   console.log('Global setup:');
   // Clear the database
   console.log('Clearing the database');
