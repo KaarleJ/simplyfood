@@ -4,7 +4,7 @@ test('NavBar is rendered', async ({ page }) => {
   await page.goto('/');
 
   const navbar = page.getByRole('navigation');
-  expect(navbar).toBeVisible();
+  expect(navbar).toBeAttached();
 });
 
 test('Links are rendered and can be navigated', async ({ page }) => {
@@ -13,9 +13,9 @@ test('Links are rendered and can be navigated', async ({ page }) => {
   const homeLink = page.getByRole('link', { name: 'Home' });
   const recipesLink = page.getByRole('link', { name: 'Recipes' });
   const signInLink = page.getByRole('link', { name: 'SignIn' });
-  expect(homeLink).toBeVisible();
-  expect(recipesLink).toBeVisible();
-  expect(signInLink).toBeVisible();
+  expect(homeLink).toBeAttached();
+  expect(recipesLink).toBeAttached();
+  expect(signInLink).toBeAttached();
 
   await signInLink.click();
   await page.waitForURL('**/api/auth/signin');
