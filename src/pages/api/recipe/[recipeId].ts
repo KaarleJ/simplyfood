@@ -32,11 +32,13 @@ export default async function handler(
     // Check if recipe exists
     if (!recipe) {
       res.status(404).json({ error: 'Recipe not found' });
+      await prisma.$disconnect();
       return;
     }
 
     // Return recipe
     res.status(200).json({ recipe, liked });
+    await prisma.$disconnect();
     return;
     // All other methods are not allowed
   } else if (req.method === 'PUT') {
@@ -44,6 +46,7 @@ export default async function handler(
     const session = await getServerSession(req, res, authOptions);
     if (!session) {
       res.status(401).json({ error: 'You must be signed in to edit a recipe' });
+      await prisma.$disconnect();
       return;
     }
     const userId = session?.user?.id as string | undefined;
@@ -51,6 +54,7 @@ export default async function handler(
     // Validate the recipe
     if (!req.body.recipe) {
       res.status(400).json({ error: 'Missing recipe in body' });
+      await prisma.$disconnect();
       return;
     }
     let validatedRecipe: Recipe;
@@ -59,9 +63,12 @@ export default async function handler(
     } catch (error) {
       if (error instanceof yup.ValidationError) {
         res.status(400).json({ error: error.errors[0] });
+        await prisma.$disconnect();
         return;
       } else {
-        throw error;
+        res.status(500).json({ error: 'Internal server error' });
+        await prisma.$disconnect();
+        return;
       }
     }
 
@@ -72,12 +79,14 @@ export default async function handler(
     // Check if recipe exists
     if (!recipe) {
       res.status(404).json({ error: 'Recipe not found' });
+      await prisma.$disconnect();
       return;
     }
 
     // Check that the user is the author of the recipe
     if (recipe.authorId !== userId) {
       res.status(403).json({ error: 'Forbidden' });
+      await prisma.$disconnect();
       return;
     }
 
@@ -108,6 +117,7 @@ export default async function handler(
 
     // Return recipe
     res.status(200).json(updatedRecipe);
+    await prisma.$disconnect();
     return;
   } else if (req.method === 'DELETE') {
     // Check session
@@ -115,6 +125,7 @@ export default async function handler(
     const userId = session?.user?.id as string | undefined;
     if (!session || !userId) {
       res.status(401).json({ error: 'Unauthorized' });
+      await prisma.$disconnect();
       return;
     }
 
@@ -125,12 +136,14 @@ export default async function handler(
     // Check if recipe exists
     if (!recipe) {
       res.status(404).json({ error: 'Recipe not found' });
+      await prisma.$disconnect();
       return;
     }
 
     // Check that the user is the author of the recipe
     if (recipe.authorId !== userId) {
       res.status(403).json({ error: 'Forbidden' });
+      await prisma.$disconnect();
       return;
     }
 
@@ -150,8 +163,10 @@ export default async function handler(
 
     // Return recipe
     res.status(200).json({ message: 'Recipe deleted' });
+    await prisma.$disconnect();
     return;
   } else {
     res.status(405).json({ message: 'Method not allowed' });
+    await prisma.$disconnect();
   }
 }

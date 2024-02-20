@@ -22,11 +22,13 @@ export default async function handler(
 
   if (!comment) {
     res.status(404).json({ error: 'Comment not found' });
+    await prisma.$disconnect();
     return;
   }
 
   if (comment.authorId !== session.user.id) {
     res.status(401).json({ error: 'Unauthorized' });
+    await prisma.$disconnect();
     return;
   }
 
@@ -37,9 +39,11 @@ export default async function handler(
       },
     });
     res.status(200).json({ message: 'Comment deleted' });
+    await prisma.$disconnect();
     return;
   } else {
     res.status(405).json({ error: 'Method not allowed' });
+    await prisma.$disconnect();
     return;
   }
 }

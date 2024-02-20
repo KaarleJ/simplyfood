@@ -40,6 +40,8 @@ export const authOptions: NextAuthOptions = {
         prismaUser = await prisma.user.create({ data: dbUser });
       }
 
+
+      await prisma.$disconnect();
       return true;
     },
   },

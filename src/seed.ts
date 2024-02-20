@@ -8,7 +8,7 @@ const prisma = new PrismaClient({
 });
 
 
-export async function seedDatabase() {
+async function seedDatabase() {
   const { id } = await prisma.user.create({
     data: {
       email: 'tester@test.com',
@@ -130,12 +130,12 @@ export async function seedDatabase() {
   });
 }
 
-if (require.main === module) {
-  seedDatabase()
-    .catch((error) => {
-      console.error(error);
-    })
-    .finally(async () => {
-      await prisma.$disconnect();
-    });
-}
+
+
+seedDatabase()
+  .catch((error) => {
+    console.error(error);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

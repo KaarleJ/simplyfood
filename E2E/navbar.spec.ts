@@ -4,7 +4,7 @@ test('NavBar is rendered', async ({ page }) => {
   await page.goto('/');
 
   const navbar = page.getByRole('navigation');
-  expect(navbar).toBeAttached();
+  expect(navbar).toBeVisible();
 });
 
 test('Links are rendered and can be navigated', async ({ page }) => {

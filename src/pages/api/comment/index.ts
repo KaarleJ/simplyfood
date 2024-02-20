@@ -13,6 +13,7 @@ export default async function handler(
   const session = await getServerSession(req, res, authOptions);
   if (!session) {
     res.status(401).json({ error: 'Must be signed in to create a recipe!' });
+    await prisma.$disconnect();
     return;
   }
 
@@ -21,6 +22,7 @@ export default async function handler(
     const comment = req.body.comment;
     if (!comment) {
       res.status(400).json({ error: 'Missing body' });
+      await prisma.$disconnect();
       return;
     }
     try {
@@ -28,9 +30,12 @@ export default async function handler(
     } catch (error) {
       if (error instanceof yup.ValidationError) {
         res.status(400).json({ error: error.errors[0] });
+        await prisma.$disconnect();
         return;
       } else {
-        throw error;
+        res.status(500).json({ error: 'Internal server error' });
+        await prisma.$disconnect();
+        return;
       }
     }
 
@@ -73,9 +78,11 @@ export default async function handler(
 
     // Send the created comment back to the client
     res.status(201).json({ comment: commentToSend });
+    await prisma.$disconnect();
     return;
   } else {
     res.status(405).json({ message: 'Method not allowed' });
+    await prisma.$disconnect();
     return;
   }
 }

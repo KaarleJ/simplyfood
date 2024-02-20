@@ -15,12 +15,14 @@ export default async function handler(
   });
   if (!recipe) {
     res.status(404).json({ error: 'Recipe not found' });
+    await prisma.$disconnect();
     return;
   }
   // Check authorization
   const session = await getServerSession(req, res, authOptions);
   if (!session || recipe?.authorId !== session.user.id) {
     res.status(401).json({ error: 'Unauthorized' });
+    await prisma.$disconnect();
     return;
   }
 
@@ -28,13 +30,16 @@ export default async function handler(
     try {
       await deleteImage(recipe.imgUrl);
       res.status(200).json({ success: true });
+      await prisma.$disconnect();
       return;
     } catch (error) {
       res.status(500).json({ error });
+      await prisma.$disconnect();
       return;
     }
   } else {
     res.status(405).json({ error: 'Method not allowed' });
+    await prisma.$disconnect();
     return;
   }
 }
