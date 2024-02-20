@@ -11,17 +11,20 @@ export default async function handler(
   const session = await getServerSession(req, res, authOptions);
   if (!session) {
     res.status(401).json({ error: 'Unauthorized' });
+    await prisma.$disconnect();
     return;
   }
 
   // Check if the recipeId is in the body
   if (!req.body.recipeId) {
     res.status(400).json({ error: 'Missing recipeId in body' });
+    await prisma.$disconnect();
     return;
   }
   // Check if the user id is in the session
   if (session.user.id === undefined) {
     res.status(400).json({ error: 'Missing id in session' });
+    await prisma.$disconnect();
     return;
   }
   const userId = session.user.id as string;
@@ -48,6 +51,7 @@ export default async function handler(
   if (req.method === 'POST') {
     if (liked) {
       res.status(400).json({ error: 'Recipe already liked' });
+      await prisma.$disconnect();
       return;
     }
 
@@ -66,6 +70,7 @@ export default async function handler(
         },
       });
       res.status(200).json({ message: 'Recipe liked' });
+      await prisma.$disconnect();
       return;
     } catch (error) {
       if (error instanceof Error) {
@@ -74,6 +79,7 @@ export default async function handler(
       }
       console.error(error);
       res.status(500).json({ error: 'Internal server error' });
+      await prisma.$disconnect();
       return;
     }
 
@@ -82,6 +88,7 @@ export default async function handler(
     // If the user hasn't liked this post, return an error
     if (!liked) {
       res.status(400).json({ error: 'Recipe not liked' });
+      await prisma.$disconnect();
       return;
     }
 
@@ -101,15 +108,18 @@ export default async function handler(
       });
 
       res.status(200).json({ message: 'Recipe unliked' });
+      await prisma.$disconnect();
       return;
     } catch (error) {
       if (error instanceof Error) {
         console.error(error);
         res.status(500).json({ error: error.message });
+        await prisma.$disconnect();
         return;
       }
       console.error(error);
       res.status(500).json({ error: 'Internal server error' });
+      await prisma.$disconnect();
       return;
     }
   }
