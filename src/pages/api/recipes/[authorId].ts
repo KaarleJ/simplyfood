@@ -32,23 +32,19 @@ export default async function handler(
         });
       }
       res.status(200).json({ recipes });
-      await prisma.$disconnect();
       return;
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
         res.status(500).json({ error: error.message });
-        await prisma.$disconnect();
         return;
       }
       console.error(error);
       res.status(500).json({ error: 'Unable to fetch author' });
-      await prisma.$disconnect();
       return;
     }
   } else {
     res.status(405).json({ error: 'Method not allowed' });
-    await prisma.$disconnect();
     return;
   }
 }

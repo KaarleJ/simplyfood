@@ -16,7 +16,6 @@ export default async function handler(
   const session = await getServerSession(req, res, authOptions);
   if (!session) {
     res.status(401).json({ error: 'Must be signed in to create a recipe!' });
-    await prisma.$disconnect();
     return;
   }
 
@@ -25,7 +24,6 @@ export default async function handler(
     const recipe = req.body.recipe;
     if (!recipe) {
       res.status(400).json({ error: 'Missing body' });
-      await prisma.$disconnect();
       return;
     }
     recipe.authorId = session.user.id;
@@ -36,12 +34,10 @@ export default async function handler(
       if (error instanceof yup.ValidationError) {
         await deleteImage(recipe.imgUrl);
         res.status(400).json({ error: error.errors[0] });
-        await prisma.$disconnect();
         return;
       } else {
         await deleteImage(recipe.imgUrl);
         res.status(500).json({ error: 'Unable to validate recipe' });
-        await prisma.$disconnect();
         return;
       }
     }
@@ -73,12 +69,10 @@ export default async function handler(
 
     // Send the recipe back to the client
     res.status(201).json(createdRecipe);
-    await prisma.$disconnect();
     return;
     // All other methods are not allowed
   } else {
     res.status(405).json({ message: 'Method not allowed' });
-    await prisma.$disconnect();
     return;
   }
 }
