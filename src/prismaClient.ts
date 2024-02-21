@@ -3,58 +3,53 @@ import { PrismaClient } from '@prisma/client';
 import { Recipe } from './types';
 import { Comment } from './types';
 
-let prisma: PrismaClient;
-
-// Check NODE_ENV to determine which database to use
-switch (process.env.NODE_ENV) {
-  case 'production':
-    console.log('Using production database.');
-    console.log(
-      'process.env.POSTGRES_PRISMA_URL',
-      process.env.POSTGRES_PRISMA_URL
-    );
-    prisma = new PrismaClient({
-      datasources: {
-        db: {
-          url: process.env.POSTGRES_PRISMA_URL,
-        },
-      },
-    });
-    break;
-  case 'development':
-    console.log('Using development database.');
-    console.log(
-      'process.env.POSTGRES_PRISMA_URL',
-      process.env.POSTGRES_PRISMA_URL
-    );
-    prisma = new PrismaClient({
-      datasources: {
-        db: {
-          url: process.env.POSTGRES_PRISMA_URL,
-        },
-      },
-    });
-    break;
-  case 'test':
-    console.log('Using test database.');
-    console.log(
-      'process.env.TEST_DATABASE_URL',
-      process.env.TEST_DATABASE_URL
-    );
-    prisma = new PrismaClient({
-      datasources: {
-        db: {
-          url: process.env.TEST_DATABASE_URL,
-        },
-      },
-    });
-    break;
-  default:
-    throw new Error('Unknown NODE_ENV');
-    break;
+declare global {
+  var prismaClient: undefined | ReturnType<typeof initPrisma>;
 }
 
+function initPrisma() {
+  // Check NODE_ENV to determine which database to use
+  switch (process.env.NODE_ENV) {
+    case 'production':
+      console.log('Using production database.');
+      return new PrismaClient({
+        datasources: {
+          db: {
+            url: process.env.POSTGRES_PRISMA_URL,
+          },
+        },
+      });
+    case 'development':
+      console.log('Using development database.');
+      return new PrismaClient({
+        datasources: {
+          db: {
+            url: process.env.POSTGRES_PRISMA_URL,
+          },
+        },
+      });
+    case 'test':
+      console.log('Using test database.');
+      return new PrismaClient({
+        datasources: {
+          db: {
+            url: process.env.TEST_DATABASE_URL,
+          },
+        },
+      });
+    default:
+      throw new Error('Unknown NODE_ENV');
+  }
+}
+
+const prisma = globalThis.prismaClient ?? initPrisma();
+
 export default prisma;
+
+if (process.env.NODE_ENV !== 'production') globalThis.prismaClient = prisma;
+
+
+// Functions below are used to interact with the database.
 
 // This function is used to get all recipes. It supports pagination and searching.
 export const getRecipes = async (
@@ -104,7 +99,6 @@ export const getRecipes = async (
     likeCount: Number(recipe.likeCount),
   }));
 
-  await prisma.$disconnect();
   return { recipes, count };
 };
 
@@ -126,7 +120,6 @@ export const getPopularRecipes = async () => {
     likeCount: Number(recipe.likeCount),
   }));
 
-  await prisma.$disconnect();
   return mostPopularRecipesWithLikeCount;
 };
 
@@ -148,7 +141,6 @@ export const getRecentRecipes = async () => {
     likeCount: Number(recipe.likeCount),
   }));
 
-  await prisma.$disconnect();
   return mostRecentRecipesWithLikeCount;
 };
 
@@ -199,7 +191,6 @@ export const getRecipeById = async (id: number, userId: string | undefined) => {
     recipe.likeCount = Number(recipe.likeCount);
   }
 
-  await prisma.$disconnect();
   return { recipe, liked };
 };
 
@@ -221,10 +212,8 @@ export const likeRecipe = async (recipeId: number, userId: string) => {
     data: { likedRecipes: { connect: { id: recipeId } } },
   });
 
-  await prisma.$disconnect();
   return newLike;
 };
-
 
 export async function seedDatabase() {
   const { id } = await prisma.user.create({
@@ -344,6 +333,6 @@ export async function seedDatabase() {
         guide:
           'Preheat the oven to 375°F (190°C). In a mixing bowl, cream together the softened butter, granulated sugar, and brown sugar until light and fluffy. Beat in the eggs one at a time, then stir in the vanilla extract. In a separate bowl, whisk together the all-purpose flour, baking soda, and salt. Gradually add the dry ingredients to the wet ingredients and mix until just combined. Fold in the chocolate chips. Drop rounded tablespoons of dough onto an ungreased baking sheet. Bake for 8 to 10 minutes or until lightly golden brown around the edges. Allow the cookies to cool on the baking sheet for a few minutes, then transfer them to a wire rack to cool completely. Enjoy the homemade chocolate chip cookies with a glass of milk!',
       },
-    ]
+    ],
   });
 }

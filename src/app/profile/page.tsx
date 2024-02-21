@@ -34,8 +34,6 @@ const Profile = async () => {
     },
   });
 
-  await prisma.$disconnect();
-
   return (
     <div className="flex flex-col items-stretch justify-start sm:m-16 grid-flow-row-dense">
       <div className='flex flex-col items-center justify-center sm:flex-row sm:justify-around'>
