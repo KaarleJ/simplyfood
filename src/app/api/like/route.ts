@@ -1,5 +1,5 @@
 import prisma from '@/prismaClient';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   const userId = req.cookies.get('userId')?.value as string;
@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
 
   // We check if the recipe is already liked
   if (user?.likedRecipes.some((recipe) => recipe.id === recipeId)) {
-    return Response.json(
+    return NextResponse.json(
       { success: false, message: 'Recipe already liked' },
       { status: 400 }
     );
@@ -37,13 +37,14 @@ export async function POST(req: NextRequest) {
         },
       },
     });
-    return Response.json(
+
+    return NextResponse.json(
       { success: true, message: 'Recipe liked' },
       { status: 200 }
     );
   } catch (error) {
     console.error(error);
-    return Response.json(
+    return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }
     );
@@ -73,7 +74,7 @@ export async function PUT(req: NextRequest) {
 
   // If the user has not liked the recipe, we return an error
   if (!liked) {
-    return Response.json(
+    return NextResponse.json(
       { success: false, message: 'Recipe not liked' },
       { status: 400 }
     );
@@ -93,13 +94,13 @@ export async function PUT(req: NextRequest) {
         },
       },
     });
-    return Response.json(
+    return NextResponse.json(
       { success: true, message: 'Recipe unliked' },
       { status: 200 }
     );
   } catch (error) {
     console.error(error);
-    return Response.json(
+    return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }
     );

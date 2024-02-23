@@ -26,11 +26,13 @@ export async function middleware(req: NextRequest) {
       );
     }
 
-    // Set the userId and recipeId in cookies
-    req.cookies.set('userId', session.user.id);
-    req.cookies.set('recipeId', body.recipeId);
+    const res = NextResponse.next();
 
-    return NextResponse.next();
+    // Set the userId and recipeId in cookies
+    res.cookies.set('userId', session.user.id);
+    res.cookies.set('recipeId', body.recipeId);
+
+    return res;
   }
 }
 
