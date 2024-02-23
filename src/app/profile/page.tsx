@@ -1,7 +1,7 @@
 import { User } from '@/types';
 import Text from '@/components/Text';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { authOptions } from '@/next.config';
 import Image from 'next/image';
 import RecipeTable from '@/components/RecipeTable';
 import prisma from '@/prismaClient';

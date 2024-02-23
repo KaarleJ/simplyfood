@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { getRecipeById } from '@/prismaClient';
-import { authOptions } from '../auth/[...nextauth]';
+import { authOptions } from '@/next.config';
 import type { Recipe as RecipeType } from '@/types';
 type Recipe = Omit<RecipeType, 'id'>;
 import { recipeSchema } from '../../../validationSchemas';

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../auth/[...nextauth]';
+import { authOptions } from '@/next.config';
 import prisma from '@/prismaClient';
 import type { Recipe as ReadyRecipe } from '@/types';
 import * as yup from 'yup';

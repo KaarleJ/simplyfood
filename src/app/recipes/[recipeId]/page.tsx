@@ -4,7 +4,7 @@ import CommentTable from '@/components/CommentTable';
 import RecipeActionComponents from './RecipeActionComponents';
 import { getRecipeById } from '@/prismaClient';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { authOptions } from '@/next.config';
 
 // This page renders a recipe with the id that is passed in the url.
 const Recipe = async ({ params }: { params: { recipeId: string } }) => {

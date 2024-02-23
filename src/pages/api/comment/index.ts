@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { authOptions } from '../auth/[...nextauth]';
+import { authOptions } from '@/next.config';
 import { getServerSession } from 'next-auth/next';
 import * as yup from 'yup';
 import prisma from '@/prismaClient';
