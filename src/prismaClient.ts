@@ -54,7 +54,7 @@ if (process.env.NODE_ENV !== 'production') globalThis.prismaClient = prisma;
 // This function is used to get all recipes. It supports pagination and searching.
 export const getRecipes = async (
   page: string = '1',
-  query: string | undefined = undefined,
+  query: string | undefined,
   take: number = 18
 ) => {
   let recipes: (Recipe & { likeCount: number })[];
