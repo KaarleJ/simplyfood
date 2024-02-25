@@ -1,15 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { commentSchema } from '@/validationSchemas';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/next.config';
 import prisma from '@/prismaClient';
 
 export async function POST(req: NextRequest) {
-  // Check authorization
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const userId = req.cookies.get('userId')?.value as string;
 
   const body = await req.json();
   const comment = body.comment;
@@ -27,7 +21,7 @@ export async function POST(req: NextRequest) {
       body: comment.body,
       author: {
         connect: {
-          id: session.user.id,
+          id: userId,
         },
       },
       recipe: {

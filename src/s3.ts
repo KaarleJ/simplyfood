@@ -40,7 +40,7 @@ export const generateUploadUrl = async () => {
 export const putImage = async (image: File) => {
   // Get the upload URL from the API
   const { url, error }: { url: string | undefined; error: string | undefined } =
-    await fetch('/api/s3').then((res) => res.json());
+    await fetch('/api/protected/s3').then((res) => res.json());
 
   // Check if there is an error or if the URL is not found
   if (error) {

@@ -12,7 +12,7 @@ const useLike = () => {
     setLoading(true);
     // We send the recipeId to the API. Based on the likedState, the API will either create or delete a like.
     const method = likedState ? 'PUT' : 'POST';
-    const { message, error } = await fetch('/api/like', {
+    const { message, error } = await fetch('/api/protected/like', {
       method,
       body: JSON.stringify({ recipeId }),
       headers: {

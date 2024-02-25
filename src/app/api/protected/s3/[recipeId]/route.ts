@@ -1,10 +1,9 @@
-import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
-import { authOptions } from '@/next.config';
 import { deleteImage } from '@/s3';
 import prisma from '@/prismaClient';
 
-export async function DELETE(_req: NextRequest, { params }: { params: { recipeId: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: { recipeId: string } }) {
+  const userId = req.cookies.get('userId')?.value as string;
   const recipeId = Number(params.recipeId);
   const recipe = await prisma.recipe.findUnique({
     where: { id: recipeId },
@@ -13,8 +12,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: { recipeId
   if (!recipe) {
     return NextResponse.json({ error: 'Recipe not found' }, { status: 404 });
   }
-  const session = await getServerSession(authOptions);
-  if (!session || recipe?.authorId !== session.user.id) {
+  if (recipe.authorId !== userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   try {

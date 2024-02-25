@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
 import { getRecipeById } from '@/prismaClient';
-import { authOptions } from '@/next.config';
 import type { Recipe as RecipeType } from '@/types';
 type Recipe = Omit<RecipeType, 'id'>;
 import { recipeSchema } from '@/validationSchemas';
@@ -9,52 +7,16 @@ import { ValidationError } from 'yup';
 import prisma from '@/prismaClient';
 import { deleteImage } from '@/s3';
 
-export async function GET(
-  _req: NextRequest,
-  { params }: { params: { recipeId: string } }
-) {
-  const { recipeId } = params;
-
-  if (!recipeId) {
-    return NextResponse.json({ error: 'Missing recipe id' }, { status: 400 });
-  }
-
-  // Check session
-  const session = await getServerSession(authOptions);
-  const userId = session?.user?.id as string | undefined;
-
-  // Get recipe by id
-  const { recipe, liked }: { recipe: Recipe | null; liked: boolean } =
-    await getRecipeById(Number(recipeId), userId);
-
-  // Check if recipe exists
-  if (!recipe) {
-    return NextResponse.json({ error: 'Recipe not found' }, { status: 404 });
-  }
-
-  // Return recipe
-  return NextResponse.json({ recipe, liked });
-}
-
 export async function PUT(
   req: NextRequest,
   { params }: { params: { recipeId: string } }
 ) {
   const { recipeId } = params;
+  const userId = req.cookies.get('userId')?.value as string;
 
   if (!recipeId) {
     return NextResponse.json({ error: 'Missing recipe id' }, { status: 400 });
   }
-
-  // Check session
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return NextResponse.json(
-      { error: 'You must be signed in to edit a recipe' },
-      { status: 401 }
-    );
-  }
-  const userId = session?.user?.id as string | undefined;
 
   // Validate the recipe
   const body = await req.json();
@@ -128,16 +90,10 @@ export async function DELETE(
   { params }: { params: { recipeId: string } }
 ) {
   const { recipeId } = params;
+  const userId = req.cookies.get('userId')?.value as string;
 
   if (!recipeId) {
     return NextResponse.json({ error: 'Missing recipe id' }, { status: 400 });
-  }
-
-  // Check session
-  const session = await getServerSession(authOptions);
-  const userId = session?.user?.id as string | undefined;
-  if (!session || !userId) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   // Get recipe by id
