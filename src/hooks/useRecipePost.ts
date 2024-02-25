@@ -68,7 +68,7 @@ const useRecipeCreate = () => {
     const imgUrl = await putImage(image);
 
     // Send the recipe data to the API
-    const { data, error } = await fetch('/api/recipe', {
+    const { data, error } = await fetch('/api/protected/recipe', {
       method: 'POST',
       body: JSON.stringify({
         recipe: {

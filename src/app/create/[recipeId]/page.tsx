@@ -1,8 +1,8 @@
 'use client';
 
-import Text from '../../../components/Text';
-import Form from '../../../components/Form';
-import useRecipePut from '../../../hooks/useRecipePut';
+import Text from '@/components/Text';
+import Form from '@/components/Form';
+import useRecipePut from '@/hooks/useRecipePut';
 import Loader from '@/components/Loader';
 
 const Edit = () => {

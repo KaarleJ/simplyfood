@@ -43,8 +43,8 @@ const useRecipe = () => {
     data,
     error,
     isLoading: recipeLoading,
-  } = useSWR(`/api/recipe/${recipeId}`, () =>
-    fetch(`/api/recipe/${recipeId}`).then((res) => res.json())
+  } = useSWR(`/api/recipes/${recipeId}`, () =>
+    fetch(`/api/recipes/${recipeId}`).then((res) => res.json())
   );
 
   // We set the recipe, likes and liked state when the data is fetched
@@ -67,7 +67,7 @@ const useRecipe = () => {
       return;
     }
     try {
-      await fetch(`/api/recipe/${recipe.id}`, {
+      await fetch(`/api/protected/recipe/${recipe.id}`, {
         method: 'DELETE',
       });
       toast.success('Recipe deleted!');

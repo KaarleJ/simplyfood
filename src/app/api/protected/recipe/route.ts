@@ -4,18 +4,12 @@ import { authOptions } from '@/next.config';
 import prisma from '@/prismaClient';
 import type { Recipe as ReadyRecipe } from '@/types';
 import { ValidationError } from 'yup';
-import { recipeSchema } from '../../../validationSchemas';
+import { recipeSchema } from '@/validationSchemas';
 type Recipe = Omit<ReadyRecipe, 'id'>;
 import { deleteImage } from '@/s3';
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return NextResponse.json(
-      { error: 'Must be signed in to create a recipe!' },
-      { status: 401 }
-    );
-  }
+  const userId = req.cookies.get('userId')?.value as string;
 
   const body = await req.json();
   const recipe = body.recipe;
@@ -24,7 +18,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Missing body' }, { status: 400 });
   }
 
-  recipe.authorId = session.user.id;
+  recipe.authorId = userId;
   let validatedRecipe: Recipe;
   try {
     validatedRecipe = await recipeSchema.validate(recipe);

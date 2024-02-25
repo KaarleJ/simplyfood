@@ -1,7 +1,7 @@
 'use client';
-import Form from '../../components/Form';
-import useRecipePost from '../../hooks/useRecipePost';
-import Text from '../../components/Text';
+import Form from '@/components/Form';
+import useRecipePost from '@/hooks/useRecipePost';
+import Text from '@/components/Text';
 
 const Create = () => {
   const { onSubmit, initialValues } = useRecipePost();

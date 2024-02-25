@@ -59,7 +59,7 @@ const useRecipeEdit = () => {
     };
 
     // Send the recipe data to the API
-    const { data, error } = await fetch(`/api/recipe/${oldValues.id}`, {
+    const { data, error } = await fetch(`/api/protected/recipe/${oldValues.id}`, {
       method: 'PUT',
       body: JSON.stringify({
         recipe,

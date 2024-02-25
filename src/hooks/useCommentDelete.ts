@@ -5,7 +5,7 @@ const useComment = () => {
 
   const remove = async (commentId: number) => {
     setIsLoading(true);
-    const { error } = await fetch(`/api/comment/${commentId}`, {
+    const { error } = await fetch(`/api/protected/comment/${commentId}`, {
       method: 'DELETE',
     }).then((res) => res.json());
     if (error) {

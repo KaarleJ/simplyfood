@@ -4,9 +4,11 @@ import { Session } from 'next-auth';
 import { decode } from 'next-auth/jwt';
 
 export async function middleware(req: NextRequest) {
+  // We initialize the response
+  const res = NextResponse.next();
 
-  //Middleware for the like route
-  if (req.nextUrl.pathname === '/api/like') {
+  // Middleware for the protected routes
+  if (req.nextUrl.pathname.startsWith('/api/protected')) {
     // We get the session manually
     const session = await getSessionManually(req);
     if (!session) {
@@ -15,6 +17,12 @@ export async function middleware(req: NextRequest) {
         { status: 401 }
       );
     }
+
+    res.cookies.set('userId', session.user.id);
+  }
+
+  //Middleware for the like route
+  if (req.nextUrl.pathname === '/api/protected/like') {
 
     const body = await req.json();
 
@@ -26,14 +34,11 @@ export async function middleware(req: NextRequest) {
       );
     }
 
-    const res = NextResponse.next();
-
-    // Set the userId and recipeId in cookies
-    res.cookies.set('userId', session.user.id);
+    // Set the recipeId in cookies
     res.cookies.set('recipeId', body.recipeId);
-
-    return res;
   }
+
+  return res;
 }
 
 export const config = {

@@ -9,7 +9,7 @@ const useComment = () => {
   const comment = async (recipeId: number, body: string) => {
 
     setIsLoading(true);
-    const { comment, error } = await fetch('/api/comment', {
+    const { comment, error } = await fetch('/api/protected/comment', {
       method: 'POST',
       body: JSON.stringify({
         comment: {

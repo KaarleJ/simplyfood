@@ -9,12 +9,11 @@ const bucketName =
 
 const s3 = new S3({
   region: 'eu-central-1',
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID || 'github-actions',
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || 'github-actions',
   signatureVersion: 'v4',
 });
 
-// This function is used to send a upload url to the client. The client will use this url to upload the image to S3
 export const generateUploadUrl = async () => {
   // Generate a unique name for the image
   const rawBytes = await randomBytes(16);
@@ -32,15 +31,10 @@ export const generateUploadUrl = async () => {
   return uploadUrl;
 };
 
-// This function is a client side function to fetch the uploadUrl and put the image to S3
-/*
-@param image - The image to upload
-@returns The URL of the uploaded image
-*/
 export const putImage = async (image: File) => {
   // Get the upload URL from the API
   const { url, error }: { url: string | undefined; error: string | undefined } =
-    await fetch('/api/s3').then((res) => res.json());
+    await fetch('/api/protected/s3').then((res) => res.json());
 
   // Check if there is an error or if the URL is not found
   if (error) {
@@ -64,10 +58,6 @@ export const putImage = async (image: File) => {
   return imgUrl;
 };
 
-// This function is used to delete an image from S3
-/*
-@param imageUrl - The URL of the image to delete
-*/
 export const deleteImage = async (imageUrl: string) => {
   // Parse the image key from the URL
   const key = imageUrl.split('/').slice(-1)[0];
