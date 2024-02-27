@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { FormikHelpers } from 'formik';
 import { toast } from 'react-hot-toast';
-import { putImage } from '@/s3';
+import { putImage } from '@/lib/s3';
 
 interface Values {
   title: string;

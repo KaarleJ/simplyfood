@@ -1,4 +1,4 @@
-import { getRecipes } from '@/prismaClient';
+import { getRecipes } from '@/lib/prismaClient';
 import RecipeCard from '@/components/RecipeCard';
 import ClientLayout from './ClientLayout';
 

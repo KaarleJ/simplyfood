@@ -14,6 +14,8 @@ const s3 = new S3({
   signatureVersion: 'v4',
 });
 
+
+// This function is executed server side. It generates a signed URL for the client to upload an image to S3
 export const generateUploadUrl = async () => {
   // Generate a unique name for the image
   const rawBytes = await randomBytes(16);
@@ -31,6 +33,7 @@ export const generateUploadUrl = async () => {
   return uploadUrl;
 };
 
+// This function is executed client side. It fetches a signed url from the API and uploads the image directly to S3
 export const putImage = async (image: File) => {
   // Get the upload URL from the API
   const { url, error }: { url: string | undefined; error: string | undefined } =
@@ -58,6 +61,7 @@ export const putImage = async (image: File) => {
   return imgUrl;
 };
 
+// This function is executed server side. It deletes an image from S3
 export const deleteImage = async (imageUrl: string) => {
   // Parse the image key from the URL
   const key = imageUrl.split('/').slice(-1)[0];

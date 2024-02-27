@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Recipe } from '@/types';
-import { getRecipes } from '@/prismaClient';
+import { getRecipes } from '@/lib/prismaClient';
 
 export async function GET(req: NextRequest) {
   const searchQuery = req.nextUrl.searchParams.get('search') || undefined;

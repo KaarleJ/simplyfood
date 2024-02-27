@@ -19,6 +19,10 @@ const config = {
   globalTeardown: './jest.teardown.ts',
   globalSetup: './jest.setup.ts',
   testMatch: ['**/*.test.ts'],
+  setupFilesAfterEnv: [
+    '<rootDir>/src/lib/__mocks__/singleton.ts',
+    '<rootDir>/src/lib/__mocks__/mockedS3.ts',
+  ],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
