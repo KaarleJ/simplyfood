@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 import { PrismaClient } from '@prisma/client';
-import { Recipe } from './types';
-import { Comment } from './types';
+import { Recipe } from '../types';
+import { Comment } from '../types';
 
 declare global {
   var prismaClient: undefined | ReturnType<typeof initPrisma>;

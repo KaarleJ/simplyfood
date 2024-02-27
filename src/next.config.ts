@@ -1,7 +1,7 @@
 import { NextAuthOptions } from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
-import prisma from '@/prismaClient';
+import prisma from '@/lib/prismaClient';
 
 export const authOptions: NextAuthOptions = {
   providers: [

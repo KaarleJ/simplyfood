@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import useRecipe from './useRecipe';
 import { FormikHelpers } from 'formik';
-import { putImage } from '@/s3';
+import { putImage } from '@/lib/s3';
 import { Recipe } from '../types';
 
 interface NewValues {

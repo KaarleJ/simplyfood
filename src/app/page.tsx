@@ -1,6 +1,6 @@
 import Text from '@/components/Text';
 import StaticRecipeTable from '@/components/RecipeTable';
-import { getPopularRecipes, getRecentRecipes } from '@/prismaClient';
+import { getPopularRecipes, getRecentRecipes } from '@/lib/prismaClient';
 
 export default async function Page() {
   const mostRecentRecipes = await getRecentRecipes();

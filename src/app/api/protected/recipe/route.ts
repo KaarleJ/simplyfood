@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/next.config';
-import prisma from '@/prismaClient';
+import prisma from '@/lib/prismaClient';
 import type { Recipe as ReadyRecipe } from '@/types';
 import { ValidationError } from 'yup';
 import { recipeSchema } from '@/validationSchemas';
 type Recipe = Omit<ReadyRecipe, 'id'>;
-import { deleteImage } from '@/s3';
+import { deleteImage } from '@/lib/s3';
 
 export async function POST(req: NextRequest) {
   const userId = req.cookies.get('userId')?.value as string;

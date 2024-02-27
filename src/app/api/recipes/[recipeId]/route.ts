@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getRecipeById } from '@/prismaClient';
+import { getRecipeById } from '@/lib/prismaClient';
 import type { Recipe as RecipeType } from '@/types';
 type Recipe = Omit<RecipeType, 'id'>;
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/next.config';
 
 export async function GET(
-  req: NextRequest,
+  _req: NextRequest,
   { params }: { params: { recipeId: string } }
 ) {
   const { recipeId } = params;

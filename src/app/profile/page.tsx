@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/next.config';
 import Image from 'next/image';
 import RecipeTable from '@/components/RecipeTable';
-import prisma from '@/prismaClient';
+import prisma from '@/lib/prismaClient';
 
 const Profile = async () => {
   const session = await getServerSession(authOptions);

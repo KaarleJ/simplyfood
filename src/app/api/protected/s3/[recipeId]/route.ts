@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { deleteImage } from '@/s3';
-import prisma from '@/prismaClient';
+import { deleteImage } from '@/lib/s3';
+import prisma from '@/lib/prismaClient';
 
 export async function DELETE(req: NextRequest, { params }: { params: { recipeId: string } }) {
   const userId = req.cookies.get('userId')?.value as string;

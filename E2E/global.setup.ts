@@ -1,5 +1,5 @@
 import { test as setup } from '@playwright/test';
-import prisma, { seedDatabase } from '@/prismaClient';
+import prisma, { seedDatabase } from '@/lib/prismaClient';
 
 setup('Clear and populate database', async () => {
   console.log('Global setup:');

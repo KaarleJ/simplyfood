@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/prismaClient';
+import prisma from '@/lib/prismaClient';
 
 export async function DELETE(req: NextRequest, { params }: { params: { commentId: string } }) {
   const userId = req.cookies.get('userId')?.value as string;

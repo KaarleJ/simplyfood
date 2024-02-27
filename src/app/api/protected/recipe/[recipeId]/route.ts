@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getRecipeById } from '@/prismaClient';
+import { getRecipeById } from '@/lib/prismaClient';
 import type { Recipe as RecipeType } from '@/types';
 type Recipe = Omit<RecipeType, 'id'>;
 import { recipeSchema } from '@/validationSchemas';
 import { ValidationError } from 'yup';
-import prisma from '@/prismaClient';
-import { deleteImage } from '@/s3';
+import prisma from '@/lib/prismaClient';
+import { deleteImage } from '@/lib/s3';
 
 export async function PUT(
   req: NextRequest,

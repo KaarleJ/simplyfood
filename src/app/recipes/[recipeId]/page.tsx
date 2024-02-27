@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Text from '@/components/Text';
 import CommentTable from '@/components/CommentTable';
 import RecipeActionComponents from './RecipeActionComponents';
-import { getRecipeById } from '@/prismaClient';
+import { getRecipeById } from '@/lib/prismaClient';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/next.config';
 

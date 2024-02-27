@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { commentSchema } from '@/validationSchemas';
-import prisma from '@/prismaClient';
+import prisma from '@/lib/prismaClient';
 
 export async function POST(req: NextRequest) {
   const userId = req.cookies.get('userId')?.value as string;
