@@ -1,15 +1,17 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { Session } from 'next-auth';
-import { decode } from 'next-auth/jwt';
+import { getSessionManually } from './lib/utils';
 
+// NextJs middleware is executed in the edge environment
 export async function middleware(req: NextRequest) {
   // We initialize the response
   const res = NextResponse.next();
+  console.log(req.nextUrl.pathname);
 
   // Middleware for the protected routes
   if (req.nextUrl.pathname.startsWith('/api/protected')) {
-    // We get the session manually
+    console.log('protected route');
+    // We get the session manually because next-auth doesn't work in edge environment
     const session = await getSessionManually(req);
     if (!session) {
       return NextResponse.json(
@@ -44,33 +46,3 @@ export async function middleware(req: NextRequest) {
 export const config = {
   matcher: '/api/:path*',
 };
-
-// NextAuth getServerSession doesn't work in edge environment, so we need to get the session manually
-async function getSessionManually(req: NextRequest) {
-  const cookie = req.cookies.get('next-auth.session-token');
-  if (!cookie) {
-    return null;
-  }
-  const token = cookie.value;
-  const secret = process.env.NEXTAUTH_SECRET as string;
-  const decoded = await decode({
-    token,
-    secret,
-  });
-
-  if (!decoded) {
-    return null;
-  }
-
-  const session: Session = {
-    user: {
-      id: decoded.sub,
-      name: decoded.name,
-      email: decoded.email,
-      image: decoded.picture,
-    },
-    expires: decoded.exp as string,
-  };
-
-  return session;
-}
