@@ -16,8 +16,6 @@ const config = {
     NODE_ENV: 'test',
   },
   testTimeout: 30000,
-  globalTeardown: './jest.teardown.ts',
-  globalSetup: './jest.setup.ts',
   testMatch: ['**/*.test.ts'],
   setupFilesAfterEnv: [
     '<rootDir>/src/lib/__mocks__/singleton.ts',

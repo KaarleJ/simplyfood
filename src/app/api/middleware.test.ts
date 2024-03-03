@@ -1,6 +1,5 @@
 import { middleware } from '../../middleware';
 import { NextRequest } from 'next/server';
-import { getSessionManually } from '@/lib/utils';
 
 jest.mock('../../lib/utils', () => {
   return {

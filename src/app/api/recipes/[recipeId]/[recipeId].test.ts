@@ -5,7 +5,9 @@ describe('GET /api/recipes/[recipeId]', () => {
   test('should return a recipe', async () => {
     await testApiHandler({
       appHandler,
-      params: { recipeId: '1' },
+      params: {
+        recipeId: '1',
+      },
       async test({ fetch }) {
         const response = await fetch({ method: 'GET' });
         expect(response.status).toBe(200);
