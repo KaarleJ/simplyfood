@@ -6,11 +6,9 @@ import { getSessionManually } from './lib/utils';
 export async function middleware(req: NextRequest) {
   // We initialize the response
   const res = NextResponse.next();
-  console.log(req.nextUrl.pathname);
 
   // Middleware for the protected routes
   if (req.nextUrl.pathname.startsWith('/api/protected')) {
-    console.log('protected route');
     // We get the session manually because next-auth doesn't work in edge environment
     const session = await getSessionManually(req);
     if (!session) {

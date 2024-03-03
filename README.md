@@ -10,18 +10,15 @@ SimplyFood is a web application that serves as a platform for users to search, p
 - **Deployment**: The application is deployed on Vercel's cloud service.
 
 ## Development
-This app was developed with NextJs. Initially the project was started with NextJs 12 pages router. But later the project was migrated to NextJs 13 app router. Pages router with vercel's free-tier did not work ideally and was a bit slow, so we had to change the pages to be rendered clientside. We migrated the pages to app router and that improved the performance, so we changed the pages to be rendered serverside. Currently the new way to create api routes in app router doesn't have good documentation on unit tests and there isn't any libraries for testing them so the api routes are still in pages router for now.
+This app was developed with NextJs. Initially the project was started with NextJs 12 pages router but later the project was migrated to NextJs 13 app router.
 
 ## CI/CD
-We use github actions to setup a CI/CD pipeline. We have a file [.github/workflows/deployment_pipeline.yml](.github/workflows/deployment_pipeline.yml) that defines the steps for build and test checks. And then we have Vercels own checks that deploy the app to Vercel.
+We use github actions to setup a CI/CD pipeline. We have a file [.github/workflows/build_tests.yml](.github/workflows/build_tests.yml) that defines the steps for build and test checks. And then we have Vercels own checks that deploy the app to Vercel.
 
 ## Development Roadmap
-- Implement E2E tests
-- Make api use middleware to make api routes more neat
-- Refactor unit tests
-- When there is good documentation or good testing libraries for the new app router api handlers then migrate api to app route.
+- Rework the E2E tests
 
 
 ## Known faults
-- The api currently looks like spaghetti and we don't currently use middleware.
-- We don't have any E2E tests and the tests currently are a bit lacking.
+- We don't have any E2E tests
+- Minor visual bugs in UI
