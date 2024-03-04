@@ -12,7 +12,8 @@
     "postinstall": "prisma generate",
     "test": "jest",
     "test:w": "jest --watch",
-    "test:e2e": "NODE_ENV=test npx playwright test"
+    "test:e2e": "cross-env NODE_ENV=test npx playwright test",
+    "test:e2e:u": "cross-env NODE_ENV=test npx playwright test --ui"
   },
   "dependencies": {
     "@prisma/client": "^4.15.0",
@@ -38,7 +39,7 @@
     "@babel/core": "^7.23.6",
     "@babel/preset-env": "^7.23.6",
     "@babel/preset-typescript": "^7.23.3",
-    "@playwright/test": "^1.41.1",
+    "@playwright/test": "^1.42.1",
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^14.1.2",
     "@types/jest": "^29.5.11",
@@ -48,6 +49,7 @@
     "@types/supertest": "^2.0.16",
     "@vercel/postgres": "^0.3.1",
     "babel-jest": "^29.7.0",
+    "cross-env": "^7.0.3",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.3",
     "jest": "^29.7.0",

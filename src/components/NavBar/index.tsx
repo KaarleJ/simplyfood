@@ -9,14 +9,14 @@ const NavBar = () => {
   const { data: session } = useSession();
 
   return (
-    <nav className="shadow-lg flex justify-between items-center bg-green-yellow p-5  mb-5">
+    <nav data-testid='navbar' className="shadow-lg flex justify-between items-center bg-green-yellow p-5  mb-5">
       <h1 className="text-off-white text-3xl font-bold">SimplyFood</h1>
 
-      <div className="sm:hidden">
+      <div data-testid="mobile-navbar" className="sm:hidden">
         <Menu session={session} />
       </div>
 
-      <ul className="ml-4 mr-20 hidden sm:flex justify-end space-x-4 lg:space-x-16 xl:space-x-32 text-xl grow items-center">
+      <ul data-testid="desktop-navbar" className="ml-4 mr-20 hidden sm:flex justify-end space-x-4 lg:space-x-16 xl:space-x-32 text-xl grow items-center">
         <li className="text-off-white font-bold hover:text-cyan-400 transition-color">
           <Link href="/">Home</Link>
         </li>
