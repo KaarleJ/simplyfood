@@ -11,16 +11,16 @@ test('has title', async ({ page }) => {
 test('Renders showing all recipes', async ({ page }) => {
   await page.goto('/recipes');
 
-  expect(page.getByText('Showing all recipes')).toBeTruthy();
-  expect(page.getByText('Spring Rolls')).toBeTruthy();
-  expect(page.getByText('Pasta Carbonara')).toBeTruthy();
-  expect(page.getByText('Chocolate Chip Cookies')).toBeTruthy();
-  expect(page.getByText('Caprese Salad')).toBeTruthy();
-  expect(page.getByText('Chicken Curry')).toBeTruthy();
+  await expect(page.getByText('Showing all recipes')).toBeVisible();
+  await expect(page.getByText('Spring Rolls').first()).toBeVisible();
+  await expect(page.getByText('Pasta Carbonara').first()).toBeVisible();
+  await expect(page.getByText('Chocolate Chip Cookies').first()).toBeVisible();
+  await expect(page.getByText('Caprese Salad').first()).toBeVisible();
+  await expect(page.getByText('Chicken Curry').first()).toBeVisible();
 });
 
 test('Renders search bar', async ({ page }) => {
   await page.goto('/recipes');
 
-  expect(page.getByPlaceholder('search recipes...')).toBeTruthy();
+  await expect(page.getByPlaceholder('search recipes...')).toBeVisible();
 });
