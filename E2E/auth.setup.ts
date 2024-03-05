@@ -20,7 +20,7 @@ setup('authenticate', async ({ page }) => {
   await page.getByRole('button', { name: 'Sign in with GitHub' }).click();
   await page.getByLabel('Username or email address').fill(username);
   await page.getByLabel('Password').fill(password);
-  await page.getByRole('button', { name: 'Sign In' }).click();
+  await page.getByRole('button', { name: 'Sign In' }).first().click();
 
   await page.waitForURL('https://github.com/login/oauth/**');
   const authorize = page.getByRole('button', { name: 'Authorize' });
