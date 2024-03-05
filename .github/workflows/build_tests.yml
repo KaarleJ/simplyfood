@@ -17,6 +17,8 @@ env:
   POSTGRES_URL_NON_POOLING: ${{  secrets.POSTGRES_URL_NON_POOLING }}
   GITHUB_USERNAME: ${{ secrets.GH_USERNAME }}
   GITHUB_PASSWORD: ${{ secrets.GH_PASSWORD }}
+  NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+  NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
 
 permissions:
   contents: read
