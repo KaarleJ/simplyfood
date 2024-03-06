@@ -11,7 +11,9 @@ setup('authenticate', async ({ page }) => {
   const username = process.env.GITHUB_USERNAME;
   const password = process.env.GITHUB_PASSWORD;
   if (!username || !password) {
-    throw new Error('GITHUB_USERNAME and GITHUB_PASSWORD environment variables must be set');
+    throw new Error(
+      'GITHUB_USERNAME and GITHUB_PASSWORD environment variables must be set'
+    );
   }
   console.log('Authenticating');
   console.log('Username:', username.length, 'Password:', password.length);
@@ -23,7 +25,14 @@ setup('authenticate', async ({ page }) => {
   await page.getByLabel('Password').fill(password);
   await page.getByRole('button', { name: 'Sign In' }).first().click();
 
-  await page.waitForURL('https://github.com/login/oauth/**');
+  console.log('Navigation after login', page.url());
+
+  try {
+    await page.waitForURL('https://github.com/login/oauth/**');
+  } catch (error) {
+    console.error('Authentication failed:', error);
+    await page.screenshot({ path: 'login-error.png' });
+  }
   const authorize = page.getByRole('button', { name: 'Authorize' });
   if (await authorize.isVisible()) {
     await authorize.click();
