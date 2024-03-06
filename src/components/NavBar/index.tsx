@@ -27,7 +27,7 @@ const NavBar = () => {
         {session ? (
           <>
             <li className="text-off-white font-bold hover:text-cyan-400 transition-color">
-              <Link href="/create">
+              <Link data-testid='create-button' href="/create">
                 <Create size="36" />
               </Link>
             </li>

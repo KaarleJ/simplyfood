@@ -13,7 +13,7 @@ const ProfileButton = ({ session }: PropTypes) => {
   const [expand, setExpand] = useState(false); // This state handles if the list of links is displayed or not.
 
   return (
-    <div className="relative z-20">
+    <div className="relative z-20" data-testid='profile-menu'>
       <button
         onClick={() => setExpand(!expand)}
         className="hover:brightness-75 w-10"

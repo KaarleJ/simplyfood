@@ -37,8 +37,14 @@ export default defineConfig({
       testMatch: /global.setup\.ts/,
     },
     {
+      name: 'auth',
+      testMatch: /auth.setup\.ts/,
+      dependencies: ['setup'],
+    },
+    {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      testIgnore: '**/authed/*.spec.ts',
       dependencies: ['setup'],
     },
 
@@ -46,7 +52,26 @@ export default defineConfig({
     {
       name: 'Mobile Chrome',
       use: { ...devices['Pixel 5'] },
+      testIgnore: '**/authed/*.spec.ts',
       dependencies: ['setup'],
+    },
+    {
+      name: 'authed chromium',
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: 'E2E/.auth/user.json',
+      },
+      testMatch: '**/authed/*.spec.ts',
+      dependencies: ['auth'],
+    },
+    {
+      name: 'authed Mobile Chrome',
+      use: {
+        ...devices['Pixel 5'],
+        storageState: 'E2E/.auth/user.json',
+      },
+      testMatch: '**/authed/*.spec.ts',
+      dependencies: ['auth'],
     },
 
     /* Test against branded browsers. */
@@ -63,8 +88,7 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     command: 'npm run start',
-    url: 'http://127.0.0.1:3000',
+    url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
   },
 });
-

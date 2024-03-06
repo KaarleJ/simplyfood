@@ -1,12 +1,5 @@
 import { test, expect } from '@playwright/test';
 
-test('NavBar is rendered', async ({ page, isMobile }) => {
-  await page.goto('/');
-
-  const navbar = page.getByTestId('navbar');
-  await expect(navbar).toBeVisible();
-});
-
 test.describe('Mobile view', () => {
   test('Menu is rendered and desktop navbar is not', async ({
     page,

@@ -19,12 +19,14 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
       }
+      console.log('JWTCallback: ', user);
       return token;
     },
     async session({ session, token }) {
       if (session?.user) {
         session.user.id = token.id;
       }
+      console.log('SessionCallback: ', session);
       return session;
     },
     async signIn({ user }) {
@@ -40,6 +42,7 @@ export const authOptions: NextAuthOptions = {
         prismaUser = await prisma.user.create({ data: dbUser });
       }
 
+      console.log('SignInCallback: ', prismaUser);
 
       return true;
     },

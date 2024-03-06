@@ -38,6 +38,13 @@ export async function middleware(req: NextRequest) {
     res.cookies.set('recipeId', body.recipeId);
   }
 
+  // Debug middleware for auth route
+  if (req.nextUrl.pathname.startsWith('/api/auth')) {
+    console.log('AuthMiddleware: Incoming request: ', req.method, req.url);
+    console.log('AuthMiddleware: Headers: ', req.headers);
+    console.log('AuthMiddleware: Cookies: ', req.cookies);
+  }
+
   return res;
 }
 
