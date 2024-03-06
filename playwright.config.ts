@@ -40,9 +40,6 @@ export default defineConfig({
       name: 'auth',
       testMatch: /auth.setup\.ts/,
       dependencies: ['setup'],
-      use: {
-        storageState: 'E2E/.auth/user.json',
-      }
     },
     {
       name: 'chromium',

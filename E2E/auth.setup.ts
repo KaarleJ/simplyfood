@@ -5,8 +5,6 @@ dotenv.config();
 
 const authFile = 'E2E/.auth/user.json';
 
-setup.use({ storageState: { cookies: [], origins: [] } });
-
 setup('authenticate', async ({ page }) => {
   const username = process.env.GITHUB_USERNAME;
   const password = process.env.GITHUB_PASSWORD;
