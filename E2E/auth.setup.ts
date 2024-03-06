@@ -14,6 +14,7 @@ setup('authenticate', async ({ page }) => {
     throw new Error('GITHUB_USERNAME and GITHUB_PASSWORD environment variables must be set');
   }
   console.log('Authenticating');
+  console.log('Username:', username.length, 'Password:', password.length);
   await page.goto('http://localhost:3000/');
   await page.getByRole('link', { name: 'Signin' }).click();
   await page.waitForURL('http://localhost:3000/api/auth/signin');
